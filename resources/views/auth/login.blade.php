@@ -23,17 +23,17 @@
 
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Quicksand:500,700" rel="stylesheet">
 
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('') }}css/bootstrap.min.css">
 
-<link rel="stylesheet" href="{{ asset('assets/css/waves.min.css') }}" type="text/css" media="all"> <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/feather.css') }}">
+<link rel="stylesheet" href="{{ asset('') }}css/waves.min.css" type="text/css" media="all"> <link rel="stylesheet" type="text/css" href="{{ asset('') }}css/feather.css">
 
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/themify-icons.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('') }}css/themify-icons.css">
 
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/icofont.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('') }}css/icofont.css">
 
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/font-awesome.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('') }}css/font-awesome.min.css">
 
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}"><link rel="stylesheet" type="text/css" href="{{ asset('assets/css/pages.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('') }}css/style.css"><link rel="stylesheet" type="text/css" href="{{ asset('') }}css/pages.css">
 </head>
 <body themebg-pattern="theme1">
 
@@ -164,7 +164,7 @@
                                         </label>
                                     </div>
                                     <div class="forgot-phone text-right float-right">
-                                        <a href="auth-reset-password.html" class="text-right f-w-600"> Forgot Password?</a>
+                                        <a href="{{ route('lupa_password_email') }}" class="text-right f-w-600"> Forgot Password?</a>
                                     </div>
                                 </div>
                             </div>
@@ -189,18 +189,18 @@
 </section>
 
 
-<script type="4878d7dfa7bc22a8dfa99416-text/javascript" src="{{ asset('assets/js/jquery.min.js') }}"></script>
-<script type="4878d7dfa7bc22a8dfa99416-text/javascript" src="{{ asset('assets/js/jquery-ui.min.js') }}"></script>
-<script type="4878d7dfa7bc22a8dfa99416-text/javascript" src="{{ asset('assets/js/popper.min.js') }}"></script>
-<script type="4878d7dfa7bc22a8dfa99416-text/javascript" src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+<script type="4878d7dfa7bc22a8dfa99416-text/javascript" src="{{ asset('') }}js/jquery.min.js"></script>
+<script type="4878d7dfa7bc22a8dfa99416-text/javascript" src="{{ asset('') }}js/jquery-ui.min.js"></script>
+<script type="4878d7dfa7bc22a8dfa99416-text/javascript" src="{{ asset('') }}js/popper.min.js"></script>
+<script type="4878d7dfa7bc22a8dfa99416-text/javascript" src="{{ asset('') }}js/bootstrap.min.js"></script>
 
-<script src="{{ asset('assets/js/waves.min.js') }}" type="4878d7dfa7bc22a8dfa99416-text/javascript"></script>
+<script src="{{ asset('') }}js/waves.min.js" type="4878d7dfa7bc22a8dfa99416-text/javascript"></script>
 
-<script type="4878d7dfa7bc22a8dfa99416-text/javascript" src="{{ asset('assets/js/jquery.slimscroll.js') }}"></script>
+<script type="4878d7dfa7bc22a8dfa99416-text/javascript" src="{{ asset('') }}js/jquery.slimscroll.js"></script>
 
-<script type="4878d7dfa7bc22a8dfa99416-text/javascript" src="{{ asset('assets/js/modernizr.js') }}"></script>
-<script type="4878d7dfa7bc22a8dfa99416-text/javascript" src="{{ asset('assets/js/css-scrollbars.js') }}"></script>
-<script type="4878d7dfa7bc22a8dfa99416-text/javascript" src="{{ asset('assets/js/common-pages.js') }}"></script>
+<script type="4878d7dfa7bc22a8dfa99416-text/javascript" src="{{ asset('') }}js/modernizr.js"></script>
+<script type="4878d7dfa7bc22a8dfa99416-text/javascript" src="{{ asset('') }}js/css-scrollbars.js"></script>
+<script type="4878d7dfa7bc22a8dfa99416-text/javascript" src="{{ asset('') }}js/common-pages.js"></script>
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13" type="4878d7dfa7bc22a8dfa99416-text/javascript"></script>
 <script type="4878d7dfa7bc22a8dfa99416-text/javascript">
@@ -210,7 +210,7 @@
 
   gtag('config', 'UA-23581568-13');
 </script>
-<script src="{{ asset('assets/js/rocket-loader.min.js') }}" data-cf-settings="4878d7dfa7bc22a8dfa99416-|49" defer=""></script></body>
+<script src="{{ asset('') }}js/rocket-loader.min.js" data-cf-settings="4878d7dfa7bc22a8dfa99416-|49" defer=""></script></body>
 
 <!-- Mirrored from colorlib.com/polygon/admindek/default/auth-sign-in-social.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 12 Dec 2019 16:08:30 GMT -->
 </html>
