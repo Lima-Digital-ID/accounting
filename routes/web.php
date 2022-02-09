@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\KodeIndukController;
 use App\Http\Controllers\v1\DashboardController;
 use App\Http\Controllers\v1\UsersController;
 use Illuminate\Support\Facades\Route;
@@ -36,8 +37,16 @@ Route::middleware(['auth'])->group(function () {
     // Users Management
     Route::resource('/user', UsersController::class);
     // change password
-    Route::get('change-password', [UsersController::class, 'changePassword'])->name('change_password');
-    Route::put('change-password/{id}', [UsersController::class, 'updatePassword'])->name('update_password');
+    Route::get('/change-password', [UsersController::class, 'changePassword'])->name('change_password');
+    Route::put('/change-password/{id}', [UsersController::class, 'updatePassword'])->name('update_password');
+    // Kode Induk trash
+    Route::get('/kode-induk/trash',[KodeIndukController::class,'trashKodeInduk'])->name('kodeInduk.trash');
+    Route::get('/kode-induk/restore/{id}',[KodeIndukController::class,'restoreKodeInduk'])->name('kodeInduk.restore');
+    Route::delete('/kode-induk/{id}/hapus',[KodeIndukController::class,'hapusPermanen'])->name('kodeInduk.hapusPermanen');
+    // Kode Induk
+    Route::resource('/kode-induk',KodeIndukController::class);
+
+
 });
 
 require __DIR__.'/auth.php';

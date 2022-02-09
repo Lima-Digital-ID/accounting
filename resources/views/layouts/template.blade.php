@@ -6,7 +6,7 @@
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
 
 <head>
-    <title>Administrator</title>
+    <title>Accounting | Administrator</title>
 
 
     <!--[if lt IE 10]>
@@ -23,7 +23,7 @@
         content="flat ui, admin Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
     <meta name="author" content="colorlib" />
 
-    <link rel="icon" href="{{ asset('') }}png/jatim.png" type="image/x-icon">
+    {{-- <link rel="icon" href="{{ asset('') }}png/jatim.png" type="image/x-icon"> --}}
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Quicksand:500,700" rel="stylesheet">

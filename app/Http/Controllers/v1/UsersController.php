@@ -173,6 +173,10 @@ class UsersController extends Controller
     {
         try {
             $trashUser = User::findOrFail($id);
+            // return $trashUser;
+            if ($trashUser->deleted_by = auth()->user()->id) {
+                $trashUser->update();
+            }
             $trashUser->delete();
             return redirect()->route('user.index')->withStatus('Berhasil memindahkan ke sampah');
 
@@ -269,6 +273,7 @@ class UsersController extends Controller
         try {
             $user = User::withTrashed()->findOrFail($id);
             if ($user->trashed()) {
+                $user->deleted_by = null;
                 $user->restore();
                 return redirect()->route('user.trash')->withStatus('Data berhasil di kembalikan.');
             }
