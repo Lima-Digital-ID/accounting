@@ -35,6 +35,8 @@
     <link rel="stylesheet" href="{{ asset('') }}css/waves.min.css" type="text/css" media="all">
 
     <link rel="stylesheet" type="text/css" href="{{ asset('') }}css/feather.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('') }}css/themify-icons.css">
+
     <link rel="stylesheet" href="{{ asset('') }}css/select2.min.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('') }}css/bootstrap-multiselect.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('') }}css/multi-select.css" />

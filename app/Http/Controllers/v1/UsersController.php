@@ -287,6 +287,7 @@ class UsersController extends Controller
     }
     public function hapusPermanen($id)
     {
+        // return   $id;
         try {
             $deleteUser = User::onlyTrashed()->where('id',$id);
             $deleteUser->forceDelete();

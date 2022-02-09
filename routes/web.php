@@ -32,7 +32,7 @@ Route::middleware(['auth'])->group(function () {
     // users trash
     Route::get('/user/trash',[UsersController::class,'trashUser'])->name('user.trash');
     Route::get('/user/restore/{id}',[UsersController::class,'restoreUser'])->name('user.restore');
-    Route::get('/user/hapus/{id}',[UsersController::class,'hapusPermanen'])->name('user.hapusPermanen');
+    Route::delete('/user/{id}/hapus',[UsersController::class,'hapusPermanen'])->name('user.hapusPermanen');
     // Users Management
     Route::resource('/user', UsersController::class);
     // change password
