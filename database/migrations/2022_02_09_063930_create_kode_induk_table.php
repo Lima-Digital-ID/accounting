@@ -14,8 +14,8 @@ class CreateKodeIndukTable extends Migration
     public function up()
     {
         Schema::create('kode_induk', function (Blueprint $table) {
-            $table->id();
-            $table->string('kode_induk',10)->unique();
+            // $table->id();
+            $table->string('kode_induk',10)->unique()->primary();
             $table->string('nama',40);
             $table->enum('tipe',['Debit','Kredit']);
             $table->timestamps();

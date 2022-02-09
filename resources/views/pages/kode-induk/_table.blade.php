@@ -22,12 +22,12 @@
                     <td>{{ $item->tipe }}</td>
                     <td>
                         <div class="form-inline">
-                            <a href="{{ route('kode-induk.edit', $item->id) }}" class="mr-2">
+                            <a href="{{ route('kode-induk.edit', $item->kode_induk) }}" class="mr-2">
                                 <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm"
                                     data-toggle="tooltip" title="Edit" data-placement="top"><span
                                         class="feather icon-edit"></span></button>
                             </a>
-                            <form action="{{ route('kode-induk.destroy', $item->id) }}" method="post">
+                            <form action="{{ route('kode-induk.destroy', $item->kode_induk) }}" method="post">
                                 @csrf
                                 @method('delete')
                                 <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Hapus"

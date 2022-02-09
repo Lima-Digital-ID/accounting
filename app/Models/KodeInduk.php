@@ -11,6 +11,7 @@ class KodeInduk extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'kode_induk';
+    protected $primaryKey = 'kode_induk';
     protected $fillable = [
         'kode_induk',
         'nama',

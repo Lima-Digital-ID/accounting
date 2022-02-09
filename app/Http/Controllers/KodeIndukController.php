@@ -33,7 +33,7 @@ class KodeIndukController extends Controller
 
         try {
             $keyword = $request->get('keyword');
-            $getKodeInduk = KodeInduk::orderBy('id', 'DESC');
+            $getKodeInduk = KodeInduk::orderBy('kode_induk', 'ASC');
 
             if ($keyword) {
                 $getKodeInduk->where('nama', 'LIKE', "%{$keyword}%")->orWhere('kode_induk', 'LIKE', "%{$keyword}%")->orWhere('tipe', 'LIKE', "%{$keyword}%");
@@ -112,11 +112,13 @@ class KodeIndukController extends Controller
         try {
             $this->param['btnText'] = 'Lihat Kode Induk';
             $this->param['btnLink'] = route('kode-induk.index');
-            $this->param['data'] = KodeInduk::findOrFail($id);
+            $this->param['data'] = KodeInduk::find($id);
             return view('pages.kode-induk.edit',$this->param);
         } catch (QueryException $e) {
+            return $e;
             return redirect()->back()->withError('Terjadi kesalahan.');
         } catch (Exception $e){
+            return $e;
             return redirect()->back()->withError('Terjadi kesalahan.');
 
         }
@@ -131,7 +133,7 @@ class KodeIndukController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $kodeInduk = KodeInduk::where('id',$id)->first();
+        $kodeInduk = KodeInduk::find($id);
         $isUniqueKode = $kodeInduk->kode_induk == $request->kode_induk ? '' : '|unique:kode_induk';
         $isUniqueNama = $kodeInduk->nama == $request->nama ? '' : '|unique:kode_induk';
         $request->validate([
@@ -140,7 +142,7 @@ class KodeIndukController extends Controller
             'tipe' => 'required',
         ]);
         try {
-            $updateData = KodeInduk::where('id',$id)->first();
+            $updateData = KodeInduk::find($id);
             $updateData->kode_induk = $request->kode_induk;
             $updateData->nama = $request->nama;
             $updateData->tipe = $request->tipe;
@@ -184,7 +186,7 @@ class KodeIndukController extends Controller
         $this->param['btnLink'] = route('kode-induk.create');
         try {
             $keyword = $request->get('keyword');
-            $getKodeInduk = KodeInduk::select('kode_induk.id','kode_induk.kode_induk as nama_kode_induk','kode_induk.nama','kode_induk.tipe','kode_induk.deleted_by','users.id','users.name')
+            $getKodeInduk = KodeInduk::select('kode_induk.kode_induk as kode_induk','kode_induk.nama','kode_induk.tipe','kode_induk.deleted_by','users.id','users.name')
                                         ->join('users','kode_induk.deleted_by','users.id')->onlyTrashed();
 
             if ($keyword) {
@@ -229,7 +231,7 @@ class KodeIndukController extends Controller
     {
         // return   $id;
         try {
-            $deleteKodeInduk = KodeInduk::onlyTrashed()->where('id',$id);
+            $deleteKodeInduk = KodeInduk::onlyTrashed()->find($id);
             $deleteKodeInduk->forceDelete();
             return redirect()->route('kodeInduk.trash')->withStatus('Data berhasil dihapus permanen.');
 
