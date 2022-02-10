@@ -96,7 +96,7 @@
 
                 <form class="md-float-material form-material" method="POST" action="{{ route('login') }}">
                     <div class="text-center">
-                        <h1>Administrator</h1>
+                        <h1>Accounting</h1>
                         {{-- <img src="{{ asset('assets/png/logo.png') }}" alt="logo.png"> --}}
                     </div>
                     <div class="auth-box card">
@@ -173,7 +173,6 @@
                                     <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">LOGIN</button>
                                 </div>
                             </div>
-                            <p class="text-inverse text-left">Don't have an account?<a href="auth-sign-up-social.html"> <b>Register here </b></a>for free!</p>
                         </div>
                     </div>
                 </form>

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\v1;
 
+use App\Http\Controllers\Controller;
 use App\Models\KodeInduk;
 use Exception;
 use Illuminate\Database\QueryException;
@@ -9,18 +10,13 @@ use Illuminate\Http\Request;
 
 class KodeIndukController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     private $param;
 
     public function __construct()
     {
         $this->param['pageTitle'] = 'Kode Induk';
         $this->param['pageIcon'] = 'feather icon-bookmark';
-        $this->param['parentMenu'] = 'user';
+        $this->param['parentMenu'] = 'Kode Akun';
         $this->param['current'] = 'Kode Induk';
     }
 
@@ -59,7 +55,6 @@ class KodeIndukController extends Controller
     {
         $this->param['btnText'] = 'Lihat Kode Induk';
         $this->param['btnLink'] = route('kode-induk.index');
-
         return view('pages.kode-induk.create',$this->param);
     }
 
@@ -74,7 +69,13 @@ class KodeIndukController extends Controller
         $request->validate([
             'kode_induk' => 'required|unique:kode_induk',
             'nama' => 'required',
-            'tipe' => 'required',
+            'tipe' => 'required|not_in:0',
+        ],[
+            'required' => ':attribute harus terisi.',
+            'not_in' => ':attribute harus terisi.'
+        ],[
+            'kode_induk' => 'Kode induk',
+            'nama' => 'Nama induk'
         ]);
         try {
             $addData = new KodeInduk;
@@ -115,12 +116,9 @@ class KodeIndukController extends Controller
             $this->param['data'] = KodeInduk::find($id);
             return view('pages.kode-induk.edit',$this->param);
         } catch (QueryException $e) {
-            return $e;
             return redirect()->back()->withError('Terjadi kesalahan.');
         } catch (Exception $e){
-            return $e;
             return redirect()->back()->withError('Terjadi kesalahan.');
-
         }
     }
 
@@ -140,6 +138,12 @@ class KodeIndukController extends Controller
             'kode_induk' => 'required'.$isUniqueKode,
             'nama' => 'required'.$isUniqueNama,
             'tipe' => 'required',
+        ],[
+            'required' => ':attribute harus terisi.',
+            'not_in' => ':attribute harus terisi.'
+        ],[
+            'kode_induk' => 'Kode induk',
+            'nama' => 'Nama induk'
         ]);
         try {
             $updateData = KodeInduk::find($id);
@@ -236,12 +240,11 @@ class KodeIndukController extends Controller
             return redirect()->route('kodeInduk.trash')->withStatus('Data berhasil dihapus permanen.');
 
         } catch (\Illuminate\Database\QueryException $e) {
-            return $e;
             return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
         }
         catch (Exception $e) {
-            return $e;
             return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
         }
     }
+
 }

@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\KodeIndukController;
+use App\Http\Controllers\v1\KodeIndukController;
 use App\Http\Controllers\v1\DashboardController;
+use App\Http\Controllers\v1\KodeAkunController;
 use App\Http\Controllers\v1\UsersController;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +46,12 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/kode-induk/{id}/hapus',[KodeIndukController::class,'hapusPermanen'])->name('kodeInduk.hapusPermanen');
     // Kode Induk
     Route::resource('/kode-induk',KodeIndukController::class);
+     // Kode Akun trash
+     Route::get('/kode-akun/trash',[KodeAkunController::class,'trashKodeAkun'])->name('kodeAkun.trash');
+     Route::get('/kode-akun/restore/{id}',[KodeAkunController::class,'restoreKodeAkun'])->name('kodeAkun.restore');
+     Route::delete('/kode-akun/{id}/hapus',[KodeAkunController::class,'hapusPermanen'])->name('kodeAkun.hapusPermanen');
+     // Kode Akun
+     Route::resource('/kode-akun',KodeAkunController::class);
 
 
 });

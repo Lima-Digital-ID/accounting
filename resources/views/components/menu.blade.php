@@ -32,14 +32,14 @@
                          <span class="pcoded-mtext">Kode Induk</span>
                      </a>
                  </li>
-                 {{-- <li class="{{ Request::segment(1) == 'kode-akun' ? 'active' : '' }}">
+                 <li class="{{ Request::segment(1) == 'kode-akun' ? 'active' : '' }}">
                      <a href="{{ url('kode-akun') }}" class="waves-effect waves-dark">
                          <span class="pcoded-micon">
-                             <i class="feather icon-user"></i>
+                             <i class="feather icon-bookmark"></i>
                          </span>
-                         <span class="pcoded-mtext">User</span>
+                         <span class="pcoded-mtext">Kode Rekening</span>
                      </a>
-                 </li> --}}
+                 </li>
              </ul>
 
         </div>
