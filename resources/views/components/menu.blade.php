@@ -40,6 +40,14 @@
                          <span class="pcoded-mtext">Kode Rekening</span>
                      </a>
                  </li>
+                 <li class="{{ Request::segment(1) == 'kunci-transaksi' ? 'active' : '' }}">
+                    <a href="{{ url('kunci-transaksi') }}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-bookmark"></i>
+                        </span>
+                        <span class="pcoded-mtext">Kunci Transaksi</span>
+                    </a>
+                </li>
              </ul>
 
         </div>
