@@ -113,10 +113,8 @@ class KunciTransaksiController extends Controller
             $editKunciTransaksi->save();
             return redirect()->route('kunci-transaksi.index')->withStatus('Berhasil mengganti data.');
         } catch (QueryException $e) {
-            return $e;
             return redirect()->back()->withError('Terjadi kesalahan.');
         } catch (Exception $e){
-            return $e;
             return redirect()->back()->withError('Terjadi kesalahan.');
         }
     }
