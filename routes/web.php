@@ -4,6 +4,7 @@ use App\Http\Controllers\v1\KodeIndukController;
 use App\Http\Controllers\v1\DashboardController;
 use App\Http\Controllers\v1\KodeAkunController;
 use App\Http\Controllers\v1\KunciTransaksiController;
+use App\Http\Controllers\v1\TransaksiKasController;
 use App\Http\Controllers\v1\UsersController;
 use App\Models\KunciTransaksi;
 use Illuminate\Support\Facades\Route;
@@ -42,21 +43,25 @@ Route::middleware(['auth'])->group(function () {
     // change password
     Route::get('/change-password', [UsersController::class, 'changePassword'])->name('change_password');
     Route::put('/change-password/{id}', [UsersController::class, 'updatePassword'])->name('update_password');
-    // Kode Induk trash
-    Route::get('/kode-induk/trash',[KodeIndukController::class,'trashKodeInduk'])->name('kodeInduk.trash');
-    Route::get('/kode-induk/restore/{id}',[KodeIndukController::class,'restoreKodeInduk'])->name('kodeInduk.restore');
-    Route::delete('/kode-induk/{id}/hapus',[KodeIndukController::class,'hapusPermanen'])->name('kodeInduk.hapusPermanen');
-    // Kode Induk
-    Route::resource('/kode-induk',KodeIndukController::class);
-    // Kode Akun trash
-    Route::get('/kode-akun/trash',[KodeAkunController::class,'trashKodeAkun'])->name('kodeAkun.trash');
-    Route::get('/kode-akun/restore/{id}',[KodeAkunController::class,'restoreKodeAkun'])->name('kodeAkun.restore');
-    Route::delete('/kode-akun/{id}/hapus',[KodeAkunController::class,'hapusPermanen'])->name('kodeAkun.hapusPermanen');
-    // Kode Akun
-    Route::resource('/kode-akun',KodeAkunController::class);
-    // KunciTransaksi
-    Route::resource('/kunci-transaksi',KunciTransaksiController::class);
-
+    // master akuntasi
+    Route::prefix('master-akuntasi')->group(function () {
+        // Kode Induk trash
+        Route::get('/kode-induk/trash',[KodeIndukController::class,'trashKodeInduk'])->name('kodeInduk.trash');
+        Route::get('/kode-induk/restore/{id}',[KodeIndukController::class,'restoreKodeInduk'])->name('kodeInduk.restore');
+        Route::delete('/kode-induk/{id}/hapus',[KodeIndukController::class,'hapusPermanen'])->name('kodeInduk.hapusPermanen');
+        // Kode Induk
+        Route::resource('/kode-induk',KodeIndukController::class);
+        // Kode Akun trash
+        Route::get('/kode-akun/trash',[KodeAkunController::class,'trashKodeAkun'])->name('kodeAkun.trash');
+        Route::get('/kode-akun/restore/{id}',[KodeAkunController::class,'restoreKodeAkun'])->name('kodeAkun.restore');
+        Route::delete('/kode-akun/{id}/hapus',[KodeAkunController::class,'hapusPermanen'])->name('kodeAkun.hapusPermanen');
+        // Kode Akun
+        Route::resource('/kode-akun',KodeAkunController::class);
+        // KunciTransaksi
+        Route::resource('/kunci-transaksi',KunciTransaksiController::class);
+    });
+    // Kas transaksi
+    Route::resource('/kas-transaksi',TransaksiKasController::class);
 
 
 });

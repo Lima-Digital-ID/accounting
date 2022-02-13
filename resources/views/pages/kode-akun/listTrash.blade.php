@@ -18,10 +18,10 @@
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link {{ request()->routeIs('kode-akun.index') ? 'active' : '' }}" href="{{ url('/kode-akun') }}">List Kode Rekening</a>
+          <a class="nav-link {{ request()->routeIs('kode-akun.index') ? 'active' : '' }}" href="{{ url('/master-akuntasi/kode-akun') }}">List Kode Rekening</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ Request::segment(2) == 'trash' ? 'active' : '' }}" href="{{ url('/kode-akun/trash') }}">List Sampah</a>
+            <a class="nav-link {{ Request::segment(3) == 'trash' ? 'active' : '' }}" href="{{ url('/master-akuntasi/kode-akun/trash') }}">List Sampah</a>
         </li>
     </ul>
     <div class="card">
