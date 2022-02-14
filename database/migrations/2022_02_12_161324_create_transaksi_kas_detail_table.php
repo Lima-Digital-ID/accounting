@@ -21,7 +21,7 @@ class CreateTransaksiKasDetailTable extends Migration
             $table->text('keterangan')->nullable();
             $table->foreign('kode_transaksi_kas')->references('kode_transaksi_kas')->on('transaksi_kas');
             $table->foreign('kode_lawan')->references('kode_akun')->on('kode_akun');
-            // $table->timestamps();
+            $table->timestamps();
         });
     }
 

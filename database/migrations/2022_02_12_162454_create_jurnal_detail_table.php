@@ -25,7 +25,7 @@ class CreateJurnalDetailTable extends Migration
 
             $table->foreign('jurnal_id')->references('id')->on('jurnal');
             $table->foreign('id_detail_transaksi')->references('id')->on('transaksi_kas_detail');
-            // $table->timestamps();
+            $table->timestamps();
         });
     }
 

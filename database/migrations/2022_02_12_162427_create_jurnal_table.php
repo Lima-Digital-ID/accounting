@@ -21,7 +21,7 @@ class CreateJurnalTable extends Migration
             $table->foreign('kode_transaksi_kas')->references('kode_transaksi_kas')->on('transaksi_kas');
             $table->string('kode_transaksi_bank')->nullable();
             $table->string('kode_memorial')->nullable();
-            // $table->timestamps();
+            $table->timestamps();
         });
     }
 
