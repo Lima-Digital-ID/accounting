@@ -11,6 +11,13 @@ class TransaksiKas extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'transaksi_kas';
     protected $primaryKey = 'kode_transaksi_kas';
+    public $incrementing = FALSE;
     protected $dates = ['deleted_at'];
 
+    public function kodeRekening()
+    {
+        return $this->belongsTo(KodeAkun::class,'akun_kode');
+
+    }
 }
+

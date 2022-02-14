@@ -61,7 +61,11 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('/kunci-transaksi',KunciTransaksiController::class);
     });
     // Kas transaksi
-    Route::resource('/kas-transaksi',TransaksiKasController::class);
+    Route::prefix('kas')->group(function () {
+        Route::get('/kas-transaksi/addDetailKasTransaksi',[TransaksiKasController::class,'DetailKasTransaksi']);
+        Route::resource('/kas-transaksi',TransaksiKasController::class);
+        // Route::resource('/laporan-kas',TransaksiKasController::class);
+    });
 
 
 });

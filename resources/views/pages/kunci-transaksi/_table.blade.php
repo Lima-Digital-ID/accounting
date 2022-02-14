@@ -17,7 +17,7 @@
                 <tr class="border-bottom-primary">
                     <td class="text-center text-muted">{{ $no }}</td>
                     <td>{{ $item->jenis_transaksi }}</td>
-                    <td>{{ $item->tanggal_mulai_kunci }}</td>
+                    <td>{{ date('d-m-Y', strtotime($item->tanggal_mulai_kunci)) }}</td>
                     <td>
                         <div class="form-inline">
                             <a href="{{ route('kunci-transaksi.edit', $item->id) }}" class="mr-2">

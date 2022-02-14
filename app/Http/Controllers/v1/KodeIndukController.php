@@ -16,7 +16,7 @@ class KodeIndukController extends Controller
     {
         $this->param['pageTitle'] = 'Kode Induk';
         $this->param['pageIcon'] = 'feather icon-bookmark';
-        $this->param['parentMenu'] = 'Kode Akun';
+        $this->param['parentMenu'] = 'Kode Induk';
         $this->param['current'] = 'Kode Induk';
     }
 
@@ -24,9 +24,6 @@ class KodeIndukController extends Controller
     {
         $this->param['btnText'] = 'Tambah Kode Induk';
         $this->param['btnLink'] = route('kode-induk.create');
-        $this->param['btnTrashText'] = 'Lihat Sampah';
-        $this->param['btnTrashLink'] = route('user.trash');
-
         try {
             $keyword = $request->get('keyword');
             $getKodeInduk = KodeInduk::orderBy('kode_induk', 'ASC');

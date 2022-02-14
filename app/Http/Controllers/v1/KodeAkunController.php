@@ -93,7 +93,7 @@ class KodeAkunController extends Controller
             $addData = new KodeAkun;
             $addData->kode_akun = $kode_akun;
             $addData->induk_kode = $request->induk_kode;
-            $addData->nama = $request->nama;
+            $addData->nama = str_replace('-',' ',$request->nama);
             $addData->saldo_awal = $request->saldo;
             $addData->save();
             return redirect()->route('kode-akun.index')->withStatus('Berhasil menambahkan data.');
@@ -148,10 +148,11 @@ class KodeAkunController extends Controller
     {
         $kode_akun = KodeAkun::find($id);
         $isUniqueKodeAkun = $kode_akun->kode_akun == $request->kode_akun ? '' : '|unique:kode_akun';
+        $isUniqueNamaAkun = $kode_akun->nama == $request->nama ? '' : '|unique:kode_akun';
         $request->validate([
             'induk_kode' => 'required|not_in:0',
             'kode_akun' => 'required|'.$isUniqueKodeAkun,
-            'nama' => 'required',
+            'nama' => 'required|'.$isUniqueNamaAkun,
             'saldo' => 'required'
         ],[
             'unique' => ':attribute sudah tersedia.',
@@ -167,15 +168,17 @@ class KodeAkunController extends Controller
         try {
             $kode_akun = $request->induk_kode.$request->kode_akun;
             $updateData = KodeAkun::findOrFail($id);
-            $updateData->kode_akun = $kode_akun;
-            $updateData->induk_kode = $request->induk_kode;
-            $updateData->nama = $request->nama;
+            // $updateData->kode_akun = $kode_akun;
+            // $updateData->induk_kode = $request->induk_kode;
+            $updateData->nama = str_replace('-',' ',$request->nama);
             $updateData->saldo_awal = $request->saldo;
             $updateData->save();
             return redirect()->route('kode-akun.index')->withStatus('Berhasil menambahkan data.');
         } catch (QueryException $e) {
+            return $e;
             return redirect()->back()->withError('Terjadi kesalahan.');
         } catch (Exception $e){
+            return $e;
             return redirect()->back()->withError('Terjadi kesalahan.');
         }
     }

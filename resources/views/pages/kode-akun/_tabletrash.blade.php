@@ -20,7 +20,7 @@
                     <td class="text-center text-muted">{{ $no }}</td>
                     <td>{{ $item->kode_akun }}</td>
                     <td>{{ $item->nama }}</td>
-                    <td>{{ number_format($item->saldo_awal, 2, ',', '.') }}</td>
+                    <td>Rp. {{ number_format($item->saldo_awal, 2, ',', '.') }}</td>
                     <td>{{ $item->name }}</td>
                     <td>
                         <div class="form-inline">

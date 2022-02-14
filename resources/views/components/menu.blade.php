@@ -20,6 +20,7 @@
                         <span class="pcoded-mtext">User</span>
                     </a>
                 </li>
+                {{-- master akuntansi --}}
                 <li class="pcoded-hasmenu {{ Request::segment(1) == 'master-akuntasi' ? 'active' : '' }} {{ Request::segment(1) == 'master-akuntasi' ? 'pcoded-trigger' : '' }}">
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="feather icon-bookmark"></i></span>
@@ -53,10 +54,32 @@
                     </ul>
                 </li>
             </ul>
-             {{-- master akuntansi --}}
-
-             <div class="pcoded-navigation-label">Master Akuntansi</div>
+             {{-- <div class="pcoded-navigation-label">Master Akuntansi</div> --}}
              <ul class="pcoded-item pcoded-left-item">
+                <li class="pcoded-hasmenu {{ Request::segment(1) == 'kas' ? 'active' : '' }} {{ Request::segment(1) == 'kas' ? 'pcoded-trigger' : '' }}">
+                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="ti-wallet"></i></span>
+                        <span class="pcoded-mtext">Kas</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        <li class="{{ Request::segment(2) == 'kas-transaksi' ? 'active' : '' }}">
+                            <a href="{{ url('kas/kas-transaksi') }}" class="waves-effect waves-dark">
+                                <span class="pcoded-micon">
+                                    <i class="feather icon-bookmark"></i>
+                                </span>
+                                <span class="pcoded-mtext">Transaksi Kas</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::segment(2) == '' ? 'active' : '' }}">
+                            <a href="{{ url('master-akuntasi/kode-induk') }}" class="waves-effect waves-dark">
+                                <span class="pcoded-micon">
+                                    <i class="feather icon-bookmark"></i>
+                                </span>
+                                <span class="pcoded-mtext">Laporan Kas</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
              </ul>
 
         </div>
