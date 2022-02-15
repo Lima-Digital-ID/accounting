@@ -24,7 +24,7 @@ class CreateJurnalDetailTable extends Migration
             $table->bigInteger('id_detail_transaksi')->unsigned();
 
             $table->foreign('jurnal_id')->references('id')->on('jurnal');
-            $table->foreign('id_detail_transaksi')->references('id')->on('transaksi_kas_detail');
+            // $table->foreign('id_detail_transaksi')->references('id')->on('transaksi_kas_detail');
             $table->timestamps();
         });
     }

@@ -17,7 +17,7 @@ class CreateJurnalTable extends Migration
             $table->bigIncrements('id');
             $table->date('tanggal');
             $table->text('keterangan');
-            $table->string('kode_transaksi_kas');
+            $table->string('kode_transaksi_kas')->nullable();
             $table->foreign('kode_transaksi_kas')->references('kode_transaksi_kas')->on('transaksi_kas');
             $table->string('kode_transaksi_bank')->nullable();
             $table->string('kode_memorial')->nullable();

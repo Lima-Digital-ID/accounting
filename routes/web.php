@@ -4,6 +4,7 @@ use App\Http\Controllers\v1\KodeIndukController;
 use App\Http\Controllers\v1\DashboardController;
 use App\Http\Controllers\v1\KodeAkunController;
 use App\Http\Controllers\v1\KunciTransaksiController;
+use App\Http\Controllers\v1\TransaksiBankController;
 use App\Http\Controllers\v1\TransaksiKasController;
 use App\Http\Controllers\v1\UsersController;
 use App\Models\KunciTransaksi;
@@ -60,12 +61,20 @@ Route::middleware(['auth'])->group(function () {
         // KunciTransaksi
         Route::resource('/kunci-transaksi',KunciTransaksiController::class);
     });
-    // Kas transaksi
+    // Kas Transaksi
     Route::prefix('kas')->group(function () {
         Route::get('/kas-transaksi/addDetailKasTransaksi',[TransaksiKasController::class,'DetailKasTransaksi']);
         Route::resource('/kas-transaksi',TransaksiKasController::class);
         // Route::resource('/laporan-kas',TransaksiKasController::class);
     });
+
+    // Bank Transaksi
+    Route::prefix('bank')->group(function () {
+        Route::get('/bank-transaksi/addDetailbankTransaksi',[TransaksiBankController::class,'DetailbankTransaksi']);
+        Route::resource('/bank-transaksi',TransaksiBankController::class);
+        // Route::resource('/laporan-kas',TransaksiKasController::class);
+    });
+
 
 
 });

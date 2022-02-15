@@ -54,8 +54,9 @@
                     </ul>
                 </li>
             </ul>
-             {{-- <div class="pcoded-navigation-label">Master Akuntansi</div> --}}
-             <ul class="pcoded-item pcoded-left-item">
+            {{-- <div class="pcoded-navigation-label">Master Akuntansi</div> --}}
+            {{-- Kas --}}
+            <ul class="pcoded-item pcoded-left-item">
                 <li class="pcoded-hasmenu {{ Request::segment(1) == 'kas' ? 'active' : '' }} {{ Request::segment(1) == 'kas' ? 'pcoded-trigger' : '' }}">
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="ti-wallet"></i></span>
@@ -80,8 +81,34 @@
                         </li>
                     </ul>
                 </li>
-             </ul>
-
+            </ul>
+            {{-- Bank --}}
+            <ul class="pcoded-item pcoded-left-item">
+                <li class="pcoded-hasmenu {{ Request::segment(1) == 'bank' ? 'active' : '' }} {{ Request::segment(1) == 'bank' ? 'pcoded-trigger' : '' }}">
+                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="ti-credit-card"></i></span>
+                        <span class="pcoded-mtext">Bank</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        <li class="{{ Request::segment(2) == 'bank-transaksi' ? 'active' : '' }}">
+                            <a href="{{ url('bank/bank-transaksi') }}" class="waves-effect waves-dark">
+                                <span class="pcoded-micon">
+                                    <i class="feather icon-bookmark"></i>
+                                </span>
+                                <span class="pcoded-mtext">Transaksi Bank</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::segment(2) == '' ? 'active' : '' }}">
+                            <a href="{{ url('master-akuntasi/kode-induk') }}" class="waves-effect waves-dark">
+                                <span class="pcoded-micon">
+                                    <i class="feather icon-bookmark"></i>
+                                </span>
+                                <span class="pcoded-mtext">Laporan Bank</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>

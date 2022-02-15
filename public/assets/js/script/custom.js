@@ -47,10 +47,10 @@ $(document).ready(function() {
                     addDetail($(this));
                 })
 
-                // $(".deleteDetail").click(function(e) {
-                //     e.preventDefault()
-                //     deleteDetail($(this));
-                // });
+                $(".deleteDetail").click(function(e) {
+                    e.preventDefault()
+                    deleteDetail($(this));
+                });
                 // $(".getSubtotal").keyup(function() {
                 //     getSubtotal($(this));
                 // });
@@ -97,15 +97,25 @@ $(document).ready(function() {
         e.preventDefault();
         addDetail($(this));
     });
-    // function getTotal() {
-    //     var total = 0;
-    //     $(".subtotal").each(function() {
-    //         var subtotalVal = parseInt($(this).val());
-    //         subtotalVal = isNaN(subtotalVal) ? 0 : subtotalVal;
-    //         total = total + subtotalVal;
-    //     });
-    //     console.log('getTotal : ' + total);
-    //     $("#total").html(new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(total))
-    //     getTotalPpn(total)
-    // }
+
+    function deleteDetail(thisParam) {
+        var delNo = thisParam.data("no");
+        var parent = ".row-detail[data-no='" + delNo + "']";
+        var idDetail = $(parent + " .idDetail").val();
+        if (thisParam.hasClass("addDeleteId") && idDetail != 0) {
+            $(".idDelete").append(
+                "<input type='hidden' name='id_delete[]' value='" +
+                idDetail +
+                "'>"
+            );
+        }
+        $(parent).remove();
+        getTotal();
+        getTotalQty();
+    }
+    $(".deleteDetail").click(function(e) {
+        e.preventDefault();
+        deleteDetail($(this));
+    });
+
 })

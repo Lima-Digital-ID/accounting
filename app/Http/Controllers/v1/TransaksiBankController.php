@@ -6,37 +6,37 @@ use App\Http\Controllers\Controller;
 use App\Models\Jurnal;
 use App\Models\JurnalDetail;
 use App\Models\KodeAkun;
-use App\Models\TransaksiKas;
-use App\Models\TransaksiKasDetail;
+use App\Models\TransaksiBank;
+use App\Models\TransaksiBankDetail;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
-class TransaksiKasController extends Controller
+class TransaksiBankController extends Controller
 {
     private $param;
 
     public function __construct()
     {
-        $this->param['pageTitle'] = 'Transaksi Kas / List Transaksi Kas';
+        $this->param['pageTitle'] = 'Transaksi Bank / List Transaksi Bank';
         $this->param['pageIcon'] = 'ti-wallet';
-        $this->param['parentMenu'] = 'Transaksi Kas';
-        $this->param['current'] = 'Transaksi Kas';
+        $this->param['parentMenu'] = 'Transaksi Bank';
+        $this->param['current'] = 'Transaksi Bank';
     }
+
     public function index(Request $request)
     {
-        // $data =  TransaksiKas::orderBy('tanggal','DESC')->get();
         $this->param['btnText'] = 'Tambah Data';
-        $this->param['btnLink'] = route('kas-transaksi.create');
+        $this->param['btnLink'] = route('bank-transaksi.create');
         try {
             $keyword = $request->get('keyword');
-            $getTransaksiKas = TransaksiKas::orderBy('kode_transaksi_kas', 'ASC');
+            $getTransaksiBank = TransaksiBank::orderBy('kode_transaksi_bank', 'ASC');
 
             if ($keyword) {
-                $getTransaksiKas->where('kode_transaksi_kas', 'LIKE', "%{$keyword}%")->orWhere('tipe', 'LIKE', "%{$keyword}%")->orWhere('akun_kode', 'LIKE', "%{$keyword}%");
+                $getTransaksiBank->where('kode_transaksi_bank', 'LIKE', "%{$keyword}%")->orWhere('tipe', 'LIKE', "%{$keyword}%")->orWhere('akun_kode', 'LIKE', "%{$keyword}%");
             }
 
-            $this->param['transaksi_kas'] = $getTransaksiKas->paginate(10);
+            $this->param['transaksi_bank'] = $getTransaksiBank->paginate(10);
         } catch (\Illuminate\Database\QueryException $e) {
             return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
         }
@@ -44,9 +44,8 @@ class TransaksiKasController extends Controller
             return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
         }
 
-        return view('pages.transaksi-kas.index', $this->param);
+        return view('pages.transaksi-bank.index', $this->param);
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -56,17 +55,17 @@ class TransaksiKasController extends Controller
     public function create()
     {
         $this->param['btnText'] = 'Lihat Data';
-        $this->param['btnLink'] = route('kas-transaksi.index');
+        $this->param['btnLink'] = route('bank-transaksi.index');
         $this->param['kodeAkun'] = KodeAkun::select('kode_akun.kode_akun','kode_akun.nama')
                                             ->join('kode_induk','kode_akun.induk_kode','kode_induk.kode_induk')
-                                            ->where('kode_akun.nama','LIKE','Kas%')
+                                            ->where('kode_akun.nama','LIKE','Bank%')
                                             ->get();
         $this->param['kode_lawan'] = KodeAkun::select('kode_akun.kode_akun','kode_akun.nama')
                                             ->join('kode_induk','kode_akun.induk_kode','kode_induk.kode_induk')
                                             ->where('kode_akun.nama','!=','Kas')
                                             ->where('kode_akun.nama', '!=', 'Bank')
                                             ->get();
-        return view('pages.transaksi-kas.create',$this->param);
+        return view('pages.transaksi-bank.create',$this->param);
     }
 
     /**
@@ -89,8 +88,8 @@ class TransaksiKasController extends Controller
             foreach ($loopTotal as $key => $value) {
                 $total += $value;
             }
-            $addTransaksi = new TransaksiKas;
-            $addTransaksi->kode_transaksi_kas = $request->kode_transaksi_kas;
+            $addTransaksi = new TransaksiBank;
+            $addTransaksi->kode_transaksi_bank = $request->kode_transaksi_bank;
             $addTransaksi->tanggal = $request->tanggal;
             $addTransaksi->akun_kode = $request->kode_akun;
             $addTransaksi->tipe = $request->tipe;
@@ -100,22 +99,24 @@ class TransaksiKasController extends Controller
             $addTransaksi->save();
 
             foreach ($_POST['subtotal'] as $key => $value) {
-                $addDetailKas =  new TransaksiKasDetail;
-                $addDetailKas->kode_transaksi_kas = $request->kode_transaksi_kas;
-                $addDetailKas->kode_lawan = $_POST['kode_lawan'][$key];
-                $addDetailKas->subtotal = $_POST['subtotal'][$key];
-                $addDetailKas->keterangan = $_POST['keterangan'][$key];
+                $addDetailBank =  new TransaksiBankDetail;
+                $addDetailBank->kode_transaksi_bank = $request->kode_transaksi_bank;
+                // $addDetailBank->kode_transaksi_kas = null;
+                $addDetailBank->kode_lawan = $_POST['kode_lawan'][$key];
+                $addDetailBank->subtotal = $_POST['subtotal'][$key];
+                $addDetailBank->keterangan = $_POST['keterangan'][$key];
 
-                $addDetailKas->save();
+                $addDetailBank->save();
 
                 // return $addDetailKas;
                 $addJurnal = new Jurnal;
                 $addJurnal->tanggal = $request->tanggal;
                 $addJurnal->keterangan = $request->ket_transaksi;
-                $addJurnal->kode_transaksi_kas = $request->kode_transaksi_kas;
+                $addJurnal->kode_transaksi_bank = $request->kode_transaksi_bank;
                 // $addJurnal->
                 $addJurnal->save();
 
+                // return $addJurnal;
                 $addDetailJurnal = new JurnalDetail;
                 $addDetailJurnal->jurnal_id = $addJurnal->id;
                 $addDetailJurnal->kode_akun = $request->kode_akun;
@@ -127,18 +128,17 @@ class TransaksiKasController extends Controller
                     $addDetailJurnal->debit = $_POST['subtotal'][$key];
                 }
                 $addDetailJurnal->tipe = $request->tipe == 'Masuk' ? 'Debit' : 'Kredit';
-                $addDetailJurnal->id_detail_transaksi = $addDetailKas->id;
+                $addDetailJurnal->id_detail_transaksi = $addDetailBank->id;
                 $addDetailJurnal->save();
             }
-            return redirect()->route('kas-transaksi.index')->withStatus('Berhasil Menambahkan data');
+            return redirect()->route('bank-transaksi.index')->withStatus('Berhasil Menambahkan data');
          } catch (QueryException $e) {
-            //  return $e;
+             return $e;
              return redirect()->back()->withError('Terjadi kesalahan.');
         } catch (Exception $e){
-            // return $e;
+            return $e;
             return redirect()->back()->withError('Terjadi kesalahan.');
         }
-
     }
 
     /**
@@ -185,9 +185,8 @@ class TransaksiKasController extends Controller
     {
         //
     }
-
-    // add detail transaksi kas
-    public function DetailKasTransaksi()
+    // detail transaksi bank
+    public function DetailbankTransaksi()
     {
         $next = $_GET['biggestNo'] + 1;
         $kode_lawan = KodeAkun::select('kode_akun.kode_akun','kode_akun.nama')
@@ -195,6 +194,6 @@ class TransaksiKasController extends Controller
                         ->where('kode_akun.nama','!=','Kas')
                         ->where('kode_akun.nama', '!=', 'Bank')
                         ->get();
-        return view('pages.transaksi-kas.form-detail-transaksi-kas', ['hapus' => true, 'no' => $next, 'kode_lawan' => $kode_lawan]);
+        return view('pages.transaksi-bank.form-detail-transaksi-bank', ['hapus' => true, 'no' => $next, 'kode_lawan' => $kode_lawan]);
     }
 }
