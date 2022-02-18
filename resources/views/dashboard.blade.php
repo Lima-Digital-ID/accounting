@@ -16,7 +16,7 @@
         <div class="col-md-12">
             <div class="card sale-card">
                 <div class="card-header">
-                    <h5>HLS</h5>
+                    <h5></h5>
                 </div>
                 <div class="card-block">
                     <figure class="highcharts-figure">
@@ -34,7 +34,7 @@
         <div class="col-md-12">
             <div class="card sale-card">
                 <div class="card-header">
-                    <h5>RLS</h5>
+                    <h5></h5>
                 </div>
                 <div class="card-block">
                     <figure class="highcharts-figure">

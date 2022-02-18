@@ -11,6 +11,7 @@ use App\Models\TransaksiBankDetail;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TransaksiBankController extends Controller
 {
@@ -82,6 +83,7 @@ class TransaksiBankController extends Controller
             'kode_akun' => 'required',
         ]);
         // return $request;
+        DB::beginTransaction();
         try {
             $total = 0;
             $loopTotal = $_POST['subtotal'];
@@ -98,6 +100,29 @@ class TransaksiBankController extends Controller
 
             $addTransaksi->save();
 
+            // return $addDetailKas;
+            $addJurnal = new Jurnal;
+            $addJurnal->tanggal = $request->tanggal;
+            $addJurnal->keterangan = $request->ket_transaksi;
+            $addJurnal->kode_transaksi_bank = $request->kode_transaksi_bank;
+            // $addJurnal->
+            $addJurnal->save();
+
+            // return $addJurnal;
+            $addDetailJurnal = new JurnalDetail;
+            $addDetailJurnal->jurnal_id = $addJurnal->id;
+            $addDetailJurnal->kode_akun = $request->kode_akun;
+            if ($request->tipe == 'Masuk') {
+                // return 'kredit';
+                $addDetailJurnal->debit = $_POST['subtotal'][$key];
+            }else{
+                // return 'debit';
+                $addDetailJurnal->kredit = $_POST['subtotal'][$key];
+            }
+            $addDetailJurnal->tipe = $request->tipe == 'Masuk' ? 'Debit' : 'Kredit';
+            // $addDetailJurnal->id_detail_transaksi = $addDetailBank->id;
+            $addDetailJurnal->save();
+
             foreach ($_POST['subtotal'] as $key => $value) {
                 $addDetailBank =  new TransaksiBankDetail;
                 $addDetailBank->kode_transaksi_bank = $request->kode_transaksi_bank;
@@ -108,18 +133,18 @@ class TransaksiBankController extends Controller
 
                 $addDetailBank->save();
 
-                // return $addDetailKas;
-                $addJurnal = new Jurnal;
-                $addJurnal->tanggal = $request->tanggal;
-                $addJurnal->keterangan = $request->ket_transaksi;
-                $addJurnal->kode_transaksi_bank = $request->kode_transaksi_bank;
-                // $addJurnal->
-                $addJurnal->save();
+                // // return $addDetailKas;
+                // $addJurnal = new Jurnal;
+                // $addJurnal->tanggal = $request->tanggal;
+                // $addJurnal->keterangan = $request->ket_transaksi;
+                // $addJurnal->kode_transaksi_bank = $request->kode_transaksi_bank;
+                // // $addJurnal->
+                // $addJurnal->save();
 
                 // return $addJurnal;
                 $addDetailJurnal = new JurnalDetail;
                 $addDetailJurnal->jurnal_id = $addJurnal->id;
-                $addDetailJurnal->kode_akun = $request->kode_akun;
+                $addDetailJurnal->kode_akun = $_POST['kode_lawan'][$key];
                 if ($request->tipe == 'Masuk') {
                     // return 'kredit';
                     $addDetailJurnal->kredit = $_POST['subtotal'][$key];
@@ -127,16 +152,19 @@ class TransaksiBankController extends Controller
                     // return 'debit';
                     $addDetailJurnal->debit = $_POST['subtotal'][$key];
                 }
-                $addDetailJurnal->tipe = $request->tipe == 'Masuk' ? 'Debit' : 'Kredit';
+                $addDetailJurnal->tipe = $request->tipe == 'Masuk' ? 'Kredit' : 'Debit';
                 $addDetailJurnal->id_detail_transaksi = $addDetailBank->id;
                 $addDetailJurnal->save();
             }
+            DB::commit();
             return redirect()->route('bank-transaksi.index')->withStatus('Berhasil Menambahkan data');
          } catch (QueryException $e) {
-             return $e;
+             DB::rollBack();
+            //  return $e;
              return redirect()->back()->withError('Terjadi kesalahan.');
         } catch (Exception $e){
-            return $e;
+            DB::rollBack();
+            // return $e;
             return redirect()->back()->withError('Terjadi kesalahan.');
         }
     }

@@ -40,7 +40,7 @@
                                 <span class="pcoded-micon">
                                     <i class="feather icon-bookmark"></i>
                                 </span>
-                                <span class="pcoded-mtext">Kode Rekening</span>
+                                <span class="pcoded-mtext">Kode Akun</span>
                             </a>
                         </li>
                         <li class="{{ Request::segment(2) == 'kunci-transaksi' ? 'active' : '' }}">
