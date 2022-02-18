@@ -12,10 +12,13 @@ use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Traits\SequenceTrait;
 
 class TransaksiBankController extends Controller
 {
     private $param;
+
+    use SequenceTrait;
 
     public function __construct()
     {
@@ -31,7 +34,7 @@ class TransaksiBankController extends Controller
         $this->param['btnLink'] = route('bank-transaksi.create');
         try {
             $keyword = $request->get('keyword');
-            $getTransaksiBank = TransaksiBank::orderBy('kode_transaksi_bank', 'ASC');
+            $getTransaksiBank = TransaksiBank::orderBy('tanggal', 'DESC')->orderBy('created_at', 'DESC');
 
             if ($keyword) {
                 $getTransaksiBank->where('kode_transaksi_bank', 'LIKE', "%{$keyword}%")->orWhere('tipe', 'LIKE', "%{$keyword}%")->orWhere('akun_kode', 'LIKE', "%{$keyword}%");
@@ -81,6 +84,9 @@ class TransaksiBankController extends Controller
             'tanggal' => 'required',
             'tipe' => 'required',
             'kode_akun' => 'required',
+            'kode_lawan.*' => 'required',
+            'subtotal.*' => 'required',
+            'keterangan.*' => 'required',
         ]);
         // return $request;
         DB::beginTransaction();
@@ -90,8 +96,14 @@ class TransaksiBankController extends Controller
             foreach ($loopTotal as $key => $value) {
                 $total += $value;
             }
+
+            $kode = $request->tipe == 'Masuk' ? 'BBM' : 'BBK';
+            $tahun = date('Y', strtotime($request->tanggal));
+            $bulan = date('m', strtotime($request->tanggal));
+            $kodeBank = $this->generateNomorTransaksi($kode, $tahun, $bulan, $request->kode_akun);
+
             $addTransaksi = new TransaksiBank;
-            $addTransaksi->kode_transaksi_bank = $request->kode_transaksi_bank;
+            $addTransaksi->kode_transaksi_bank = $kodeBank;
             $addTransaksi->tanggal = $request->tanggal;
             $addTransaksi->akun_kode = $request->kode_akun;
             $addTransaksi->tipe = $request->tipe;
@@ -104,7 +116,7 @@ class TransaksiBankController extends Controller
             $addJurnal = new Jurnal;
             $addJurnal->tanggal = $request->tanggal;
             $addJurnal->keterangan = $request->ket_transaksi;
-            $addJurnal->kode_transaksi_bank = $request->kode_transaksi_bank;
+            $addJurnal->kode_transaksi_bank = $kodeBank;
             // $addJurnal->
             $addJurnal->save();
 
@@ -125,7 +137,7 @@ class TransaksiBankController extends Controller
 
             foreach ($_POST['subtotal'] as $key => $value) {
                 $addDetailBank =  new TransaksiBankDetail;
-                $addDetailBank->kode_transaksi_bank = $request->kode_transaksi_bank;
+                $addDetailBank->kode_transaksi_bank = $kodeBank;
                 // $addDetailBank->kode_transaksi_kas = null;
                 $addDetailBank->kode_lawan = $_POST['kode_lawan'][$key];
                 $addDetailBank->subtotal = $_POST['subtotal'][$key];
@@ -137,7 +149,7 @@ class TransaksiBankController extends Controller
                 // $addJurnal = new Jurnal;
                 // $addJurnal->tanggal = $request->tanggal;
                 // $addJurnal->keterangan = $request->ket_transaksi;
-                // $addJurnal->kode_transaksi_bank = $request->kode_transaksi_bank;
+                // $addJurnal->kode_transaksi_bank = $kodeBank;
                 // // $addJurnal->
                 // $addJurnal->save();
 

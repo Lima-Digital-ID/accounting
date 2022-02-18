@@ -2,16 +2,6 @@
     @csrf
     <div class="form-group row">
         <div class="col-sm-4">
-            <label class="col-form-label">Kode Transaksi Bank</label>
-            <input type="text" name="kode_transaksi_bank" class="form-control @error('kode_transaksi_bank') is-invalid @enderror"
-                value="{{ old('kode_transaksi_bank') }}">
-            @error('kode_transaksi_bank')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
-        <div class="col-sm-4">
             <label class="col-form-label">Tanggal</label>
             <input class="form-control @error('tanggal') is-invalid @enderror" type="date" name="tanggal"/>
             @error('tanggal')
