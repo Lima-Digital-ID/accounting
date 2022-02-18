@@ -40,7 +40,7 @@ $(document).ready(function() {
                 console.log(response);
                 $(".loader-bg").removeClass("show");
                 $(".row-detail[data-no='" + thisNo + "']").after(response);
-                // $(".select2").select2();
+                $(".select2").select2();
 
                 $(".addDetail[data-no='" + next + "']").click(function(e) {
                     e.preventDefault()

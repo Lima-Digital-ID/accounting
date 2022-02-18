@@ -78,9 +78,10 @@ class TransaksiBankController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'kode_transaksi_bank' => 'required|unique:transaksi_bank',
             'tanggal' => 'required',
             'tipe' => 'required',
-            'kode_akun' => 'required',
+            'kode_akun' => 'required|not_in:0',
         ]);
         // return $request;
         DB::beginTransaction();
@@ -96,65 +97,32 @@ class TransaksiBankController extends Controller
             $addTransaksi->akun_kode = $request->kode_akun;
             $addTransaksi->tipe = $request->tipe;
             $addTransaksi->total = $total;
-            $addTransaksi->keterangan = $request->ket_transaksi;
+
 
             $addTransaksi->save();
 
-            // return $addDetailKas;
-            $addJurnal = new Jurnal;
-            $addJurnal->tanggal = $request->tanggal;
-            $addJurnal->keterangan = $request->ket_transaksi;
-            $addJurnal->kode_transaksi_bank = $request->kode_transaksi_bank;
-            // $addJurnal->
-            $addJurnal->save();
-
-            // return $addJurnal;
-            $addDetailJurnal = new JurnalDetail;
-            $addDetailJurnal->jurnal_id = $addJurnal->id;
-            $addDetailJurnal->kode_akun = $request->kode_akun;
-            if ($request->tipe == 'Masuk') {
-                // return 'kredit';
-                $addDetailJurnal->debit = $_POST['subtotal'][$key];
-            }else{
-                // return 'debit';
-                $addDetailJurnal->kredit = $_POST['subtotal'][$key];
-            }
-            $addDetailJurnal->tipe = $request->tipe == 'Masuk' ? 'Debit' : 'Kredit';
-            // $addDetailJurnal->id_detail_transaksi = $addDetailBank->id;
-            $addDetailJurnal->save();
 
             foreach ($_POST['subtotal'] as $key => $value) {
                 $addDetailBank =  new TransaksiBankDetail;
                 $addDetailBank->kode_transaksi_bank = $request->kode_transaksi_bank;
-                // $addDetailBank->kode_transaksi_kas = null;
                 $addDetailBank->kode_lawan = $_POST['kode_lawan'][$key];
                 $addDetailBank->subtotal = $_POST['subtotal'][$key];
                 $addDetailBank->keterangan = $_POST['keterangan'][$key];
 
                 $addDetailBank->save();
 
-                // // return $addDetailKas;
-                // $addJurnal = new Jurnal;
-                // $addJurnal->tanggal = $request->tanggal;
-                // $addJurnal->keterangan = $request->ket_transaksi;
-                // $addJurnal->kode_transaksi_bank = $request->kode_transaksi_bank;
-                // // $addJurnal->
-                // $addJurnal->save();
-
-                // return $addJurnal;
-                $addDetailJurnal = new JurnalDetail;
-                $addDetailJurnal->jurnal_id = $addJurnal->id;
-                $addDetailJurnal->kode_akun = $_POST['kode_lawan'][$key];
-                if ($request->tipe == 'Masuk') {
-                    // return 'kredit';
-                    $addDetailJurnal->kredit = $_POST['subtotal'][$key];
-                }else{
-                    // return 'debit';
-                    $addDetailJurnal->debit = $_POST['subtotal'][$key];
-                }
-                $addDetailJurnal->tipe = $request->tipe == 'Masuk' ? 'Kredit' : 'Debit';
-                $addDetailJurnal->id_detail_transaksi = $addDetailBank->id;
-                $addDetailJurnal->save();
+                // tambah jurnal
+                $addJurnal = new Jurnal;
+                $addJurnal->tanggal = $request->tanggal;
+                $addJurnal->jenis_transaksi = 'Bank';
+                $addJurnal->kode_transaksi = $request->kode_transaksi_bank;
+                $addJurnal->keterangan = $_POST['keterangan'][$key];
+                $addJurnal->kode = $request->kode_akun;
+                $addJurnal->lawan = $_POST['kode_lawan'][$key];
+                $addJurnal->tipe = $request->tipe == 'Masuk' ? 'Debit' : 'Kredit';
+                $addJurnal->nominal = $_POST['subtotal'][$key];
+                $addJurnal->id_detail = $addDetailBank->id;
+                $addJurnal->save();
             }
             DB::commit();
             return redirect()->route('bank-transaksi.index')->withStatus('Berhasil Menambahkan data');

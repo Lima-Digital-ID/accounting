@@ -3,7 +3,7 @@
     <div class="form-group row">
         <div class="col-sm-4">
             <label class="col-form-label">Kode Transaksi Bank</label>
-            <input type="text" name="kode_transaksi_bank" class="form-control @error('kode_transaksi_bank') is-invalid @enderror"
+            <input type="text" name="kode_transaksi_bank" class="form-control form-control-lg @error('kode_transaksi_bank') is-invalid @enderror"
                 value="{{ old('kode_transaksi_bank') }}">
             @error('kode_transaksi_bank')
                 <div class="invalid-feedback">
@@ -13,7 +13,7 @@
         </div>
         <div class="col-sm-4">
             <label class="col-form-label">Tanggal</label>
-            <input class="form-control @error('tanggal') is-invalid @enderror" type="date" name="tanggal"/>
+            <input class="form-control form-control-lg @error('tanggal') is-invalid @enderror" type="date" name="tanggal"/>
             @error('tanggal')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -22,7 +22,7 @@
         </div>
         <div class="col-sm-4">
             <label class="col-form-label">Tipe</label>
-            <select name="tipe" id="tipe" class="form-control @error('tipe') is-invalid @enderror">
+            <select name="tipe" id="tipe" class="form-control form-control-lg @error('tipe') is-invalid @enderror">
                 <option value="0" disabled>Tipe</option>
                 <option value="Masuk" {{old('tipe') == 'Masuk' ? 'selected' : ''}}>Masuk</option>
                 <option value="Keluar" {{old('tipe') == 'Keluar' ? 'selected' : ''}}>Keluar</option>
@@ -35,22 +35,13 @@
         </div>
         <div class="col-sm-4 mt-4">
             <label class="col-form-label">Kode Akun Kas</label>
-            <select name="kode_akun" id="kode_akun" class="form-control @error('kode_akun') is-invalid @enderror">
+            <select name="kode_akun" id="kode_akun" class="form-control form-control-lg @error('kode_akun') is-invalid @enderror">
                 <option value="0" disabled> --Pilih Kode Akun--</option>
                 @foreach ($kodeAkun as $item)
-                    <option value="{{ $item->kode_akun }}" {{old('kode_akun') == $item->kode_akun ? 'selected' : ''}}>{{ $item->nama }}</option>
+                    <option value="{{ $item->kode_akun }}" {{old('kode_akun') == $item->kode_akun ? 'selected' : ''}}>{{ $item->kode_akun.'--'.$item->nama }}</option>
                 @endforeach
             </select>
             @error('kode_akun')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
-        <div class="col-sm-4 mt-4">
-            <label class="col-form-label">Keterangan</label>
-            <input class="form-control @error('ket_transaksi') is-invalid @enderror" type="text" name="ket_transaksi"/>
-            @error('ket_transaksi')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>

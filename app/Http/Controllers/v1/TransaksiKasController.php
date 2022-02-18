@@ -78,11 +78,24 @@ class TransaksiKasController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'kode_transaksi_kas' => 'required|unique:transaksi_kas',
             'tanggal' => 'required',
             'tipe' => 'required',
-            'kode_akun' => 'required',
+            'kode_akun' => 'required|not_in:0',
+        ],[
+            'required' => ':attribute data harus terisi.',
+            'not_in' => 'data harus terisi',
+        ],[
+            'kode_transaksi_kas' => 'kode transaksi kas',
+            'kode_akun' => 'kode akun'
         ]);
-        // return $request;
+        if (empty($_POST['bayar'])) {
+            $request->validate([
+                'kode_lawan' => 'required',
+                'subtotal' => 'required|numeric|gt:0',
+                'keterangan' => 'required',
+            ]);
+        }
         DB::beginTransaction();
         try {
             $total = 0;
@@ -96,31 +109,32 @@ class TransaksiKasController extends Controller
             $addTransaksi->akun_kode = $request->kode_akun;
             $addTransaksi->tipe = $request->tipe;
             $addTransaksi->total = $total;
-            $addTransaksi->keterangan = $request->ket_transaksi;
+
 
             $addTransaksi->save();
 
-            // return $addDetailKas;
-            $addJurnal = new Jurnal;
-            $addJurnal->tanggal = $request->tanggal;
-            $addJurnal->keterangan = $request->ket_transaksi;
-            $addJurnal->kode_transaksi_kas = $request->kode_transaksi_kas;
-            // $addJurnal->
-            $addJurnal->save();
+            // // return $addDetailKas;
+            // $addJurnal = new Jurnal;
+            // $addJurnal->tanggal = $request->tanggal;
+            // $addJurnal->keterangan = $request->ket_transaksi;
+            // $addJurnal->kode_transaksi_kas = $request->kode_transaksi_kas;
 
-            $addDetailJurnal = new JurnalDetail;
-            $addDetailJurnal->jurnal_id = $addJurnal->id;
-            $addDetailJurnal->kode_akun = $request->kode_akun;
-            if ($request->tipe == 'Masuk') {
-                // return 'kredit';
-                $addDetailJurnal->debit = $total;
-            } else {
-                // return 'debit';
-                $addDetailJurnal->kredit = $total;
-            }
-            $addDetailJurnal->tipe = $request->tipe == 'Masuk' ? 'Debit' : 'Kredit';
-            // $addDetailJurnal->id_detail_transaksi = $addDetailKas->id;
-            $addDetailJurnal->save();
+            // // $addJurnal->
+            // $addJurnal->save();
+
+            // $addDetailJurnal = new JurnalDetail;
+            // $addDetailJurnal->jurnal_id = $addJurnal->id;
+            // $addDetailJurnal->kode_akun = $request->kode_akun;
+            // if ($request->tipe == 'Masuk') {
+            //     // return 'kredit';
+            //     $addDetailJurnal->debit = $total;
+            // } else {
+            //     // return 'debit';
+            //     $addDetailJurnal->kredit = $total;
+            // }
+            // $addDetailJurnal->tipe = $request->tipe == 'Masuk' ? 'Debit' : 'Kredit';
+            // // $addDetailJurnal->id_detail_transaksi = $addDetailKas->id;
+            // $addDetailJurnal->save();
 
             foreach ($_POST['subtotal'] as $key => $value) {
                 $addDetailKas =  new TransaksiKasDetail;
@@ -131,36 +145,25 @@ class TransaksiKasController extends Controller
 
                 $addDetailKas->save();
 
-                // // return $addDetailKas;
-                // $addJurnal = new Jurnal;
-                // $addJurnal->tanggal = $request->tanggal;
-                // $addJurnal->keterangan = $request->ket_transaksi;
-                // $addJurnal->kode_transaksi_kas = $request->kode_transaksi_kas;
-                // // $addJurnal->
-                // $addJurnal->save();
-
-                $addDetailJurnal = new JurnalDetail;
-                $addDetailJurnal->jurnal_id = $addJurnal->id;
-                $addDetailJurnal->kode_akun = $_POST['kode_lawan'][$key];
-                if ($request->tipe == 'Masuk') {
-                    // return 'kredit';
-                    $addDetailJurnal->kredit = $_POST['subtotal'][$key];
-                } else {
-                    // return 'debit';
-                    $addDetailJurnal->debit = $_POST['subtotal'][$key];
-                }
-                $addDetailJurnal->tipe = $request->tipe == 'Masuk' ? 'Kredit' : 'Debit';
-                $addDetailJurnal->id_detail_transaksi = $addDetailKas->id;
-                $addDetailJurnal->save();
+                // tambah jurnal
+                $addJurnal = new Jurnal;
+                $addJurnal->tanggal = $request->tanggal;
+                $addJurnal->jenis_transaksi = 'Kas';
+                $addJurnal->kode_transaksi = $request->kode_transaksi_kas;
+                $addJurnal->keterangan = $_POST['keterangan'][$key];
+                $addJurnal->kode = $request->kode_akun;
+                $addJurnal->lawan = $_POST['kode_lawan'][$key];
+                $addJurnal->tipe = $request->tipe == 'Masuk' ? 'Debit' : 'Kredit';
+                $addJurnal->nominal = $_POST['subtotal'][$key];
+                $addJurnal->id_detail = $addDetailKas->id;
+                $addJurnal->save();
             }
             DB::commit();
             return redirect()->route('kas-transaksi.index')->withStatus('Berhasil Menambahkan data');
         } catch (QueryException $e) {
-            //  return $e;
             DB::rollBack();
             return redirect()->back()->withError('Terjadi kesalahan.' . $e->getMessage());
         } catch (Exception $e) {
-            // return $e;
             DB::rollBack();
             return redirect()->back()->withError('Terjadi kesalahan.'. $e->getMessage());
         }
