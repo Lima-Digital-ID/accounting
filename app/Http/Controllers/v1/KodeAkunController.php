@@ -77,7 +77,6 @@ class KodeAkunController extends Controller
             'induk_kode' => 'required|not_in:0',
             'kode_akun' => 'required|unique:kode_akun',
             'nama' => 'required',
-            'saldo' => 'required'
         ],[
             'required' => ':attribute harus terisi.',
             'not_in' => ':attribute harus terisi.'
@@ -85,7 +84,6 @@ class KodeAkunController extends Controller
             'induk_kode' => 'Kode induk',
             'kode_akun' => 'Kode akun',
             'nama' => 'Nama akun',
-            'saldo' => 'Saldo awal'
         ]);
         // return $request;
         try {
@@ -94,7 +92,6 @@ class KodeAkunController extends Controller
             $addData->kode_akun = $kode_akun;
             $addData->induk_kode = $request->induk_kode;
             $addData->nama = str_replace('-',' ',$request->nama);
-            $addData->saldo_awal = $request->saldo;
             $addData->save();
             return redirect()->route('kode-akun.index')->withStatus('Berhasil menambahkan data.');
         } catch (QueryException $e) {
@@ -128,7 +125,6 @@ class KodeAkunController extends Controller
             $this->param['btnLink'] = route('kode-akun.index');
             $this->param['data'] = KodeAkun::find($id);
             $this->param['data_induk'] = KodeInduk::all();
-            $this->param['saldo_awal'] = str_replace(',00', '', number_format($this->param['data']->saldo_awal, 2, ',', ''));
             return view('pages.kode-akun.edit',$this->param);
         } catch (QueryException $e) {
             return redirect()->back()->withError('Terjadi kesalahan.');
@@ -148,12 +144,11 @@ class KodeAkunController extends Controller
     {
         $kode_akun = KodeAkun::find($id);
         $isUniqueKodeAkun = $kode_akun->kode_akun == $request->kode_akun ? '' : '|unique:kode_akun';
-        $isUniqueNamaAkun = $kode_akun->nama == $request->nama ? '' : '|unique:nama';
+        $isUniqueNamaAkun = $kode_akun->nama == $request->nama ? '' : '|unique:kode_akun';
         $request->validate([
             'induk_kode' => 'required|not_in:0',
-            'kode_akun' => 'required|'.$isUniqueKodeAkun,
-            'nama' => 'required|'.$isUniqueNamaAkun,
-            'saldo' => 'required'
+            'kode_akun' => 'required'.$isUniqueKodeAkun,
+            'nama' => 'required'.$isUniqueNamaAkun,
         ],[
             'unique' => ':attribute sudah tersedia.',
             'required' => ':attribute harus terisi.',
@@ -162,16 +157,13 @@ class KodeAkunController extends Controller
             'induk_kode' => 'Kode induk',
             'kode_akun' => 'Kode akun',
             'nama' => 'Nama akun',
-            'saldo' => 'Saldo awal'
         ]);
-        // return $request;
         try {
             $kode_akun = $request->kode_akun;
             $updateData = KodeAkun::findOrFail($id);
             $updateData->kode_akun = $kode_akun;
             $updateData->induk_kode = $request->induk_kode;
             $updateData->nama = str_replace('-',' ',$request->nama);
-            $updateData->saldo_awal = $request->saldo;
             $updateData->save();
             return redirect()->route('kode-akun.index')->withStatus('Berhasil menambahkan data.');
         } catch (QueryException $e) {
