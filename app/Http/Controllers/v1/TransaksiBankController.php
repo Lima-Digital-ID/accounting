@@ -212,4 +212,99 @@ class TransaksiBankController extends Controller
                         ->get();
         return view('pages.transaksi-bank.form-detail-transaksi-bank', ['hapus' => true, 'no' => $next, 'kode_lawan' => $kode_lawan]);
     }
+
+    // report Bank
+    public function reportBank()
+    {
+        try {
+            $this->param['kodeAkun'] = KodeAkun::select('kode_akun.kode_akun', 'kode_akun.nama')
+            // ->join('kode_induk', 'kode_akun.induk_kode', 'kode_induk.kode_induk')
+                                                ->where('kode_akun.nama', 'LIKE', 'Bank%')
+                                                ->get();
+            $this->param['report_bank'] = null;
+            return view('pages.transaksi-bank.laporan-bank',$this->param);
+        }catch(\Exception $e){
+            return redirect()->back()->withStatus('Terjadi kesalahan. : ' . $e->getMessage());
+        }catch(\Illuminate\Database\QueryException $e){
+            return redirect()->back()->withStatus('Terjadi kesalahan pada database : ' . $e->getMessage());
+        }
+    }
+    public function getReport(Request $request)
+    {
+        $request->validate([
+            'kode_perkiraan' => 'required|not_in:0',
+            'start' => 'required',
+            'end' => 'required'
+        ],[
+            'required', ':atrribute harus terisi',
+            'no_in' => ':attribute harus terisi'
+        ],[
+            'kode_perkiraan' => 'kode perkiraan',
+        ]);
+        // return $request;
+        try {
+            $this->param['kodeAkun'] = KodeAkun::select('kode_akun.kode_akun', 'kode_akun.nama')
+                                                ->where('kode_akun.nama', 'LIKE', 'Bank%')
+                                                ->get();
+            $this->param['report_bank'] = TransaksiBank::select(
+                                                    'transaksi_bank.kode_transaksi_bank',
+                                                    'transaksi_bank.tanggal',
+                                                    'transaksi_bank.akun_kode',
+                                                    'transaksi_bank.tipe',
+                                                    'transaksi_bank.total',
+                                                    'transaksi_bank_detail.kode_transaksi_bank',
+                                                    'transaksi_bank_detail.kode_lawan',
+                                                    'transaksi_bank_detail.subtotal',
+                                                    'transaksi_bank_detail.keterangan')
+                                                    ->join('transaksi_bank_detail','transaksi_bank_detail.kode_transaksi_bank','transaksi_bank.kode_transaksi_bank')
+                                                    ->where('transaksi_bank.akun_kode',$request->kode_perkiraan)
+                                                    // ->whereBetween('transaksi_bank.tanggal', [$request->get('start'), $request->get('end')])
+                                                    ->whereBetween('transaksi_bank.tanggal',[$request->start,$request->end])
+                                                    ->get();
+            return view('pages.transaksi-bank.laporan-bank',$this->param);
+        }catch(\Exception $e){
+            return redirect()->back()->withStatus('Terjadi kesalahan. : ' . $e->getMessage());
+        }catch(\Illuminate\Database\QueryException $e){
+            return redirect()->back()->withStatus('Terjadi kesalahan pada database : ' . $e->getMessage());
+        }
+    }
+    public function printReport(Request $request)
+    {
+        $request->validate([
+            'kode_perkiraan' => 'required|not_in:0',
+            'start' => 'required',
+            'end' => 'required'
+        ],[
+            'required', ':atrribute harus terisi',
+            'no_in' => ':attribute harus terisi'
+        ],[
+            'kode_perkiraan' => 'kode perkiraan',
+        ]);
+        // return $request;
+        try {
+            $this->param['kodeAkun'] = KodeAkun::select('kode_akun.kode_akun', 'kode_akun.nama')
+                                                ->where('kode_akun.nama', 'LIKE', 'Kas%')
+                                                ->get();
+            $this->param['report_kas'] = TransaksiBank::select(
+                                                    'transaksi_bank.kode_transaksi_bank',
+                                                    'transaksi_bank.tanggal',
+                                                    'transaksi_bank.akun_kode',
+                                                    'transaksi_bank.tipe',
+                                                    'transaksi_bank.total',
+                                                    'transaksi_bank_detail.kode_transaksi_bank',
+                                                    'transaksi_bank_detail.kode_lawan',
+                                                    'transaksi_bank_detail.subtotal',
+                                                    'transaksi_bank_detail.keterangan')
+                                                    ->join('transaksi_bank_detail','transaksi_bank_detail.kode_transaksi_bank','transaksi_bank.kode_transaksi_bank')
+                                                    ->where('transaksi_bank.akun_kode',$request->kode_perkiraan)
+                                                    // ->whereBetween('transaksi_bank.tanggal', [$request->get('start'), $request->get('end')])
+                                                    ->whereBetween('transaksi_bank.tanggal',[$request->start,$request->end])
+                                                    ->get();
+            return view('pages.transaksi-bank.print-laporan-bank',$this->param);
+        }catch(\Exception $e){
+            return redirect()->back()->withStatus('Terjadi kesalahan. : ' . $e->getMessage());
+        }catch(\Illuminate\Database\QueryException $e){
+            return redirect()->back()->withStatus('Terjadi kesalahan pada database : ' . $e->getMessage());
+        }
+    }
 }

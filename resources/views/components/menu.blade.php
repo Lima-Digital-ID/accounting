@@ -100,8 +100,8 @@
                                 <span class="pcoded-mtext">Transaksi Bank</span>
                             </a>
                         </li>
-                        <li class="{{ Request::segment(2) == '' ? 'active' : '' }}">
-                            <a href="{{ url('master-akuntasi/kode-induk') }}" class="waves-effect waves-dark">
+                        <li class="{{ Request::segment(2) == 'laporan-bank' ? 'active' : '' }}">
+                            <a href="{{ url('bank/laporan-bank') }}" class="waves-effect waves-dark">
                                 <span class="pcoded-micon">
                                     <i class="feather icon-bookmark"></i>
                                 </span>
@@ -128,12 +128,12 @@
                                 <span class="pcoded-mtext">Memorial / Jurnal Umum</span>
                             </a>
                         </li>
-                        <li class="{{ Request::segment(2) == '' ? 'active' : '' }}">
-                            <a href="{{ url('master-akuntasi/kode-induk') }}" class="waves-effect waves-dark">
+                        <li class="{{ Request::segment(2) == 'laporan-memorial' ? 'active' : '' }}">
+                            <a href="{{ url('memorial/laporan-memorial') }}" class="waves-effect waves-dark">
                                 <span class="pcoded-micon">
                                     <i class="feather icon-bookmark"></i>
                                 </span>
-                                <span class="pcoded-mtext">Laporan Bank</span>
+                                <span class="pcoded-mtext">Laporan Memorial</span>
                             </a>
                         </li>
                     </ul>

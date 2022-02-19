@@ -213,4 +213,82 @@ class MemorialController extends Controller
                                 ->get();
         return view('pages.memorial.form-detail-memorial-kas', ['hapus' => true, 'no' => $next, 'kode_lawan' => $kode_lawan,'kode_akun' => $kode_lawan]);
     }
+
+    // report memorial
+    public function reportMemorial()
+    {
+        try {
+
+            $this->param['report_memorial'] = null;
+            return view('pages.memorial.laporan-memorial',$this->param);
+        }catch(\Exception $e){
+            return redirect()->back()->withStatus('Terjadi kesalahan. : ' . $e->getMessage());
+        }catch(\Illuminate\Database\QueryException $e){
+            return redirect()->back()->withStatus('Terjadi kesalahan pada database : ' . $e->getMessage());
+        }
+    }
+    public function getReport(Request $request)
+    {
+        $request->validate([
+            'start' => 'required',
+            'end' => 'required'
+        ],[
+            'required', ':atrribute harus terisi',
+            'no_in' => ':attribute harus terisi'
+        ]);
+        // return $request;
+        try {
+            $this->param['report_memorial'] = Memorial::select(
+                                                    'memorial.kode_memorial',
+                                                    'memorial.tanggal',
+                                                    'memorial.tipe',
+                                                    'memorial.total',
+                                                    'memorial_detail.kode_memorial',
+                                                    'memorial_detail.kode',
+                                                    'memorial_detail.lawan',
+                                                    'memorial_detail.subtotal',
+                                                    'memorial_detail.keterangan')
+                                                    ->join('memorial_detail','memorial_detail.kode_memorial','memorial.kode_memorial')
+                                                    // ->whereBetween('memorial.tanggal', [$request->get('start'), $request->get('end')])
+                                                    ->whereBetween('memorial.tanggal',[$request->start,$request->end])
+                                                    ->get();
+            return view('pages.memorial.laporan-memorial',$this->param);
+        }catch(\Exception $e){
+            return redirect()->back()->withStatus('Terjadi kesalahan. : ' . $e->getMessage());
+        }catch(\Illuminate\Database\QueryException $e){
+            return redirect()->back()->withStatus('Terjadi kesalahan pada database : ' . $e->getMessage());
+        }
+    }
+    public function printReport(Request $request)
+    {
+        $request->validate([
+            'start' => 'required',
+            'end' => 'required'
+        ],[
+            'required', ':atrribute harus terisi',
+            'no_in' => ':attribute harus terisi'
+        ]);
+        // return $request;
+        try {
+            $this->param['report_memorial'] = Memorial::select(
+                                                    'memorial.kode_memorial',
+                                                    'memorial.tanggal',
+                                                    'memorial.tipe',
+                                                    'memorial.total',
+                                                    'memorial_detail.kode_memorial',
+                                                    'memorial_detail.kode',
+                                                    'memorial_detail.lawan',
+                                                    'memorial_detail.subtotal',
+                                                    'memorial_detail.keterangan')
+                                                    ->join('memorial_detail','memorial_detail.kode_memorial','memorial.kode_memorial')
+                                                    // ->whereBetween('memorial.tanggal', [$request->get('start'), $request->get('end')])
+                                                    ->whereBetween('memorial.tanggal',[$request->start,$request->end])
+                                                    ->get();
+            return view('pages.memorial.print-laporan-memorial',$this->param);
+        }catch(\Exception $e){
+            return redirect()->back()->withStatus('Terjadi kesalahan. : ' . $e->getMessage());
+        }catch(\Illuminate\Database\QueryException $e){
+            return redirect()->back()->withStatus('Terjadi kesalahan pada database : ' . $e->getMessage());
+        }
+    }
 }

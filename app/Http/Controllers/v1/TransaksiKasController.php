@@ -263,4 +263,43 @@ class TransaksiKasController extends Controller
             return redirect()->back()->withStatus('Terjadi kesalahan pada database : ' . $e->getMessage());
         }
     }
+    public function printReport(Request $request)
+    {
+        $request->validate([
+            'kode_perkiraan' => 'required|not_in:0',
+            'start' => 'required',
+            'end' => 'required'
+        ],[
+            'required', ':atrribute harus terisi',
+            'no_in' => ':attribute harus terisi'
+        ],[
+            'kode_perkiraan' => 'kode perkiraan',
+        ]);
+        // return $request;
+        try {
+            $this->param['kodeAkun'] = KodeAkun::select('kode_akun.kode_akun', 'kode_akun.nama')
+                                                ->where('kode_akun.nama', 'LIKE', 'Kas%')
+                                                ->get();
+            $this->param['report_kas'] = TransaksiKas::select(
+                                                    'transaksi_kas.kode_transaksi_kas',
+                                                    'transaksi_kas.tanggal',
+                                                    'transaksi_kas.akun_kode',
+                                                    'transaksi_kas.tipe',
+                                                    'transaksi_kas.total',
+                                                    'transaksi_kas_detail.kode_transaksi_kas',
+                                                    'transaksi_kas_detail.kode_lawan',
+                                                    'transaksi_kas_detail.subtotal',
+                                                    'transaksi_kas_detail.keterangan')
+                                                    ->join('transaksi_kas_detail','transaksi_kas_detail.kode_transaksi_kas','transaksi_kas.kode_transaksi_kas')
+                                                    ->where('transaksi_kas.akun_kode',$request->kode_perkiraan)
+                                                    // ->whereBetween('transaksi_kas.tanggal', [$request->get('start'), $request->get('end')])
+                                                    ->whereBetween('transaksi_kas.tanggal',[$request->start,$request->end])
+                                                    ->get();
+            return view('pages.transaksi-kas.print-laporan-kas',$this->param);
+        }catch(\Exception $e){
+            return redirect()->back()->withStatus('Terjadi kesalahan. : ' . $e->getMessage());
+        }catch(\Illuminate\Database\QueryException $e){
+            return redirect()->back()->withStatus('Terjadi kesalahan pada database : ' . $e->getMessage());
+        }
+    }
 }

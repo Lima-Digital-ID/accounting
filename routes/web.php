@@ -69,6 +69,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('laporan-kas')->group(function () {
             Route::get('/',[TransaksiKasController::class,'reportKas']);
             Route::get('result',[TransaksiKasController::class,'getReport'])->name('laporan-kas');
+            Route::get('print',[TransaksiKasController::class,'printReport'])->name('print-kas');
         });
         // Route::resource('/laporan-kas',TransaksiKasController::class);
     });
@@ -77,13 +78,22 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('bank')->group(function () {
         Route::get('/bank-transaksi/addDetailbankTransaksi',[TransaksiBankController::class,'DetailbankTransaksi']);
         Route::resource('/bank-transaksi',TransaksiBankController::class);
-        // Route::resource('/laporan-kas',TransaksiKasController::class);
+        Route::prefix('laporan-bank')->group(function () {
+            Route::get('/',[TransaksiBankController::class,'reportBank']);
+            Route::get('result',[TransaksiBankController::class,'getReport'])->name('laporan-bank');
+            Route::get('print',[TransaksiBankController::class,'printReport'])->name('print-bank');
+        });
     });
 
     // Memorial
     Route::prefix('memorial')->group(function () {
         Route::get('/memorial/addDetailMemorial',[MemorialController::class,'DetailMemorial']);
         Route::resource('/memorial', MemorialController::class);
+        Route::prefix('laporan-memorial')->group(function () {
+            Route::get('/',[MemorialController::class,'reportMemorial']);
+            Route::get('result',[MemorialController::class,'getReport'])->name('laporan-memorial');
+            Route::get('print',[MemorialController::class,'printReport'])->name('print-memorial');
+        });
     });
 
     // general ledger

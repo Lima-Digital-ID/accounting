@@ -18,13 +18,13 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h4><strong> Laporan Kas </strong></h4>
+                    <h4><strong> Laporan Bank </strong></h4>
                 </div>
                 <div class="card-block">
-                    <form action="{{ route('laporan-kas') }}" method="GET" class="mb-5" id="report_kas">
+                    <form action="{{ route('laporan-bank') }}" method="GET" class="mb-5" id="report_bank">
                         <div class="form-group row ">
                             <div class="col-lg-4">
-                                <label class="col-form-label">Kode Akun Kas</label>
+                                <label class="col-form-label">Kode Akun Bank</label>
                                 <select name="kode_perkiraan" id="kode_perkiraan" class="select2 form-control js-example-basic-single {{ $errors->has('kode_perkiraan') ? ' is-invalid' : '' }}" style="width: 100%">
                                     <option value="0"> --Pilih Kode Akun--</option>
                                     @foreach ($kodeAkun as $item)
@@ -70,10 +70,10 @@
                         </div>
                     </form>
                     {{-- <h4 class="sub-title">Basic Inputs</h4> --}}
-                    @if ($report_kas != null)
+                    @if ($report_bank != null)
                         <div class="row d-flex justify-content-between">
                             <div class="col">
-                                <h6 class="mb-3">Laporan Kas</h6>
+                                <h6 class="mb-3">Laporan Bank</h6>
                                 <h6 class="mb-3">Periode <strong class="font-weight-bold"> {{ \Request::get('start') }} s/d {{ \Request::get('end') }} </strong></h6>
                                 <h6 class="mb-3">
                                     @foreach ($kodeAkun as $item)
@@ -84,8 +84,8 @@
                                 </h6>
                             </div>
                             <div class="form-group mr-3">
-                                <a target="_blank" href="{{ route('print-kas')."?start=$_GET[start]&end=$_GET[end]&kode_perkiraan=$_GET[kode_perkiraan]" }}"  class="btn btn-danger waves-effect waves-light text-white"><i class="fa fa-file-pdf-o"></i> Download PDF</a>
-                                <a target="_blank" href="{{ route('print-kas')."?start=$_GET[start]&end=$_GET[end]&kode_perkiraan=$_GET[kode_perkiraan]&xls=true" }}" class="btn btn-success waves-effect waves-light text-white"><i class="fa fa-file-excel-o"></i> Download Excel</a>
+                                <a target="_blank" href="{{ route('print-bank')."?start=$_GET[start]&end=$_GET[end]&kode_perkiraan=$_GET[kode_perkiraan]" }}"  class="btn btn-danger waves-effect waves-light text-white"><i class="fa fa-file-pdf-o"></i> Download PDF</a>
+                                <a target="_blank" href="{{ route('print-bank')."?start=$_GET[start]&end=$_GET[end]&kode_perkiraan=$_GET[kode_perkiraan]&xls=true" }}" class="btn btn-success waves-effect waves-light text-white"><i class="fa fa-file-excel-o"></i> Download Excel</a>
 
                             </div>
                         </div>
@@ -106,10 +106,10 @@
                                         $page = Request::get('page');
                                         $no = !$page || $page == 1 ? 1 : ($page - 1) * 10 + 1;
                                     @endphp --}}
-                                    @foreach ($report_kas as $item)
+                                    @foreach ($report_bank as $item)
                                         <tr class="border-bottom-primary">
                                             <td>{{ date('d-m-Y', strtotime($item->tanggal)) }}</td>
-                                            <td>{{ $item->kode_transaksi_kas }}</td>
+                                            <td>{{ $item->kode_transaksi_bank }}</td>
                                             <td>{{ $item->keterangan }}</td>
                                             <td>{{ $item->kode_lawan }}</td>
                                             <td>
