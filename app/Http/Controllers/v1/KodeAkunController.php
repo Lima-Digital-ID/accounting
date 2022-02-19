@@ -37,7 +37,7 @@ class KodeAkunController extends Controller
             $getKodeAkun = KodeAkun::with('kodeInduk')->orderBy('kode_akun', 'ASC');
 
             if ($keyword) {
-                $getKodeAkun->where('nama', 'LIKE', "%{$keyword}%")->orWhere('kode_akun', 'LIKE', "%{$keyword}%")->orWhere('tipe', 'LIKE', "%{$keyword}%");
+                $getKodeAkun->where('nama', 'LIKE', "%{$keyword}%")->orWhere('kode_akun', 'LIKE', "%{$keyword}%");
             }
 
             $this->param['kode_akun'] = $getKodeAkun->paginate(10);
