@@ -130,7 +130,7 @@ class KodeIndukController extends Controller
     {
         $kodeInduk = KodeInduk::find($id);
         $isUniqueKode = $kodeInduk->kode_induk == $request->kode_induk ? '' : '|unique:kode_induk';
-        $isUniqueNama = $kodeInduk->nama == $request->nama ? '' : '|unique:kode_induk';
+        $isUniqueNama = $kodeInduk->nama == $request->nama ? '' : '|unique:nama';
         $request->validate([
             'kode_induk' => 'required'.$isUniqueKode,
             'nama' => 'required'.$isUniqueNama,
@@ -150,7 +150,7 @@ class KodeIndukController extends Controller
             $updateData->save();
             return redirect()->route('kode-induk.index')->withStatus('Berhasil mengganti data.');
         } catch (QueryException $e) {
-            return redirect()->back()->withError('Terjadi kesalahan.');
+            return redirect()->back()->withError('Terjadi kesalahan.' . $e->getMessage());
         } catch (Exception $e){
             return redirect()->back()->withError('Terjadi kesalahan.');
         }
