@@ -3,10 +3,9 @@
         <thead>
             <tr class="table-primary">
                 <th class="text-center">#</th>
-                <th>Kode Akun</th>
+                <th>Kode Rekening</th>
                 <th>Nama</th>
-                <th>Kode Induk</th>
-                {{-- <th>Saldo Awal</th> --}}
+                <th>Saldo Awal</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -20,8 +19,7 @@
                     <td class="text-center text-muted">{{ $no }}</td>
                     <td>{{ $item->kode_akun }}</td>
                     <td>{{ $item->nama }}</td>
-                    <td>{{ $item->kodeInduk->kode_induk . ' - ' . $item->kodeInduk->nama }}</td>
-                    {{-- <td>Rp. {{number_format($item->saldo_awal, 2, ',', '.') }}</td> --}}
+                    <td>Rp. {{number_format($item->saldo_awal, 2, ',', '.') }}</td>
                     <td>
                         <div class="form-inline">
                             <a href="{{ route('kode-akun.edit', $item->kode_akun) }}" class="mr-2">

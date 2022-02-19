@@ -20,21 +20,21 @@ class KodeAkunController extends Controller
 
     public function __construct()
     {
-        $this->param['pageTitle'] = 'Kode Akun';
+        $this->param['pageTitle'] = 'Kode Rekening';
         $this->param['pageIcon'] = 'feather icon-bookmark';
-        $this->param['parentMenu'] = 'Kode Akun';
-        $this->param['current'] = 'Kode Akun';
+        $this->param['parentMenu'] = 'Kode Rekening';
+        $this->param['current'] = 'Kode Rekening';
     }
     public function index(Request $request)
     {
-        $this->param['btnText'] = 'Tambah Kode Akun';
+        $this->param['btnText'] = 'Tambah Kode Rekening';
         $this->param['btnLink'] = route('kode-akun.create');
         $this->param['btnTrashText'] = 'Lihat Sampah';
         $this->param['btnTrashLink'] = route('kodeAkun.trash');
 
         try {
             $keyword = $request->get('keyword');
-            $getKodeAkun = KodeAkun::with('kodeInduk')->orderBy('kode_akun', 'ASC');
+            $getKodeAkun = KodeAkun::orderBy('kode_akun', 'ASC');
 
             if ($keyword) {
                 $getKodeAkun->where('nama', 'LIKE', "%{$keyword}%")->orWhere('kode_akun', 'LIKE', "%{$keyword}%");
@@ -58,7 +58,7 @@ class KodeAkunController extends Controller
      */
     public function create()
     {
-        $this->param['btnText'] = 'Lihat Kode Akun';
+        $this->param['btnText'] = 'Lihat Kode Rekening';
         $this->param['btnLink'] = route('kode-akun.index');
         $this->param['data'] = KodeInduk::all();
 
@@ -89,7 +89,7 @@ class KodeAkunController extends Controller
         ]);
         // return $request;
         try {
-            $kode_akun = $request->kode_akun;
+            $kode_akun = $request->induk_kode.$request->kode_akun;
             $addData = new KodeAkun;
             $addData->kode_akun = $kode_akun;
             $addData->induk_kode = $request->induk_kode;
@@ -124,7 +124,7 @@ class KodeAkunController extends Controller
     public function edit($id)
     {
         try {
-            $this->param['btnText'] = 'Lihat Kode Akun';
+            $this->param['btnText'] = 'Lihat Kode Rekening';
             $this->param['btnLink'] = route('kode-akun.index');
             $this->param['data'] = KodeAkun::find($id);
             $this->param['data_induk'] = KodeInduk::all();
@@ -166,10 +166,10 @@ class KodeAkunController extends Controller
         ]);
         // return $request;
         try {
-            $kode_akun = $request->kode_akun;
+            $kode_akun = $request->induk_kode.$request->kode_akun;
             $updateData = KodeAkun::findOrFail($id);
-            $updateData->kode_akun = $kode_akun;
-            $updateData->induk_kode = $request->induk_kode;
+            // $updateData->kode_akun = $kode_akun;
+            // $updateData->induk_kode = $request->induk_kode;
             $updateData->nama = str_replace('-',' ',$request->nama);
             $updateData->saldo_awal = $request->saldo;
             $updateData->save();
@@ -210,14 +210,12 @@ class KodeAkunController extends Controller
     }
     public function trashKodeAkun(Request $request)
     {
-        $this->param['btnText'] = 'Tambah Kode Akun';
+        $this->param['btnText'] = 'Tambah Kode Rekening';
         $this->param['btnLink'] = route('kode-akun.create');
         try {
             $keyword = $request->get('keyword');
-            $getKodeAkun = KodeAkun::with('kodeInduk', 'user')->onlyTrashed();
-                // ->select('kode_akun.kode_akun as kode_akun','kode_akun.nama','kode_akun.saldo_awal','kode_akun.deleted_by','users.id','users.name')
-                // ->join('users','kode_akun.deleted_by','users.id')->onlyTrashed();
-
+            $getKodeAkun = KodeAkun::select('kode_akun.kode_akun as kode_akun','kode_akun.nama','kode_akun.saldo_awal','kode_akun.deleted_by','users.id','users.name')
+                                        ->join('users','kode_akun.deleted_by','users.id')->onlyTrashed();
 
             if ($keyword) {
                 $getKodeAkun->where('nama', 'LIKE', "%{$keyword}%")->orWhere('kode_akun', 'LIKE', "%{$keyword}%");
