@@ -5,7 +5,7 @@
                 <th class="text-center">#</th>
                 <th>Kode Kas</th>
                 <th>Tanggal</th>
-                <th>Kode Rekening Bank</th>
+                <th>Kode Akun Bank</th>
                 <th>Tipe</th>
                 <th>Total</th>
                 <th>Aksi</th>

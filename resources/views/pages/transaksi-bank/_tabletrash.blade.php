@@ -3,7 +3,7 @@
         <thead>
             <tr class="table-primary">
                 <th class="text-center">#</th>
-                <th>Kode Rekening</th>
+                <th>Kode Akun</th>
                 <th>Nama</th>
                 <th>Saldo Awal</th>
                 <th>Deleted By</th>
