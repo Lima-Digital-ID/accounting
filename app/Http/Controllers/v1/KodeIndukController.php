@@ -130,7 +130,7 @@ class KodeIndukController extends Controller
     {
         $kodeInduk = KodeInduk::find($id);
         $isUniqueKode = $kodeInduk->kode_induk == $request->kode_induk ? '' : '|unique:kode_induk';
-        $isUniqueNama = $kodeInduk->nama == $request->nama ? '' : '|unique:kode_induk';
+        $isUniqueNama = $kodeInduk->nama == $request->nama ? '' : '|unique:nama';
         $request->validate([
             'kode_induk' => 'required'.$isUniqueKode,
             'nama' => 'required'.$isUniqueNama,

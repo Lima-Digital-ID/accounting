@@ -48,4 +48,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     protected $dates = ['deleted_at'];
+
+    public function kodeAkun()
+    {
+        return $this->hasMany('\App\Models\KodeAkun','deleted_by', 'id');
+    }
 }

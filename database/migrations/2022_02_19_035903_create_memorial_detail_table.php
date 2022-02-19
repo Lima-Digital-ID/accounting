@@ -23,6 +23,7 @@ class CreateMemorialDetailTable extends Migration
             $table->timestamps();
 
             $table->foreign('kode')->references('kode_akun')->on('kode_akun');
+            $table->foreign('lawan')->references('kode_akun')->on('kode_akun');
         });
     }
 
