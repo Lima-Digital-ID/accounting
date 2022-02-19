@@ -66,6 +66,10 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('kas')->group(function () {
         Route::get('/kas-transaksi/addDetailKasTransaksi',[TransaksiKasController::class,'DetailKasTransaksi']);
         Route::resource('/kas-transaksi',TransaksiKasController::class);
+        Route::prefix('laporan-kas')->group(function () {
+            Route::get('/',[TransaksiKasController::class,'reportKas']);
+            Route::get('result',[TransaksiKasController::class,'getReport'])->name('laporan-kas');
+        });
         // Route::resource('/laporan-kas',TransaksiKasController::class);
     });
 

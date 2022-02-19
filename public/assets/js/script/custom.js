@@ -1,4 +1,7 @@
 $(document).ready(function() {
+    function myFunction() {
+        document.getElementById("report_kas").reset();
+    }
     // no otomatis
     function getTotalKas() {
         var total = 0

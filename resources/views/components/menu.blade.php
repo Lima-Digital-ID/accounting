@@ -71,8 +71,8 @@
                                 <span class="pcoded-mtext">Transaksi Kas</span>
                             </a>
                         </li>
-                        <li class="{{ Request::segment(2) == '' ? 'active' : '' }}">
-                            <a href="{{ url('master-akuntasi/kode-induk') }}" class="waves-effect waves-dark">
+                        <li class="{{ Request::segment(2) == 'laporan-kas' ? 'active' : '' }}">
+                            <a href="{{ url('kas/laporan-kas') }}" class="waves-effect waves-dark">
                                 <span class="pcoded-micon">
                                     <i class="feather icon-bookmark"></i>
                                 </span>
