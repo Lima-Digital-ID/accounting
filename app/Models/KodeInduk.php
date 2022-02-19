@@ -20,9 +20,4 @@ class KodeInduk extends Model
         'deleted_by',
     ];
     protected $dates = ['deleted_at'];
-
-    public function kodeAkun()
-    {
-        return $this->hasMany('\App\Models\KodeAkun', 'induk_kode', 'kode_induk');
-    }
 }

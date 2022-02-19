@@ -12,14 +12,4 @@ class KodeAkun extends Model
     protected $table = 'kode_akun';
     protected $primaryKey = 'kode_akun';
     protected $dates = ['deleted_at'];
-
-    public function kodeInduk()
-    {
-        return $this->belongsTo('\App\Models\KodeInduk', 'induk_kode');
-    }
-    
-    public function user()
-    {
-        return $this->belongsTo('\App\Models\User', 'deleted_by');
-    }
 }

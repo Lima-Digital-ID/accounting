@@ -19,7 +19,7 @@
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link {{ Request::segment(2) == 'kode-akun' ? 'active' : '' }}" href="{{ url('/master-akuntasi/kode-akun') }}">List Kode Akun</a>
+          <a class="nav-link {{ Request::segment(2) == 'kode-akun' ? 'active' : '' }}" href="{{ url('/master-akuntasi/kode-akun') }}">List Kode Rekening</a>
         </li>
         <li class="nav-item">
             <a class="nav-link {{ Request::segment(3) == 'kode-akun' ? 'active' : '' }}" href="{{ url('/master-akuntasi/kode-akun/trash') }}">List Sampah</a>
