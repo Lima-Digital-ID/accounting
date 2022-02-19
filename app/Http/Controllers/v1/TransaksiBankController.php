@@ -81,7 +81,6 @@ class TransaksiBankController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kode_transaksi_bank' => 'required|unique:transaksi_bank',
             'tanggal' => 'required',
             'tipe' => 'required|not_in:0',
             'kode_akun' => 'required|not_in:0',

@@ -168,10 +168,10 @@ class TransaksiKasController extends Controller
             return redirect()->route('kas-transaksi.index')->withStatus('Berhasil Menambahkan data');
         } catch (QueryException $e) {
             DB::rollBack();
-            return redirect()->back()->withError('Terjadi kesalahan.' . $e->getMessage());
+            return back()->withError('Terjadi kesalahan.' . $e->getMessage());
         } catch (Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withError('Terjadi kesalahan.'. $e->getMessage());
+            return back()->withError('Terjadi kesalahan.'. $e->getMessage());
         }
     }
 

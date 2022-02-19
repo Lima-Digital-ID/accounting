@@ -3,7 +3,7 @@
     <div class="form-group row">
         <div class="col-sm-4">
             <label class="col-form-label">Tanggal</label>
-            <input class="form-control form-control-lg @error('tanggal') is-invalid @enderror" type="date" name="tanggal"/>
+            <input class="form-control form-control-lg @error('tanggal') is-invalid @enderror" type="date" name="tanggal" value="{{old('tanggal')}}"/>
             @error('tanggal')
                 <div class="invalid-feedback">
                     {{ $message }}
