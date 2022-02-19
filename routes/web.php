@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserActivityController;
 use App\Http\Controllers\v1\KodeIndukController;
 use App\Http\Controllers\v1\DashboardController;
 use App\Http\Controllers\v1\KodeAkunController;
@@ -109,6 +110,8 @@ Route::middleware(['auth'])->group(function () {
         // Route::get('ekuitas/print', 'EkuitasController@print');
     });
 
+    // User Activity
+    Route::resource('user-activity',UserActivityController::class);
 
 
 });

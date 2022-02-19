@@ -13,6 +13,9 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Traits\SequenceTrait;
+use App\Models\UserActivity;
+use Illuminate\Support\Facades\Auth;
+
 class TransaksiKasController extends Controller
 {
     private $param;
@@ -118,6 +121,14 @@ class TransaksiKasController extends Controller
 
 
             $addTransaksi->save();
+
+            // User Activity
+            $addUserActivity = new UserActivity;
+            $addUserActivity->id_user = Auth::user()->id;
+            $addUserActivity->jenis_transaksi = 'Kas';
+            $addUserActivity->tipe = 'Insert';
+            $addUserActivity->keterangan = 'Berhasil menambahkan Transaksi Kas dengan kode '.$kodeKas.' dengan total '.$total.'.';
+            $addUserActivity->save();
 
             foreach ($_POST['subtotal'] as $key => $value) {
                 $addDetailKas =  new TransaksiKasDetail;

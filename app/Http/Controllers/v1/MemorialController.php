@@ -8,9 +8,11 @@ use App\Models\Jurnal;
 use App\Models\KodeAkun;
 use App\Models\Memorial;
 use App\Models\MemorialDetail;
+use App\Models\UserActivity;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class MemorialController extends Controller
@@ -110,6 +112,14 @@ class MemorialController extends Controller
 
 
             $addMemorial->save();
+
+            // User Activity
+            $addUserActivity = new UserActivity;
+            $addUserActivity->id_user = Auth::user()->id;
+            $addUserActivity->jenis_transaksi = 'Memorial';
+            $addUserActivity->tipe = 'Insert';
+            $addUserActivity->keterangan = 'Berhasil menambahkan Memorial dengan kode '.$kodeMemorial.' dengan total '.$total.'.';
+            $addUserActivity->save();
 
 
             foreach ($_POST['subtotal'] as $key => $value) {

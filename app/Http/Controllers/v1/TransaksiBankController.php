@@ -13,6 +13,8 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Traits\SequenceTrait;
+use App\Models\UserActivity;
+use Illuminate\Support\Facades\Auth;
 
 class TransaksiBankController extends Controller
 {
@@ -121,6 +123,13 @@ class TransaksiBankController extends Controller
 
             $addTransaksi->save();
 
+             // User Activity
+            $addUserActivity = new UserActivity;
+            $addUserActivity->id_user = Auth::user()->id;
+            $addUserActivity->jenis_transaksi = 'Bank';
+            $addUserActivity->tipe = 'Insert';
+            $addUserActivity->keterangan = 'Berhasil menambahkan Transaksi Bank dengan kode '.$kodeBank.' dengan total '.$total.'.';
+            $addUserActivity->save();
 
             foreach ($_POST['subtotal'] as $key => $value) {
                 $addDetailBank =  new TransaksiBankDetail;
