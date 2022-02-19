@@ -4,6 +4,7 @@ use App\Http\Controllers\v1\KodeIndukController;
 use App\Http\Controllers\v1\DashboardController;
 use App\Http\Controllers\v1\KodeAkunController;
 use App\Http\Controllers\v1\KunciTransaksiController;
+use App\Http\Controllers\v1\MemorialController;
 use App\Http\Controllers\v1\TransaksiBankController;
 use App\Http\Controllers\v1\TransaksiKasController;
 use App\Http\Controllers\v1\UsersController;
@@ -73,6 +74,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/bank-transaksi/addDetailbankTransaksi',[TransaksiBankController::class,'DetailbankTransaksi']);
         Route::resource('/bank-transaksi',TransaksiBankController::class);
         // Route::resource('/laporan-kas',TransaksiKasController::class);
+    });
+
+    // Memorial
+    Route::prefix('memorial')->group(function () {
+        Route::resource('/memorial', MemorialController::class);
     });
 
 

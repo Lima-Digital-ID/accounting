@@ -12,7 +12,7 @@
         </div>
         <div class="col-sm-4">
             <label class="col-form-label">Tipe</label>
-            <select name="tipe" id="tipe" class="select2 form-control form-control-lg js-example-basic-single@error('tipe') is-invalid @enderror">
+            <select name="tipe" id="tipe" class="select2 form-control form-control-lg js-example-basic-single @error('tipe') is-invalid @enderror">
                 <option value="0" disabled>Tipe</option>
                 <option value="Masuk" {{old('tipe') == 'Masuk' ? 'selected' : ''}}>Masuk</option>
                 <option value="Keluar" {{old('tipe') == 'Keluar' ? 'selected' : ''}}>Keluar</option>
