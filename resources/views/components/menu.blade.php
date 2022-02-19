@@ -84,6 +84,7 @@
                 </li>
             </ul>
             {{-- Bank --}}
+            <div class="pcoded-navigation-label">Transaksi Bank</div>
             <ul class="pcoded-item pcoded-left-item">
                 <li class="pcoded-hasmenu {{ Request::segment(1) == 'bank' ? 'active' : '' }} {{ Request::segment(1) == 'bank' ? 'pcoded-trigger' : '' }}">
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
@@ -111,6 +112,7 @@
                 </li>
             </ul>
             {{-- Memorial Jurnal Umum --}}
+            <div class="pcoded-navigation-label">Memorial / Jurnal Umum</div>
             <ul class="pcoded-item pcoded-left-item">
                 <li class="pcoded-hasmenu {{ Request::segment(1) == 'memorial' ? 'active' : '' }} {{ Request::segment(1) == 'memorial' ? 'pcoded-trigger' : '' }}">
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
@@ -123,7 +125,7 @@
                                 <span class="pcoded-micon">
                                     <i class="feather icon-bookmark"></i>
                                 </span>
-                                <span class="pcoded-mtext">Transaksi Memorial (Jurnal Umum)</span>
+                                <span class="pcoded-mtext">Memorial / Jurnal Umum</span>
                             </a>
                         </li>
                         <li class="{{ Request::segment(2) == '' ? 'active' : '' }}">
@@ -132,6 +134,43 @@
                                     <i class="feather icon-bookmark"></i>
                                 </span>
                                 <span class="pcoded-mtext">Laporan Bank</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            {{-- General Ledger --}}
+            <div class="pcoded-navigation-label">General Ledger</div>
+            <ul class="pcoded-item pcoded-left-item">
+                <li class="pcoded-hasmenu {{ Request::segment(1) == 'general-ledger' ? 'active pcoded-trigger' : '' }}">
+                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="ti-book"></i></span>
+                        <span class="pcoded-mtext">General Ledger</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        <li class="{{ Request::segment(2) == 'buku-besar' ? 'active' : '' }}">
+                            <a href="{{ url('general-ledger/buku-besar') }}" class="waves-effect waves-dark">
+                                <span class="pcoded-micon">
+                                    <i class="feather icon-bookmark"></i>
+                                </span>
+                                <span class="pcoded-mtext">Buku Besar</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::segment(2) == 'neraca-saldo' ? 'active' : '' }}">
+                            <a href="{{ url('general-ledger/neraca-saldo') }}" class="waves-effect waves-dark">
+                                <span class="pcoded-micon">
+                                    <i class="feather icon-bookmark"></i>
+                                </span>
+                                <span class="pcoded-mtext">Neraca Saldo</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::segment(2) == 'laba-rugi' ? 'active' : '' }}">
+                            <a href="{{ url('general-ledger/laba-rugi') }}" class="waves-effect waves-dark">
+                                <span class="pcoded-micon">
+                                    <i class="feather icon-bookmark"></i>
+                                </span>
+                                <span class="pcoded-mtext">Laba Rugi</span>
                             </a>
                         </li>
                     </ul>

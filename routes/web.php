@@ -8,6 +8,7 @@ use App\Http\Controllers\v1\MemorialController;
 use App\Http\Controllers\v1\TransaksiBankController;
 use App\Http\Controllers\v1\TransaksiKasController;
 use App\Http\Controllers\v1\UsersController;
+use App\Http\Controllers\v1\GeneralLedger\BukuBesarController;
 use App\Models\KunciTransaksi;
 use Illuminate\Support\Facades\Route;
 
@@ -16,7 +17,6 @@ use Illuminate\Support\Facades\Route;
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
@@ -80,6 +80,19 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('memorial')->group(function () {
         Route::get('/memorial/addDetailMemorial',[MemorialController::class,'DetailMemorial']);
         Route::resource('/memorial', MemorialController::class);
+    });
+
+    // general ledger
+    Route::group(['prefix' => 'general-ledger'], function () {
+        Route::get('buku-besar', [BukuBesarController::class, 'index']);
+        Route::post('buku-besar', [BukuBesarController::class, 'index']);
+        Route::post('buku-besar/export', [BukuBesarController::class, 'export']);
+        Route::get('neraca', 'NeracaController@index');
+        Route::get('neraca/print', 'NeracaController@print');
+        Route::get('laba-rugi', 'LabaRugiController@index');
+        Route::get('laba-rugi/print', 'LabaRugiController@print');
+        // Route::get('ekuitas', 'EkuitasController@index');
+        // Route::get('ekuitas/print', 'EkuitasController@print');
     });
 
 
