@@ -83,12 +83,21 @@ class TransaksiBankController extends Controller
         $request->validate([
             'kode_transaksi_bank' => 'required|unique:transaksi_bank',
             'tanggal' => 'required',
-            'tipe' => 'required',
+            'tipe' => 'required|not_in:0',
             'kode_akun' => 'required|not_in:0',
-            'kode_akun' => 'required',
-            'kode_lawan.*' => 'required',
+            'kode_akun' => 'required|not_in:0',
+            'kode_lawan.*' => 'required|not_in:0',
             'subtotal.*' => 'required',
             'keterangan.*' => 'required',
+        ],[
+            'required' => ':attribute harus terisi.',
+            'not_in' => ':attribute harus terisi',
+        ],[
+            'kode_akun' => 'kode akun',
+            'kode_lawan.*' => 'kode lawan',
+            'subtotal.*' => 'subtotal',
+            'keterangan.*' => 'keterangan'
+
         ]);
         // return $request;
         DB::beginTransaction();

@@ -1,12 +1,12 @@
 <div class="form-group row row-detail" data-no="{{ $no }}">
-    <div class="col-sm-4 mt-4" {{ isset($n)&&$errors->has('kode_lawan.'.$n) ? ' is-invalid' : '' }} >
+    <div class="col-sm-4 mt-4">
         <div class="d-flex">
             <label class="col-form-label">Lawan</label>
         </div>
-        <select name="kode_lawan[]" id="kode_lawan" class="form-control form-control-lg select2 js-example-basic-single col-sm-12 d-flex" style="width: 100%">
-            <option value="0" > -- Pilih --</option>
+        <select name="kode_lawan[]" class="form-control select2 js-example-basic-single {{ isset($n)&&$errors->has('kode_lawan.'.$n) ? ' is-invalid' : '' }}" style="width: 100%">
+            <option value=""> -- Pilih --</option>
             @foreach ($kode_lawan as $item)
-                <option value="{{ $item->kode_akun }}" {{ isset($n)&&old('kode_lawan.'.$n) == $item->kode_akum ? 'selected' : ''}}>{{ $item->nama }}</option>
+                <option value="{{ $item->kode_akun }}" {{ isset($n)&&old('kode_lawan.'.$n) == $item->kode_akun ? 'selected' : ''}}>{{ $item->nama }}</option>
             @endforeach
         </select>
         @if(isset($n)&&$errors->has('kode_lawan.'.$n))

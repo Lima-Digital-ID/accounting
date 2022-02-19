@@ -5,7 +5,6 @@
                 <th class="text-center">#</th>
                 <th>Kode Kas</th>
                 <th>Tanggal</th>
-                <th>Kode Akun Kas</th>
                 <th>Tipe</th>
                 <th>Total</th>
                 <th>Aksi</th>
@@ -21,7 +20,6 @@
                     <td class="text-center text-muted">{{ $no }}</td>
                     <td>{{ $item->kode_memorial }}</td>
                     <td>{{ date('d-m-Y', strtotime($item->tanggal)) }}</td>
-                    <td>{{ $item->akun_kode }}</td>
                     <td>{{ $item->tipe }}</td>
                     <td>Rp. {{number_format($item->total, 2, ',', '.') }}</td>
                     <td>

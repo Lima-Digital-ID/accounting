@@ -1,4 +1,4 @@
-<form action="{{ route('kas-transaksi.store') }}" method="POST">
+<form action="{{ route('memorial.store') }}" method="POST">
     @csrf
     <div class="form-group row">
         {{-- <div class="col-sm-4">
@@ -34,7 +34,7 @@
             @enderror
         </div>
         <div class="col-sm-4">
-            <label class="col-form-label">Kode Akun Kas</label>
+            <label class="col-form-label">Kode Akun</label>
             <select name="kode_akun" id="kode_akun" class="select2 form-control js-example-basic-single @error('kode_akun') is-invalid @enderror" style="width: 100%">
                 <option value="0"> --Pilih Kode Akun--</option>
                 @foreach ($kodeAkun as $item)

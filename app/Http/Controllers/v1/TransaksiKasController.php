@@ -83,15 +83,18 @@ class TransaksiKasController extends Controller
             'tanggal' => 'required',
             'tipe' => 'required|not_in:0',
             'kode_akun' => 'required|not_in:0',
-            'kode_lawan.*' => 'required',
+            'kode_lawan.*' => 'required|not_in:0',
             'subtotal.*' => 'required|numeric',
             'keterangan.*' => 'required',
         ],[
-            'required' => ':attribute data harus terisi.',
-            'not_in' => 'data harus terisi',
+            'required' => ':attribute harus terisi.',
+            'not_in' => ':attribute harus terisi',
         ],[
-            'kode_transaksi_kas' => 'kode transaksi kas',
-            'kode_akun' => 'kode akun'
+            'kode_akun' => 'kode akun',
+            'kode_lawan.*' => 'kode lawan',
+            'subtotal.*' => 'subtotal',
+            'keterangan.*' => 'keterangan'
+
         ]);
 
         DB::beginTransaction();
