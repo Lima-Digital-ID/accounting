@@ -86,7 +86,7 @@ class TransaksiBankController extends Controller
             'tipe' => 'required',
             'kode_akun' => 'required|not_in:0',
             'kode_akun' => 'required',
-            'kode_lawan.*' => 'required',
+            'kode_lawan.*' => 'required|not_in:0',
             'subtotal.*' => 'required',
             'keterangan.*' => 'required',
         ]);
