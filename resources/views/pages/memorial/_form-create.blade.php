@@ -1,4 +1,4 @@
-<form action="{{ route('kas-transaksi.store') }}" method="POST">
+<form action="{{ route('memorial.store') }}" method="POST">
     @csrf
     <div class="form-group row">
         {{-- <div class="col-sm-4">
@@ -33,26 +33,13 @@
                 </div>
             @enderror
         </div>
-        <div class="col-sm-4">
-            <label class="col-form-label">Kode Akun Kas</label>
-            <select name="kode_akun" id="kode_akun" class="select2 form-control js-example-basic-single @error('kode_akun') is-invalid @enderror" style="width: 100%">
-                <option value="0"> --Pilih Kode Akun--</option>
-                @foreach ($kodeAkun as $item)
-                    <option value="{{ $item->kode_akun }}" {{old('kode_akun') == $item->kode_akun ? 'selected' : ''}}>{{ $item->kode_akun.'--'.$item->nama }}</option>
-                @endforeach
-            </select>
-            @error('kode_akun')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
+
     </div>
     <div class="card-header">
-        <h5>Detail Transaksi Kas</h5>
+        <h5>Detail Transaksi Memorial</h5>
     </div>
     <div class="detail-lawan">
-        <div class="" id='urlAddDetail' data-url="{{ url('kas/kas-transaksi/addDetailKasTransaksi') }}">
+        <div class="" id='urlAddDetail' data-url="{{ url('memorial/memorial/addDetailMemorial') }}">
             {{-- @if (!is_null(old('kode_lawan'))) --}}
             @if (!is_null(old('kode_lawan')))
                 @php
@@ -62,12 +49,12 @@
                     @php
                         $no++
                     @endphp
-                        @include('pages.transaksi-kas.form-detail-transaksi-kas',['hapus' => false, 'no' => $no, 'kode_lawan' => $kode_lawan])
-                        {{-- @include('pages.transaksi-kas.form-detail-transaksi-kas'); --}}
+                        @include('pages.memorial.form-detail-memorial-kas',['hapus' => false, 'no' => $no, 'kode_lawan' => $kode_lawan])
+                        {{-- @include('pages.memorial.form-detail-memorial-kas'); --}}
                 @endforeach
             @else
                  {{-- {{ $no }} --}}
-                    @include('pages.transaksi-kas.form-detail-transaksi-kas',['hapus' => false, 'no' => 1, 'kode_lawan' => $kode_lawan])
+                    @include('pages.memorial.form-detail-memorial-kas',['hapus' => false, 'no' => 1, 'kode_lawan' => $kode_lawan])
                     {{-- @include('pages.transaksi-kas.form-detail-transaksi-kas'); --}}
 
             @endif

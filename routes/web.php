@@ -78,6 +78,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Memorial
     Route::prefix('memorial')->group(function () {
+        Route::get('/memorial/addDetailMemorial',[MemorialController::class,'DetailMemorial']);
         Route::resource('/memorial', MemorialController::class);
     });
 

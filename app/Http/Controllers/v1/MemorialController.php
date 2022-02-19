@@ -35,7 +35,7 @@ class MemorialController extends Controller
             $getMemorial = Memorial::orderBy('tanggal', 'DESC')->orderBy('created_at', 'DESC');
 
             if ($keyword) {
-                $getMemorial->where('kode_memorial', 'LIKE', "%{$keyword}%")->orWhere('tipe', 'LIKE', "%{$keyword}%")->orWhere('akun_kode', 'LIKE', "%{$keyword}%");
+                $getMemorial->where('kode_memorial', 'LIKE', "%{$keyword}%")->orWhere('tipe', 'LIKE', "%{$keyword}%");
             }
 
             $this->param['memorial'] = $getMemorial->paginate(10);
@@ -57,12 +57,8 @@ class MemorialController extends Controller
     {
         $this->param['btnText'] = 'Lihat Data';
         $this->param['btnLink'] = route('memorial.index');
-        $this->param['kodeAkun'] = KodeAkun::select('kode_akun.kode_akun','kode_akun.nama')
-                                            ->join('kode_induk','kode_akun.induk_kode','kode_induk.kode_induk')
-                                            ->get();
-        $this->param['kode_lawan'] = KodeAkun::select('kode_akun.kode_akun','kode_akun.nama')
-                                            ->join('kode_induk','kode_akun.induk_kode','kode_induk.kode_induk')
-                                            ->get();
+
+        $this->param['kode_lawan'] = KodeAkun::select('kode_akun.kode_akun','kode_akun.nama')->get();
         return view('pages.memorial.create',$this->param);
     }
 
@@ -74,11 +70,11 @@ class MemorialController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request;
         $request->validate([
             'tanggal' => 'required',
             'tipe' => 'required|not_in:0',
-            'kode_akun' => 'required|not_in:0',
-            'kode_akun' => 'required|not_in:0',
+            'kode_akun.*' => 'required|not_in:0',
             'kode_lawan.*' => 'required|not_in:0',
             'subtotal.*' => 'required',
             'keterangan.*' => 'required',
@@ -86,13 +82,12 @@ class MemorialController extends Controller
             'required' => ':attribute harus terisi.',
             'not_in' => ':attribute harus terisi',
         ],[
-            'kode_akun' => 'kode akun',
+            'kode_akun.*' => 'kode akun',
             'kode_lawan.*' => 'kode lawan',
             'subtotal.*' => 'subtotal',
             'keterangan.*' => 'keterangan'
 
         ]);
-        // return $request;
         DB::beginTransaction();
         try {
             $total = 0;
@@ -122,7 +117,7 @@ class MemorialController extends Controller
                 $addDetailMemorial =  new MemorialDetail;
                 $addDetailMemorial->kode_memorial = $kodeMemorial;
                 $addDetailMemorial->keterangan = $_POST['keterangan'][$key];
-                $addDetailMemorial->kode = $request->kode_akun;
+                $addDetailMemorial->kode = $_POST['kode_akun'][$key];
                 $addDetailMemorial->lawan = $_POST['kode_lawan'][$key];
                 $addDetailMemorial->subtotal = $_POST['subtotal'][$key];
 
@@ -134,7 +129,7 @@ class MemorialController extends Controller
                 $addJurnal->jenis_transaksi = 'Memorial';
                 $addJurnal->kode_transaksi = $kodeMemorial;
                 $addJurnal->keterangan = $_POST['keterangan'][$key];
-                $addJurnal->kode = $request->kode_akun;
+                $addJurnal->kode = $_POST['kode_akun'][$key];
                 $addJurnal->lawan = $_POST['kode_lawan'][$key];
                 $addJurnal->tipe = $request->tipe == 'Masuk' ? 'Debit' : 'Kredit';
                 $addJurnal->nominal = $_POST['subtotal'][$key];
@@ -209,5 +204,13 @@ class MemorialController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function DetailMemorial()
+    {
+        $next = $_GET['biggestNo'] + 1;
+        $kode_lawan = KodeAkun::select('kode_akun.kode_akun','kode_akun.nama')
+                                ->get();
+        return view('pages.memorial.form-detail-memorial-kas', ['hapus' => true, 'no' => $next, 'kode_lawan' => $kode_lawan,'kode_akun' => $kode_lawan]);
     }
 }

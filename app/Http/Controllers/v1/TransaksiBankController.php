@@ -61,11 +61,11 @@ class TransaksiBankController extends Controller
         $this->param['btnText'] = 'Lihat Data';
         $this->param['btnLink'] = route('bank-transaksi.index');
         $this->param['kodeAkun'] = KodeAkun::select('kode_akun.kode_akun','kode_akun.nama')
-                                            ->join('kode_induk','kode_akun.induk_kode','kode_induk.kode_induk')
+                                            // ->join('kode_induk','kode_akun.induk_kode','kode_induk.kode_induk')
                                             ->where('kode_akun.nama','LIKE','Bank%')
                                             ->get();
         $this->param['kode_lawan'] = KodeAkun::select('kode_akun.kode_akun','kode_akun.nama')
-                                            ->join('kode_induk','kode_akun.induk_kode','kode_induk.kode_induk')
+                                            // ->join('kode_induk','kode_akun.induk_kode','kode_induk.kode_induk')
                                             ->where('kode_akun.nama','!=','Kas')
                                             ->where('kode_akun.nama', '!=', 'Bank')
                                             ->get();

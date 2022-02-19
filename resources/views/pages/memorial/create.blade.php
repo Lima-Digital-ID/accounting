@@ -23,7 +23,7 @@
                 </div>
                 <div class="card-block">
                     {{-- <h4 class="sub-title">Basic Inputs</h4> --}}
-                    @include('pages.transaksi-kas._form-create')
+                    @include('pages.memorial._form-create')
                 </div>
             </div>
         </div>

@@ -27,7 +27,6 @@ $(document).ready(function() {
         var next = parseInt(biggestNo) + 1;
         var thisNo = param.data("no");
         var url = $("#urlAddDetail").data('url')
-            // console.log(next);
         console.log(url);
         $.ajax({
             type: "get",

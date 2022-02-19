@@ -13,7 +13,7 @@
         </div> --}}
         <div class="col-sm-4">
             <label class="col-form-label">Tanggal</label>
-            <input class="form-control form-control-lg @error('tanggal') is-invalid @enderror" type="date" name="tanggal" value="{{old('tanggal')}}"/>
+            <input class="form-control form-control-lg @error('tanggal') is-invalid @enderror" type="date" name="tanggal"/>
             @error('tanggal')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -34,7 +34,7 @@
             @enderror
         </div>
         <div class="col-sm-4">
-            <label class="col-form-label">Kode Akun</label>
+            <label class="col-form-label">Kode Akun Kas</label>
             <select name="kode_akun" id="kode_akun" class="select2 form-control js-example-basic-single @error('kode_akun') is-invalid @enderror" style="width: 100%">
                 <option value="0"> --Pilih Kode Akun--</option>
                 @foreach ($kodeAkun as $item)
