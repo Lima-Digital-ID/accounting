@@ -7,6 +7,7 @@ use App\Http\Traits\SequenceTrait;
 use App\Models\KodeAkun;
 use App\Models\Memorial;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -94,39 +95,39 @@ class MemorialController extends Controller
             $bulan = date('m', strtotime($request->tanggal));
             $kodeBank = $this->generateNomorTransaksi($kode, $tahun, $bulan, null);
 
-            $addMemorial = new Memorial;
-            $addMemorial->kode_memorial = $kodeBank;
-            $addMemorial->tanggal = $request->tanggal;
-            $addMemorial->akun_kode = $request->kode_akun;
-            $addMemorial->tipe = $request->tipe;
-            $addMemorial->total = $total;
+            // $addMemorial = new Memorial;
+            // $addMemorial->kode_memorial = $kodeBank;
+            // $addMemorial->tanggal = $request->tanggal;
+            // $addMemorial->akun_kode = $request->kode_akun;
+            // $addMemorial->tipe = $request->tipe;
+            // $addMemorial->total = $total;
 
 
-            $addMemorial->save();
+            // $addMemorial->save();
 
 
-            foreach ($_POST['subtotal'] as $key => $value) {
-                $addDetailBank =  new TransaksiBankDetail;
-                $addDetailBank->kode_transaksi_bank = $kodeBank;
-                $addDetailBank->kode_lawan = $_POST['kode_lawan'][$key];
-                $addDetailBank->subtotal = $_POST['subtotal'][$key];
-                $addDetailBank->keterangan = $_POST['keterangan'][$key];
+            // foreach ($_POST['subtotal'] as $key => $value) {
+            //     // $addDetailBank =  new Memoria;
+            //     $addDetailBank->kode_transaksi_bank = $kodeBank;
+            //     $addDetailBank->kode_lawan = $_POST['kode_lawan'][$key];
+            //     $addDetailBank->subtotal = $_POST['subtotal'][$key];
+            //     $addDetailBank->keterangan = $_POST['keterangan'][$key];
 
-                $addDetailBank->save();
+            //     $addDetailBank->save();
 
-                // tambah jurnal
-                $addJurnal = new Jurnal;
-                $addJurnal->tanggal = $request->tanggal;
-                $addJurnal->jenis_transaksi = 'Bank';
-                $addJurnal->kode_transaksi = $kodeBank;
-                $addJurnal->keterangan = $_POST['keterangan'][$key];
-                $addJurnal->kode = $request->kode_akun;
-                $addJurnal->lawan = $_POST['kode_lawan'][$key];
-                $addJurnal->tipe = $request->tipe == 'Masuk' ? 'Debit' : 'Kredit';
-                $addJurnal->nominal = $_POST['subtotal'][$key];
-                $addJurnal->id_detail = $addDetailBank->id;
-                $addJurnal->save();
-            }
+            //     // tambah jurnal
+            //     $addJurnal = new Jurnal;
+            //     $addJurnal->tanggal = $request->tanggal;
+            //     $addJurnal->jenis_transaksi = 'Bank';
+            //     $addJurnal->kode_transaksi = $kodeBank;
+            //     $addJurnal->keterangan = $_POST['keterangan'][$key];
+            //     $addJurnal->kode = $request->kode_akun;
+            //     $addJurnal->lawan = $_POST['kode_lawan'][$key];
+            //     $addJurnal->tipe = $request->tipe == 'Masuk' ? 'Debit' : 'Kredit';
+            //     $addJurnal->nominal = $_POST['subtotal'][$key];
+            //     $addJurnal->id_detail = $addDetailBank->id;
+            //     $addJurnal->save();
+            // }
             DB::commit();
             return redirect()->route('bank-transaksi.index')->withStatus('Berhasil Menambahkan data');
          } catch (QueryException $e) {
