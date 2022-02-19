@@ -148,7 +148,7 @@ class KodeAkunController extends Controller
     {
         $kode_akun = KodeAkun::find($id);
         $isUniqueKodeAkun = $kode_akun->kode_akun == $request->kode_akun ? '' : '|unique:kode_akun';
-        $isUniqueNamaAkun = $kode_akun->nama == $request->nama ? '' : '|unique:kode_akun';
+        $isUniqueNamaAkun = $kode_akun->nama == $request->nama ? '' : '|unique:nama';
         $request->validate([
             'induk_kode' => 'required|not_in:0',
             'kode_akun' => 'required|'.$isUniqueKodeAkun,
