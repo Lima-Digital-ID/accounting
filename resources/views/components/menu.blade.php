@@ -55,6 +55,7 @@
                 </li>
             </ul>
             {{-- <div class="pcoded-navigation-label">Master Akuntansi</div> --}}
+            <div class="pcoded-navigation-label">Transaksi Kas</div>
             {{-- Kas --}}
             <ul class="pcoded-item pcoded-left-item">
                 <li class="pcoded-hasmenu {{ Request::segment(1) == 'kas' ? 'active' : '' }} {{ Request::segment(1) == 'kas' ? 'pcoded-trigger' : '' }}">
