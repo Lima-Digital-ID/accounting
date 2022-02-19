@@ -109,6 +109,33 @@
                     </ul>
                 </li>
             </ul>
+            {{-- Memorial Jurnal Umum --}}
+            <ul class="pcoded-item pcoded-left-item">
+                <li class="pcoded-hasmenu {{ Request::segment(1) == 'memorial' ? 'active' : '' }} {{ Request::segment(1) == 'memorial' ? 'pcoded-trigger' : '' }}">
+                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="ti-folder"></i></span>
+                        <span class="pcoded-mtext">Memorial</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        <li class="{{ Request::segment(2) == 'memorial' ? 'active' : '' }}">
+                            <a href="{{ url('memorial/memorial') }}" class="waves-effect waves-dark">
+                                <span class="pcoded-micon">
+                                    <i class="feather icon-bookmark"></i>
+                                </span>
+                                <span class="pcoded-mtext">Transaksi Memorial (Jurnal Umum)</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::segment(2) == '' ? 'active' : '' }}">
+                            <a href="{{ url('master-akuntasi/kode-induk') }}" class="waves-effect waves-dark">
+                                <span class="pcoded-micon">
+                                    <i class="feather icon-bookmark"></i>
+                                </span>
+                                <span class="pcoded-mtext">Laporan Bank</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
