@@ -216,6 +216,18 @@ code {
     position: relative
 }
 
+.card .card-header h6 {
+    margin-bottom: 0;
+    color: #333;
+    font-size: 13px;
+    font-weight: 500;
+    /* display: inline-block; */
+    margin-right: 10px;
+    /* margin-bottom: 10px; */
+    line-height: 1.1;
+    position: relative
+}
+
 .card .card-header h5+span {
     display: none
 }
@@ -229,6 +241,17 @@ code {
     bottom: -20px;
     left: 0
 }
+
+
+/* .card .card-header h6:after {
+    content: "";
+    background-color: #d2d2d2;
+    width: 60px;
+    height: 1px;
+    position: absolute;
+    bottom: -20px;
+    left: 0
+} */
 
 .card .card-block {
     padding: 1.25rem

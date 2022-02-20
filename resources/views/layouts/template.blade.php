@@ -41,6 +41,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('') }}css/bootstrap-multiselect.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('') }}css/multi-select.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('') }}css/style.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('') }}css/widget.css">
 
     @stack('custom-styles')
 </head>
