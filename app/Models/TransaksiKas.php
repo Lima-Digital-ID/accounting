@@ -14,7 +14,7 @@ class TransaksiKas extends Model
     public $incrementing = FALSE;
     protected $dates = ['deleted_at'];
 
-    public function kodeRekening()
+    public function kodeAkun()
     {
         return $this->belongsTo(KodeAkun::class,'akun_kode');
 
