@@ -17,14 +17,14 @@
     @include('components.button-add', ['btnText' => $btnText, 'btnLink' => $btnLink])
 
 
-    {{-- <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link {{ Request::segment(2) == 'kode-akun' ? 'active' : '' }}" href="{{ url('/master-akuntasi/kode-akun') }}">List Kode Rekening</a>
+          <a class="nav-link {{ Request::segment(2) == 'kas-transaksi' ? 'active' : '' }}" href="{{ url('/kas/kas-transaksi') }}">List Transaksi Kas</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ Request::segment(3) == 'kode-akun' ? 'active' : '' }}" href="{{ url('/master-akuntasi/kode-akun/trash') }}">List Sampah</a>
+            <a class="nav-link {{ Request::segment(3) == 'trash' ? 'active' : '' }}" href="{{ url('/kas/kas-transaksi/trash') }}">List Sampah</a>
         </li>
-    </ul> --}}
+    </ul>
 
     <div class="card">
         <div class="card-header">
