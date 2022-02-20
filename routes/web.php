@@ -66,6 +66,11 @@ Route::middleware(['auth'])->group(function () {
     // Kas Transaksi
     Route::prefix('kas')->group(function () {
         Route::get('/kas-transaksi/addDetailKasTransaksi',[TransaksiKasController::class,'DetailKasTransaksi']);
+        Route::get('/kas-transaksi/addEditDetailKasTransaksi',[TransaksiKasController::class,'addEditDetailKasTransaksi']);
+        // Kode Transaksi Kas
+        Route::get('/kas-transaksi/trash',[TransaksiKasController::class,'trashTransaksiKas'])->name('transaksiKas.trash');
+        Route::get('/kas-transaksi/restore/{id}',[TransaksiKasController::class,'restoretransaksiKas'])->name('transaksiKas.restore');
+        Route::delete('/kas-transaksi/{id}/hapus',[TransaksiKasController::class,'hapusPermanen'])->name('transaksiKas.hapusPermanen');
         Route::resource('/kas-transaksi',TransaksiKasController::class);
         Route::prefix('laporan-kas')->group(function () {
             Route::get('/',[TransaksiKasController::class,'reportKas']);
