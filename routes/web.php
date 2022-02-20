@@ -10,6 +10,8 @@ use App\Http\Controllers\v1\TransaksiBankController;
 use App\Http\Controllers\v1\TransaksiKasController;
 use App\Http\Controllers\v1\UsersController;
 use App\Http\Controllers\v1\GeneralLedger\BukuBesarController;
+use App\Http\Controllers\v1\GeneralLedger\NeracaSaldoController;
+use App\Http\Controllers\v1\GeneralLedger\LabaRugiController;
 use App\Models\KunciTransaksi;
 use Illuminate\Support\Facades\Route;
 
@@ -102,12 +104,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('buku-besar', [BukuBesarController::class, 'index']);
         Route::post('buku-besar', [BukuBesarController::class, 'index']);
         Route::post('buku-besar/export', [BukuBesarController::class, 'export']);
-        Route::get('neraca', 'NeracaController@index');
-        Route::get('neraca/print', 'NeracaController@print');
-        Route::get('laba-rugi', 'LabaRugiController@index');
-        Route::get('laba-rugi/print', 'LabaRugiController@print');
-        // Route::get('ekuitas', 'EkuitasController@index');
-        // Route::get('ekuitas/print', 'EkuitasController@print');
+        
+        Route::get('neraca-saldo', [NeracaSaldoController::class, 'index']);
+        Route::post('neraca-saldo', [NeracaSaldoController::class, 'index']);
+        Route::post('neraca-saldo/export', [NeracaSaldoController::class, 'export']);
+        
+        Route::get('laba-rugi', [LabaRugiController::class, 'index']);
+        Route::post('laba-rugi', [LabaRugiController::class, 'index']);
+        Route::post('laba-rugi/export', [LabaRugiController::class, 'export']);
+        
     });
 
     // User Activity
