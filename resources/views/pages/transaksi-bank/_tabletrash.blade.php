@@ -3,10 +3,11 @@
         <thead>
             <tr class="table-primary">
                 <th class="text-center">#</th>
-                <th>Kode Akun</th>
-                <th>Nama</th>
-                <th>Saldo Awal</th>
-                <th>Deleted By</th>
+                <th>Kode Kas</th>
+                <th>Tanggal</th>
+                <th>Kode Akun Kas</th>
+                <th>Tipe</th>
+                <th>Total</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -15,21 +16,21 @@
                 $page = Request::get('page');
                 $no = !$page || $page == 1 ? 1 : ($page - 1) * 10 + 1;
             @endphp
-            @foreach($kode_akun as $item)
+            @foreach ($transaksi_bank as $item)
                 <tr class="border-bottom-primary">
                     <td class="text-center text-muted">{{ $no }}</td>
-                    <td>{{ $item->kode_akun }}</td>
-                    <td>{{ $item->nama }}</td>
-                    <td>{{ number_format($item->saldo_awal, 2, ',', '.') }}</td>
-                    <td>{{ $item->name }}</td>
+                    <td>{{ $item->kode_transaksi_bank }}</td>
+                    <td>{{ date('d-m-Y', strtotime($item->tanggal)) }}</td>
+                    <td>{{ $item->akun_kode }}</td>
+                    <td>{{ $item->tipe }}</td>
+                    <td>Rp. {{number_format($item->total, 2, ',', '.') }}</td>
                     <td>
                         <div class="form-inline">
-                            <a href="{{ route('kodeAkun.restore', $item->kode_akun) }}" class="mr-2">
+                            <a href="{{ route('transaksiBank.restore', $item->kode_transaksi_bank) }}" class="mr-2">
                                 <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm"
                                     data-toggle="tooltip" title="Restore" data-placement="top"><i class="ti-reload"></i></button>
                             </a>
-                            {{-- <a href="{{ route('kode-induk.hapusPermanen',$item->kode_akun) }}"> --}}
-                            <form action="{{ route('kodeAkun.hapusPermanen', [$item->kode_akun]) }}" method="post" onsubmit="return confirm('Delete this data permanently ?')">
+                            <form action="{{ route('transaksiBank.hapusPermanen', [$item->kode_transaksi_bank]) }}" method="post" onsubmit="return confirm('Delete this data permanently ?')">
                                 @csrf
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" value="Delete" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Hapus Permanen"
@@ -38,7 +39,6 @@
                                 </button>
                                 {{-- </a> --}}
                             </form>
-
                         </div>
                     </td>
                 </tr>
@@ -49,6 +49,6 @@
         </tbody>
     </table>
     <div class="pull-right">
-        {{ $kode_akun->appends(Request::all())->links('vendor.pagination.custom') }}
+        {{ $transaksi_bank->appends(Request::all())->links('vendor.pagination.custom') }}
     </div>
 </div>

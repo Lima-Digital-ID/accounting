@@ -9,4 +9,6 @@ class MemorialDetail extends Model
 {
     use HasFactory;
     protected $table = 'memorial_detail';
+    protected $fillable = ['kode_memorial', 'keterangan', 'kode','lawan','subtotal'];
+
 }

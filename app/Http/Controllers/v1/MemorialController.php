@@ -145,18 +145,6 @@ class MemorialController extends Controller
                 $addJurnal->nominal = $_POST['subtotal'][$key];
                 $addJurnal->id_detail = $addDetailMemorial->id;
                 $addJurnal->save();
-            //     // tambah jurnal
-            //     $addJurnal = new Jurnal;
-            //     $addJurnal->tanggal = $request->tanggal;
-            //     $addJurnal->jenis_transaksi = 'Bank';
-            //     $addJurnal->kode_transaksi = $kodeBank;
-            //     $addJurnal->keterangan = $_POST['keterangan'][$key];
-            //     $addJurnal->kode = $request->kode_akun;
-            //     $addJurnal->lawan = $_POST['kode_lawan'][$key];
-            //     $addJurnal->tipe = $request->tipe == 'Masuk' ? 'Debit' : 'Kredit';
-            //     $addJurnal->nominal = $_POST['subtotal'][$key];
-            //     $addJurnal->id_detail = $addDetailBank->id;
-            //     $addJurnal->save();
             }
             DB::commit();
             return redirect()->route('memorial.index')->withStatus('Berhasil Menambahkan data');
@@ -190,7 +178,38 @@ class MemorialController extends Controller
      */
     public function edit($id)
     {
-        //
+        try {
+            $this->param['btnText'] = 'Lihat Memorial';
+            $this->param['btnLink'] = route('memorial.index');
+            $this->param['kodeAkun'] = KodeAkun::select('kode_akun.kode_akun','kode_akun.nama')->get();
+
+            $this->param['memorial'] = Memorial::find($id);
+            $this->param['detailMemorial'] = MemorialDetail::where('kode_memorial',$id)->get();
+
+            return view('pages.memorial.edit',$this->param);
+
+        } catch (QueryException $e) {
+            return redirect()->back()->withError('Terjadi kesalahan.' . $e->getMessage());
+        } catch (Exception $e) {
+            return redirect()->back()->withError('Terjadi kesalahan.'. $e->getMessage());
+        }
+    }
+
+    public function addEditDetailMemorial()
+    {
+        $fields = array(
+            'kode' => 'kode',
+            'lawan' => 'lawan',
+            'subtotal' => 'subtotal',
+            'keterangan' => 'keterangan',
+        );
+        $next = $_GET['biggestNo'] + 1;
+        $kodeAkun = KodeAkun::select('kode_akun.kode_akun', 'kode_akun.nama')
+                                ->join('kode_induk', 'kode_akun.induk_kode', 'kode_induk.kode_induk')
+                                ->where('kode_akun.nama', '!=', 'Kas')
+                                ->where('kode_akun.nama', '!=', 'Bank')
+                                ->get();
+        return view('pages.memorial.form-edit-detail-memorial', ['hapus' => true, 'no' => $next, 'kodeAkun' => $kodeAkun, 'fields' => $fields, 'idDetail' => '0']);
     }
 
     /**
@@ -202,18 +221,216 @@ class MemorialController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'tanggal' => 'required',
+            'tipe' => 'required|not_in:0',
+            'kode_akun.*' => 'required|not_in:0',
+            'kode_lawan.*' => 'required|not_in:0',
+            'subtotal.*' => 'required',
+            'keterangan.*' => 'required',
+        ],[
+            'required' => ':attribute harus terisi.',
+            'not_in' => ':attribute harus terisi',
+        ],[
+            'kode_akun.*' => 'kode akun',
+            'kode_lawan.*' => 'kode lawan',
+            'subtotal.*' => 'subtotal',
+            'keterangan.*' => 'keterangan'
+
+        ]);
+
+        try {
+            $memorial = Memorial::where('kode_memorial',$id)->get()[0];
+
+            $bulanMemorial = date('m-Y', strtotime($memorial->tanggal));
+            $editBulanMemorial = date('m-Y', strtotime($request->tanggal));
+
+            if ($bulanMemorial != $editBulanMemorial) {
+                return redirect()->back()->withStatus('Tidak dapat merubah bulan transaksi');
+            }
+
+            $newTotal = 0;
+            $tipe = $memorial->tipe;
+            foreach ($_POST['lawan'] as $key => $value) {
+
+                if ($_POST['id_detail'][$key] != 0) {
+                    $getDetail = MemorialDetail::select('kode','lawan', 'keterangan', 'subtotal')->where('id', $_POST['id_detail'][$key])->get()[0];
+                    if ($_POST['kode'][$key] != $getDetail['kode'] || $_POST['lawan'][$key] != $getDetail['lawan'] || $_POST['keterangan'][$key]  != $getDetail['keterangan'] || $_POST['subtotal'][$key] != $getDetail['subtotal']) {
+                        //update detail
+                        MemorialDetail::where('id', $_POST['id_detail'][$key])
+                        ->update([
+                            'kode' => $_POST['kode'][$key],
+                            'lawan' => $_POST['lawan'][$key],
+                            'subtotal' => $_POST['subtotal'][$key],
+                            'keterangan' => $_POST['keterangan'][$key],
+                        ]);
+
+                    // update jurnal
+                        Jurnal::where('id_detail', $_POST['id_detail'][$key])
+                        ->where('kode_transaksi', $id)
+                        ->update([
+                            'tanggal' => $_POST['tanggal'],
+                            'keterangan' => $_POST['keterangan'][$key],
+                            'kode' => $_POST['kode'][$key],
+                            'lawan' => $_POST['lawan'][$key],
+                            'nominal' => $_POST['subtotal'][$key],
+                        ]);
+
+                    }
+                    else{ //hanya mengupdate jurnal
+                        // update jurnal
+                        Jurnal::where('id_detail', $_POST['id_detail'][$key])
+                        ->where('kode_transaksi', $id)
+                        ->update([
+                            'tanggal' => $_POST['tanggal'],
+                        ]);
+                    }
+                }else{
+                    //insert to detail
+                    $newDetail = MemorialDetail::create([
+                        'kode_memorial' => $_POST['kode_memorial'],
+                        'keterangan' => str_replace(' ', '-', strtoupper($_POST['keterangan'][$key])),
+                        'kode' => $_POST['kode'][$key],
+                        'lawan' => $_POST['lawan'][$key],
+                        'subtotal' => $_POST['subtotal'][$key],
+                    ]);
+
+                    // update kartu stock
+                    Jurnal::insert([
+                        'tanggal' => $_POST['tanggal'],
+                        'jenis_transaksi' => 'Memorial',
+                        'kode_transaksi' => $_POST['kode_memorial'],
+                        'keterangan' => str_replace(' ', '-', strtoupper($_POST['keterangan'][$key])),
+                        'kode' => $_POST['kode'][$key],
+                        'lawan' => $_POST['lawan'][$key],
+                        'tipe' => $tipe == 'Masuk' ? 'Debet' : 'Kredit',
+                        'nominal' => $_POST['subtotal'][$key],
+                        'id_detail' => $newDetail->id
+                    ]);
+                }
+                $newTotal = $newTotal + $_POST['subtotal'][$key];
+
+            }
+
+            if (isset($_POST['id_delete'])) {
+                foreach ($_POST['id_delete'] as $key => $value) {
+
+                    //delete detail
+                    MemorialDetail::where('id', $value)->delete();
+
+                    //delete kartu stock
+                    Jurnal::where('id_detail', $value)->where('kode_transaksi', $id)->delete();
+                }
+            }
+            //update memorial
+            Memorial::where('kode_memorial', $id)
+            ->update([
+                'tanggal' => $_POST['tanggal'],
+                'tipe' => $_POST['tipe'],
+                'total' => $newTotal,
+            ]);
+            $addUserActivity = new UserActivity;
+            $addUserActivity->id_user = Auth::user()->id;
+            $addUserActivity->jenis_transaksi = 'Memorial';
+            $addUserActivity->tipe = 'Update';
+            $addUserActivity->keterangan = 'Berhasil mengganti/menambahkan data baru Memorial Kas dengan kode '.$id.' dengan total '.$newTotal.'.';
+            $addUserActivity->save();
+            return redirect()->route('memorial.index')->withStatus('Data berhasil diperbarui.');
+        } catch (QueryException $e) {
+            return $e;
+            return redirect()->back()->withError('Terjadi kesalahan.' . $e->getMessage());
+        } catch (Exception $e) {
+            return $e;
+            return redirect()->back()->withError('Terjadi kesalahan.'. $e->getMessage());
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    // softdelete transaksi bank
+    public function hapusPermanen($id)
+    {
+        try {
+            $deleteMemorial = Memorial::onlyTrashed()->find($id);
+            MemorialDetail::where('kode_memorial',$id)->delete();
+            Jurnal::where('kode_transaksi',$id)->delete();
+            // User Activity
+            $addUserActivity = new UserActivity;
+            $addUserActivity->id_user = Auth::user()->id;
+            $addUserActivity->jenis_transaksi = 'Memorial';
+            $addUserActivity->tipe = 'Delete';
+            $addUserActivity->keterangan = 'Menghapus Transaksi Memorial dengan kode '.$id.' dengan total '.$deleteMemorial->total.'.';
+            $addUserActivity->save();
+
+            $deleteMemorial->forceDelete();
+            return redirect()->route('transaksiMemorial.trash')->withStatus('Data berhasil dihapus permanen.');
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            return $e;
+            return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
+        }
+        catch (Exception $e) {
+            return $e;
+            return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
+        }
+    }
+
+    public function trashTransaksiMemorial(Request $request)
+    {
+        $this->param['btnText'] = 'Tambah Data';
+        $this->param['btnLink'] = route('memorial.create');
+        try {
+            $keyword = $request->get('keyword');
+            $getMemorial = Memorial::orderBy('tanggal', 'DESC')->orderBy('created_at', 'DESC')->onlyTrashed();
+
+            if ($keyword) {
+                $getMemorial->where('kode_memorial', 'LIKE', "%{$keyword}%")->orWhere('tipe', 'LIKE', "%{$keyword}%")->orWhere('akun_kode', 'LIKE', "%{$keyword}%");
+            }
+
+            $this->param['memorial'] = $getMemorial->paginate(10);
+            return view('pages.memorial.listTrash', $this->param);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
+        } catch (Exception $e) {
+            return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
+        }
+    }
+
+    public function restoretransaksiMemorial($id)
+    {
+        try {
+            $transaksiMemorial = Memorial::withTrashed()->findOrFail($id);
+            if ($transaksiMemorial->trashed()) {
+                $transaksiMemorial->restore();
+                return redirect()->route('transaksiMemorial.trash')->withStatus('Data berhasil di kembalikan.');
+            }
+            else
+            {
+                return redirect()->route('transaksiMemorial.trash')->withError('Data tidak ada dalam sampah.');
+            }
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
+        }
+        catch (Exception $e) {
+            return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
+        }
+    }
+
     public function destroy($id)
     {
-        //
+        try {
+            $trashMemorial = Memorial::findOrFail($id);
+            // return $trashUser;
+            // if ($trashMemorial->deleted_by = auth()->user()->id) {
+            //     $trashMemorial->update();
+            // }
+            $trashMemorial->delete();
+            return redirect()->route('memorial.index')->withStatus('Berhasil memindahkan ke sampah');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withError('Terjadi kesalahan.');
+        } catch (\Illuminate\Database\QueryException $e) {
+            return redirect()->back()->withError('Terjadi kesalahan.');
+        }
     }
 
     public function DetailMemorial()

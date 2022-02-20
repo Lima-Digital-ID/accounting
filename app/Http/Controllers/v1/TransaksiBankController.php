@@ -13,6 +13,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Traits\SequenceTrait;
+use App\Models\TransaksiKasDetail;
 use App\Models\UserActivity;
 use Illuminate\Support\Facades\Auth;
 
@@ -185,7 +186,28 @@ class TransaksiBankController extends Controller
      */
     public function edit($id)
     {
-        //
+        try {
+            $this->param['btnText'] = 'Lihat Transaksi Bank';
+            $this->param['btnLink'] = route('kas-transaksi.index');
+            $this->param['kodeAkun'] = KodeAkun::select('kode_akun.kode_akun', 'kode_akun.nama')
+                                                ->join('kode_induk', 'kode_akun.induk_kode', 'kode_induk.kode_induk')
+                                                ->where('kode_akun.nama', 'LIKE', 'Bank%')
+                                                ->get();
+            $this->param['kode_lawan'] = KodeAkun::select('kode_akun.kode_akun', 'kode_akun.nama')
+                                                ->join('kode_induk', 'kode_akun.induk_kode', 'kode_induk.kode_induk')
+                                                ->where('kode_akun.nama', '!=', 'Kas')
+                                                ->where('kode_akun.nama', '!=', 'Bank')
+                                                ->get();
+            $this->param['transaksi_bank'] = TransaksiBank::find($id);
+            $this->param['transaksi_bank_detail'] = TransaksiBankDetail::where('kode_transaksi_bank',$id)->get();
+
+            return view('pages.transaksi-bank.edit',$this->param);
+
+        } catch (QueryException $e) {
+            return redirect()->back()->withError('Terjadi kesalahan.' . $e->getMessage());
+        } catch (Exception $e) {
+            return redirect()->back()->withError('Terjadi kesalahan.'. $e->getMessage());
+        }
     }
 
     /**
@@ -197,18 +219,229 @@ class TransaksiBankController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'tanggal' => 'required',
+            'tipe' => 'required|not_in:0',
+            'kode_akun' => 'required|not_in:0',
+            'kode_lawan.*' => 'required|not_in:0',
+            'subtotal.*' => 'required|numeric',
+            'keterangan.*' => 'required',
+        ],[
+            'required' => ':attribute harus terisi.',
+            'not_in' => ':attribute harus terisi',
+        ],[
+            'kode_akun' => 'kode akun',
+            'kode_lawan.*' => 'kode lawan',
+            'subtotal.*' => 'subtotal',
+            'keterangan.*' => 'keterangan'
+
+        ]);
+
+        DB::beginTransaction();
+        try {
+
+            $transaksi_bank = TransaksiBank::where('kode_transaksi_bank',$id)->get()[0];
+            $bulan_transaksi_bank = date('m-Y',strtotime($transaksi_bank->tanggal));
+            $edit_bulan_transasik_bank = date('m-Y',strtotime($request->tanggal));
+
+            if ($bulan_transaksi_bank != $edit_bulan_transasik_bank) {
+                return redirect()->back()->withStatus('tidak dapat mengganti bulan transaksi');
+            }
+            $tipe = $transaksi_bank->tipe;
+
+            $newTotal = 0;
+
+            foreach ($_POST['kode_lawan'] as $key => $value) {
+                // cek tambah detail baru
+                if ($_POST['id_detail'][$key] != 0) {
+                    $get_detail_transaksi_bank = TransaksiBankDetail::select('kode_lawan','keterangan','subtotal')
+                                                                    ->where('id',$_POST['id_detail'][$key])->get()[0];
+                    // cek terdapat perubahan pada detail
+                    if ($_POST['kode_lawan'][$key] != $get_detail_transaksi_bank['kode_lawan'] || $_POST['keterangan'][$key] != $get_detail_transaksi_bank['keterangan'] || $_POST['subtotal'][$key] != $get_detail_transaksi_bank['subtotal']) {
+                        // update detail transaksi bank
+                        TransaksiBankDetail::where('id', $_POST['id_detail'][$key])
+                        ->update([
+                            'kode_lawan' => $_POST['kode_lawan'][$key],
+                            'subtotal' => $_POST['subtotal'][$key],
+                            'keterangan' => $_POST['keterangan'][$key],
+                        ]);
+
+                        // return 'aman';
+
+                        // update jurnal
+                        Jurnal::where('id_detail', $_POST['id_detail'][$key])
+                        ->where('kode_transaksi', $id)
+                        ->update([
+                            'tanggal' => $_POST['tanggal'],
+                            'keterangan' => $_POST['keterangan'][$key],
+                            'kode' => $request->kode_akun,
+                            'lawan' => $_POST['kode_lawan'][$key],
+                            'nominal' => $_POST['subtotal'][$key],
+                        ]);
+
+                    }else{
+
+                        // update jurnal
+                        Jurnal::where('id_detail', $_POST['id_detail'][$key])
+                        ->where('kode_transaksi', $id)
+                        ->update([
+                            'tanggal' => $_POST['tanggal'],
+                            'kode' => $request->kode_akun,
+                        ]);
+                    }
+                }else{
+                    //insert to detail
+                    $newDetailTransaksiBank = TransaksiBankDetail::create([
+                        'kode_transaksi_bank' => $_POST['kode_transaksi_bank'],
+                        'keterangan' => $_POST['keterangan'][$key],
+                        'kode_lawan' => $_POST['kode_lawan'][$key],
+                        'subtotal' => $_POST['subtotal'][$key],
+                    ]);
+                    // return $_POST['kode_lawan'];
+
+                        Jurnal::insert([
+                            'tanggal' => $_POST['tanggal'],
+                            'jenis_transaksi' => 'Bank',
+                            'kode_transaksi' => $_POST['kode_transaksi_bank'],
+                            'keterangan' => $_POST['keterangan'][$key],
+                            'kode' => $_POST['kode_akun'],
+                            'lawan' => $_POST['kode_lawan'][$key],
+                            'tipe' => $tipe == 'Masuk' ? 'Debit' : 'Kredit',
+                            'nominal' => $_POST['subtotal'][$key],
+                            'id_detail' => $newDetailTransaksiBank->id
+                        ]);
+                }
+                $newTotal = $newTotal + $_POST['subtotal'][$key];
+            }
+
+            if (isset($_POST['id_delete'])) {
+                foreach ($_POST['id_delete'] as $key => $value) {
+
+                    //delete detail
+                    TransaksiBankDetail::where('id', $value)->delete();
+
+                    //delete jurnal
+                    Jurnal::where('id_detail', $value)->where('kode_transaksi', $id)->delete();
+                }
+            }
+
+            TransaksiBank::where('kode_transaksi_bank', $id)
+            ->update([
+                'tanggal' => $_POST['tanggal'],
+                'akun_kode' => $_POST['kode_akun'],
+                'tipe' => $_POST['tipe'],
+                'total' => $newTotal,
+            ]);
+
+            // User Activity
+            $addUserActivity = new UserActivity;
+            $addUserActivity->id_user = Auth::user()->id;
+            $addUserActivity->jenis_transaksi = 'Bank';
+            $addUserActivity->tipe = 'Update';
+            $addUserActivity->keterangan = 'Berhasil mengganti/menambahkan data baru Transaksi Bank dengan kode '.$_POST['kode_transaksi_bank'].' dengan total '.$newTotal.'.';
+            $addUserActivity->save();
+
+            DB::commit();
+            return redirect()->route('bank-transaksi.index')->withStatus('Berhasil mengganti data.');
+        } catch (QueryException $e) {
+            return $e;
+            DB::rollBack();
+            return redirect()->back()->withError('Terjadi kesalahan.' . $e->getMessage());
+        } catch (Exception $e) {
+            return $e;
+            DB::rollBack();
+            return redirect()->back()->withError('Terjadi kesalahan.'. $e->getMessage());
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    // softdelete transaksi bank
+    public function hapusPermanen($id)
+    {
+        try {
+            $deleteTransaksiBank = TransaksiBank::onlyTrashed()->find($id);
+            TransaksiBankDetail::where('kode_transaksi_bank',$id)->delete();
+            Jurnal::where('kode_transaksi',$id)->delete();
+            // User Activity
+            $addUserActivity = new UserActivity;
+            $addUserActivity->id_user = Auth::user()->id;
+            $addUserActivity->jenis_transaksi = 'Bank';
+            $addUserActivity->tipe = 'Delete';
+            $addUserActivity->keterangan = 'Menghapus Transaksi Bank dengan kode '.$id.' dengan total '.$deleteTransaksiBank->total.'.';
+            $addUserActivity->save();
+
+            $deleteTransaksiBank->forceDelete();
+            return redirect()->route('transaksiBank.trash')->withStatus('Data berhasil dihapus permanen.');
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            return $e;
+            return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
+        }
+        catch (Exception $e) {
+            return $e;
+            return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
+        }
+    }
+
+    public function restoretransaksiBank($id)
+    {
+        try {
+            $transaksiBank = TransaksiBank::withTrashed()->findOrFail($id);
+            if ($transaksiBank->trashed()) {
+                $transaksiBank->deleted_by = null;
+                $transaksiBank->restore();
+                return redirect()->route('transaksiBank.trash')->withStatus('Data berhasil di kembalikan.');
+            }
+            else
+            {
+                return redirect()->route('transaksiBank.trash')->withError('Data tidak ada dalam sampah.');
+            }
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
+        }
+        catch (Exception $e) {
+            return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
+        }
+    }
+
+    public function trashTransaksiBank(Request $request)
+    {
+        $this->param['btnText'] = 'Tambah Data';
+        $this->param['btnLink'] = route('bank-transaksi.create');
+        try {
+            $keyword = $request->get('keyword');
+            $getTransaksiBank = TransaksiBank::orderBy('tanggal', 'DESC')->orderBy('created_at', 'DESC')->onlyTrashed();
+
+            if ($keyword) {
+                $getTransaksiBank->where('kode_transaksi_bank', 'LIKE', "%{$keyword}%")->orWhere('tipe', 'LIKE', "%{$keyword}%")->orWhere('akun_kode', 'LIKE', "%{$keyword}%");
+            }
+
+            $this->param['transaksi_bank'] = $getTransaksiBank->paginate(10);
+            return view('pages.transaksi-bank.listTrash', $this->param);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
+        } catch (Exception $e) {
+            return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
+        }
+    }
     public function destroy($id)
     {
-        //
+        try {
+            $trashTransaksiBank = TransaksiBank::findOrFail($id);
+            // return $trashUser;
+            if ($trashTransaksiBank->deleted_by = auth()->user()->id) {
+                $trashTransaksiBank->update();
+            }
+            $trashTransaksiBank->delete();
+            return redirect()->route('bank-transaksi.index')->withStatus('Berhasil memindahkan ke sampah');
+
+        } catch (\Exception $e) {
+            return $e;
+            return redirect()->back()->withError('Terjadi kesalahan.');
+        } catch (\Illuminate\Database\QueryException $e) {
+            return $e;
+            return redirect()->back()->withError('Terjadi kesalahan.');
+        }
     }
     // detail transaksi bank
     public function DetailbankTransaksi()
@@ -315,5 +548,23 @@ class TransaksiBankController extends Controller
         }catch(\Illuminate\Database\QueryException $e){
             return redirect()->back()->withStatus('Terjadi kesalahan pada database : ' . $e->getMessage());
         }
+    }
+
+    // edit kas transaksi
+    public function addEditDetailBankTransaksi()
+    {
+        $fields = array(
+            'kode_lawan' => 'kode_lawan',
+            'subtotal' => 'subtotal',
+            'keterangan' => 'keterangan',
+        );
+        $next = $_GET['biggestNo'] + 1;
+
+        $kode_lawan = KodeAkun::select('kode_akun.kode_akun', 'kode_akun.nama')
+                                ->join('kode_induk', 'kode_akun.induk_kode', 'kode_induk.kode_induk')
+                                ->where('kode_akun.nama', '!=', 'Kas')
+                                ->where('kode_akun.nama', '!=', 'Bank')
+                                ->get();
+        return view('pages.transaksi-bank.form-edit-detail-transaksi-bank', ['hapus' => true, 'no' => $next, 'kode_lawan' => $kode_lawan, 'fields' => $fields, 'idDetail' => '0']);
     }
 }

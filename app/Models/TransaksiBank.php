@@ -19,4 +19,8 @@ class TransaksiBank extends Model
         return $this->belongsTo(KodeAkun::class,'akun_kode');
 
     }
+    public function detailKas()
+    {
+        return $this->hasMany('App\Models\TransaksiBankDetail');
+    }
 }

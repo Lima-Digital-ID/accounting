@@ -377,6 +377,7 @@ class TransaksiKasController extends Controller
             return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
         }
     }
+
     public function restoretransaksiKas($id)
     {
         try {
@@ -398,6 +399,7 @@ class TransaksiKasController extends Controller
             return back()->withError('Terjadi Kesalahan : ' . $e->getMessage());
         }
     }
+
     public function trashTransaksiKas(Request $request)
     {
         $this->param['btnText'] = 'Tambah Data';

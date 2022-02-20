@@ -19,11 +19,11 @@
             @include('components.button-list', ['btnText' => $btnText, 'btnLink' => $btnLink])
             <div class="card">
                 <div class="card-header">
-                    <h5>Edit Kode Akun</h5>
+                    <h5>Edit Transaksi Bank</h5>
                 </div>
                 <div class="card-block">
                     {{-- <h4 class="sub-title">Basic Inputs</h4> --}}
-                    @include('pages.kode-akun._form-edit')
+                    @include('pages.transaksi-bank._form-edit')
                 </div>
             </div>
         </div>
