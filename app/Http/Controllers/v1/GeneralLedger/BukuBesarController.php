@@ -31,6 +31,11 @@ class BukuBesarController extends Controller
             // $kodeRekeningSampai = $request->get('kodeRekeningSampai');
             $tanggalDari = $request->get('tanggalDari');
             $tanggalSampai = $request->get('tanggalSampai');
+
+            if ($tanggalDari > $tanggalSampai) {
+                return back()->withError('Tanggal tidak valid.');
+            }
+
             $isAll = false;
             if (!is_null($kodeAkun) && !is_null($tanggalDari) && !is_null($tanggalSampai) ) {
 
@@ -47,7 +52,7 @@ class BukuBesarController extends Controller
             // return $kodeAkun;
             // return implode(',', $kodeAkun);
         } catch (\Illuminate\Database\QueryException $e) {
-            return back()->withStatus($e->getMessage());
+            return back()->withError($e->getMessage());
         }
 
         return \view('pages.general-ledger.buku-besar.index', $this->param);

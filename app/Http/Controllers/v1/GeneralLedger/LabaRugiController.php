@@ -76,7 +76,9 @@ class LabaRugiController extends Controller
 
             $month = $request->get('month');
             $year = $request->get('year');
-
+            if ($month > date('m') && $year >= date('Y')) {
+                return back()->withError('Periode tidak valid.');
+            }
             if (!is_null($month) && !is_null($year)) {
 
                 $this->param['rekeningPenjualan'] = KodeAkun::with('kodeInduk')->where('kode_akun', 'LIKE', '4%')->orderBy('kode_akun', 'ASC')->get();

@@ -30,6 +30,11 @@ class NeracaSaldoController extends Controller
             // $kodeRekeningSampai = $request->get('kodeRekeningSampai');
             $tanggalDari = $request->get('tanggalDari');
             $tanggalSampai = $request->get('tanggalSampai');
+
+            if ($tanggalDari > $tanggalSampai) {
+                return back()->withError('Tanggal tidak valid.');
+            }
+            
             $isAll = false;
             if (!is_null($kodeAkun) && !is_null($tanggalDari) && !is_null($tanggalSampai) ) {
 

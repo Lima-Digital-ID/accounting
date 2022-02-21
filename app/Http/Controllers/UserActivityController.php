@@ -24,6 +24,11 @@ class UserActivityController extends Controller
             $start = $request->start;
             $end = $request->end;
             $idUser = $request->id_user;
+
+            if ($start > $end) {
+                return back()->withError('Tanggal tidak valid.');
+            }
+
             $getUserActivity = UserActivity::select('user_activity.id','user_activity.id_user','user_activity.jenis_transaksi','user_activity.tipe','user_activity.keterangan','user_activity.created_at','user_activity.updated_at','users.id','users.name')
                                             ->join('users','users.id','user_activity.id_user')
                                             ->orderBy('user_activity.id', 'DESC');
