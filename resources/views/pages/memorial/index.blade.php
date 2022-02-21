@@ -13,6 +13,14 @@
 @section('content')
     @include('components.notification')
     @include('components.button-add', ['btnText' => $btnText, 'btnLink' => $btnLink])
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link {{ Request::segment(2) == 'memorial' ? 'active' : '' }}" href="{{ url('/memorial/memorial') }}">List Memorial</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ Request::segment(3) == 'trash' ? 'active' : '' }}" href="{{ url('/memorial/memorial/trash') }}">List Sampah</a>
+        </li>
+    </ul>
     <div class="card">
         <div class="card-header">
 

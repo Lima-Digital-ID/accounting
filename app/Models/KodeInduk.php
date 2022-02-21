@@ -15,7 +15,6 @@ class KodeInduk extends Model
     protected $fillable = [
         'kode_induk',
         'nama',
-        'tipe',
         'deleted_at',
         'deleted_by',
     ];

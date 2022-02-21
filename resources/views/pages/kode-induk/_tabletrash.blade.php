@@ -5,7 +5,6 @@
                 <th class="text-center">#</th>
                 <th>Kode Induk</th>
                 <th>Nama</th>
-                <th>Tipe</th>
                 <th>Deleted By</th>
                 <th>Aksi</th>
             </tr>
@@ -20,7 +19,6 @@
                     <td class="text-center text-muted">{{ $no }}</td>
                     <td>{{ $item->kode_induk }}</td>
                     <td>{{ $item->nama }}</td>
-                    <td>{{ $item->tipe }}</td>
                     <td>{{ $item->name }}</td>
                     <td>
                         <div class="form-inline">

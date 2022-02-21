@@ -3,7 +3,7 @@
         <thead>
             <tr class="table-primary">
                 <th class="text-center">#</th>
-                <th>Kode Kas</th>
+                <th>Kode Memorial</th>
                 <th>Tanggal</th>
                 <th>Tipe</th>
                 <th>Total</th>

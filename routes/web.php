@@ -85,6 +85,11 @@ Route::middleware(['auth'])->group(function () {
     // Bank Transaksi
     Route::prefix('bank')->group(function () {
         Route::get('/bank-transaksi/addDetailbankTransaksi',[TransaksiBankController::class,'DetailbankTransaksi']);
+        Route::get('/bank-transaksi/addEditDetailBankTransaksi',[TransaksiBankController::class,'addEditDetailBankTransaksi']);
+        // Kode Transaksi Bank
+        Route::get('/bank-transaksi/trash',[TransaksiBankController::class,'trashTransaksiBank'])->name('transaksiBank.trash');
+        Route::get('/bank-transaksi/restore/{id}',[TransaksiBankController::class,'restoretransaksiBank'])->name('transaksiBank.restore');
+        Route::delete('/bank-transaksi/{id}/hapus',[TransaksiBankController::class,'hapusPermanen'])->name('transaksiBank.hapusPermanen');
         Route::resource('/bank-transaksi',TransaksiBankController::class);
         Route::prefix('laporan-bank')->group(function () {
             Route::get('/',[TransaksiBankController::class,'reportBank']);
@@ -96,6 +101,11 @@ Route::middleware(['auth'])->group(function () {
     // Memorial
     Route::prefix('memorial')->group(function () {
         Route::get('/memorial/addDetailMemorial',[MemorialController::class,'DetailMemorial']);
+        Route::get('/memorial/addEditDetailMemorial',[MemorialController::class,'addEditDetailMemorial']);
+        // Kode Memorial
+        Route::get('/memorial/trash',[MemorialController::class,'trashTransaksiMemorial'])->name('transaksiMemorial.trash');
+        Route::get('/memorial/restore/{id}',[MemorialController::class,'restoretransaksiMemorial'])->name('transaksiMemorial.restore');
+        Route::delete('/memorial/{id}/hapus',[MemorialController::class,'hapusPermanen'])->name('transaksiMemorial.hapusPermanen');
         Route::resource('/memorial', MemorialController::class);
         Route::prefix('laporan-memorial')->group(function () {
             Route::get('/',[MemorialController::class,'reportMemorial']);
@@ -109,15 +119,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('buku-besar', [BukuBesarController::class, 'index']);
         Route::post('buku-besar', [BukuBesarController::class, 'index']);
         Route::post('buku-besar/export', [BukuBesarController::class, 'export']);
-        
+
         Route::get('neraca-saldo', [NeracaSaldoController::class, 'index']);
         Route::post('neraca-saldo', [NeracaSaldoController::class, 'index']);
         Route::post('neraca-saldo/export', [NeracaSaldoController::class, 'export']);
-        
+
         Route::get('laba-rugi', [LabaRugiController::class, 'index']);
         Route::post('laba-rugi', [LabaRugiController::class, 'index']);
         Route::post('laba-rugi/export', [LabaRugiController::class, 'export']);
-        
+
     });
 
     // User Activity

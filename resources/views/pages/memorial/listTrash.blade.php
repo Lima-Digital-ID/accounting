@@ -18,10 +18,10 @@
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link {{ request()->routeIs('kode-akun.index') ? 'active' : '' }}" href="{{ url('/master-akuntasi/kode-akun') }}">List Kode Rekening</a>
+          <a class="nav-link {{ request()->routeIs('memorial.index') ? 'active' : '' }}" href="{{ url('/memorial/memorial') }}">List Kode Rekening</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ Request::segment(3) == 'trash' ? 'active' : '' }}" href="{{ url('/master-akuntasi/kode-akun/trash') }}">List Sampah</a>
+            <a class="nav-link {{ Request::segment(3) == 'trash' ? 'active' : '' }}" href="{{ url('/memorial/memorial/trash') }}">List Sampah</a>
         </li>
     </ul>
     <div class="card">
@@ -33,7 +33,7 @@
 
         </div>
         <div class="card-block table-border-style">
-            @include('pages.kode-akun._tabletrash')
+            @include('pages.memorial._tabletrash')
         </div>
     </div>
 @endsection
