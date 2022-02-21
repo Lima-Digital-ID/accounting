@@ -29,7 +29,7 @@ class KodeIndukController extends Controller
             $getKodeInduk = KodeInduk::orderBy('kode_induk', 'ASC');
 
             if ($keyword) {
-                $getKodeInduk->where('nama', 'LIKE', "%{$keyword}%")->orWhere('kode_induk', 'LIKE', "%{$keyword}%")->orWhere('tipe', 'LIKE', "%{$keyword}%");
+                $getKodeInduk->where('nama', 'LIKE', "%{$keyword}%")->orWhere('kode_induk', 'LIKE', "%{$keyword}%");
             }
 
             $this->param['kode_induk'] = $getKodeInduk->paginate(10);
@@ -66,7 +66,6 @@ class KodeIndukController extends Controller
         $request->validate([
             'kode_induk' => 'required|unique:kode_induk',
             'nama' => 'required',
-            'tipe' => 'required|not_in:0',
         ],[
             'required' => ':attribute harus terisi.',
             'not_in' => ':attribute harus terisi.'
@@ -78,7 +77,6 @@ class KodeIndukController extends Controller
             $addData = new KodeInduk;
             $addData->kode_induk = $request->kode_induk;
             $addData->nama = $request->nama;
-            $addData->tipe = $request->tipe;
             $addData->save();
             return redirect()->route('kode-induk.index')->withStatus('Berhasil menambahkan data.');
         } catch (QueryException $e) {
@@ -134,7 +132,6 @@ class KodeIndukController extends Controller
         $request->validate([
             'kode_induk' => 'required'.$isUniqueKode,
             'nama' => 'required'.$isUniqueNama,
-            'tipe' => 'required',
         ],[
             'required' => ':attribute harus terisi.',
             'not_in' => ':attribute harus terisi.'
@@ -146,7 +143,6 @@ class KodeIndukController extends Controller
             $updateData = KodeInduk::find($id);
             $updateData->kode_induk = $request->kode_induk;
             $updateData->nama = $request->nama;
-            $updateData->tipe = $request->tipe;
             $updateData->save();
             return redirect()->route('kode-induk.index')->withStatus('Berhasil mengganti data.');
         } catch (QueryException $e) {
@@ -187,11 +183,11 @@ class KodeIndukController extends Controller
         $this->param['btnLink'] = route('kode-induk.create');
         try {
             $keyword = $request->get('keyword');
-            $getKodeInduk = KodeInduk::select('kode_induk.kode_induk as kode_induk','kode_induk.nama','kode_induk.tipe','kode_induk.deleted_by','users.id','users.name')
+            $getKodeInduk = KodeInduk::select('kode_induk.kode_induk as kode_induk','kode_induk.nama','kode_induk.deleted_by','users.id','users.name')
                                         ->join('users','kode_induk.deleted_by','users.id')->onlyTrashed();
 
             if ($keyword) {
-                $getKodeInduk->where('nama', 'LIKE', "%{$keyword}%")->orWhere('kode_induk', 'LIKE', "%{$keyword}%")->orWhere('tipe', 'LIKE', "%{$keyword}%");
+                $getKodeInduk->where('nama', 'LIKE', "%{$keyword}%")->orWhere('kode_induk', 'LIKE', "%{$keyword}%");
             }
 
             $this->param['kode_induk'] = $getKodeInduk->paginate(10);

@@ -5,7 +5,6 @@
                 <th class="text-center">#</th>
                 <th>Kode Induk</th>
                 <th>Nama</th>
-                <th>Tipe</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -19,7 +18,6 @@
                     <td class="text-center text-muted">{{ $no }}</td>
                     <td>{{ $item->kode_induk }}</td>
                     <td>{{ $item->nama }}</td>
-                    <td>{{ $item->tipe }}</td>
                     <td>
                         <div class="form-inline">
                             <a href="{{ route('kode-induk.edit', $item->kode_induk) }}" class="mr-2">

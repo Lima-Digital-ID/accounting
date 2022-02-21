@@ -37,7 +37,7 @@ class KodeAkunController extends Controller
             $getKodeAkun = KodeAkun::with('kodeInduk')->orderBy('kode_akun', 'ASC');
 
             if ($keyword) {
-                $getKodeAkun->where('nama', 'LIKE', "%{$keyword}%")->orWhere('kode_akun', 'LIKE', "%{$keyword}%");
+                $getKodeAkun->where('nama', 'LIKE', "%{$keyword}%")->orWhere('kode_akun', 'LIKE', "%{$keyword}%")->orWhere('tipe', 'LIKE', "%{$keyword}%");
             }
 
             $this->param['kode_akun'] = $getKodeAkun->paginate(10);
@@ -76,6 +76,7 @@ class KodeAkunController extends Controller
         $request->validate([
             'induk_kode' => 'required|not_in:0',
             'kode_akun' => 'required|unique:kode_akun',
+            'tipe' => 'required|not_in:0',
             'nama' => 'required',
         ],[
             'required' => ':attribute harus terisi.',
@@ -91,6 +92,7 @@ class KodeAkunController extends Controller
             $addData = new KodeAkun;
             $addData->kode_akun = $kode_akun;
             $addData->induk_kode = $request->induk_kode;
+            $addData->tipe = $request->tipe;
             $addData->nama = str_replace('-',' ',$request->nama);
             $addData->save();
             return redirect()->route('kode-akun.index')->withStatus('Berhasil menambahkan data.');
@@ -149,6 +151,7 @@ class KodeAkunController extends Controller
             'induk_kode' => 'required|not_in:0',
             'kode_akun' => 'required'.$isUniqueKodeAkun,
             'nama' => 'required'.$isUniqueNamaAkun,
+            'tipe' => 'required|not_in:0',
         ],[
             'unique' => ':attribute sudah tersedia.',
             'required' => ':attribute harus terisi.',
@@ -163,6 +166,7 @@ class KodeAkunController extends Controller
             $updateData = KodeAkun::findOrFail($id);
             $updateData->kode_akun = $kode_akun;
             $updateData->induk_kode = $request->induk_kode;
+            $updateData->tipe = $request->tipe;
             $updateData->nama = str_replace('-',' ',$request->nama);
             $updateData->save();
             return redirect()->route('kode-akun.index')->withStatus('Berhasil menambahkan data.');

@@ -6,6 +6,7 @@
                 <th>Kode Rekening</th>
                 <th>Nama</th>
                 <th>Kode Induk</th>
+                <th>Tipe</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -20,6 +21,7 @@
                     <td>{{ $item->kode_akun }}</td>
                     <td>{{ $item->nama }}</td>
                     <td>{{ $item->kodeInduk->kode_induk . ' - ' . $item->kodeInduk->nama }}</td>
+                    <td>{{ $item->tipe }}</td>
                     {{-- <td>Rp. {{number_format($item->saldo_awal, 2, ',', '.') }}</td> --}}
                     <td>
                         <div class="form-inline">
