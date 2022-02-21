@@ -224,16 +224,16 @@ class MemorialController extends Controller
         $request->validate([
             'tanggal' => 'required',
             'tipe' => 'required|not_in:0',
-            'kode_akun.*' => 'required|not_in:0',
-            'kode_lawan.*' => 'required|not_in:0',
+            'kode.*' => 'required|not_in:0',
+            'lawan.*' => 'required|not_in:0',
             'subtotal.*' => 'required',
             'keterangan.*' => 'required',
         ],[
             'required' => ':attribute harus terisi.',
             'not_in' => ':attribute harus terisi',
         ],[
-            'kode_akun.*' => 'kode akun',
-            'kode_lawan.*' => 'kode lawan',
+            'kode.*' => 'kode akun',
+            'lawan.*' => 'kode lawan',
             'subtotal.*' => 'subtotal',
             'keterangan.*' => 'keterangan'
 
@@ -382,7 +382,7 @@ class MemorialController extends Controller
             $getMemorial = Memorial::orderBy('tanggal', 'DESC')->orderBy('created_at', 'DESC')->onlyTrashed();
 
             if ($keyword) {
-                $getMemorial->where('kode_memorial', 'LIKE', "%{$keyword}%")->orWhere('tipe', 'LIKE', "%{$keyword}%")->orWhere('akun_kode', 'LIKE', "%{$keyword}%");
+                $getMemorial->where('kode_memorial', 'LIKE', "%{$keyword}%")->orWhere('tipe', 'LIKE', "%{$keyword}%");
             }
 
             $this->param['memorial'] = $getMemorial->paginate(10);
