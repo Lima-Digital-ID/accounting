@@ -125,7 +125,7 @@ class KodeAkunController extends Controller
         try {
             $this->param['btnText'] = 'Lihat Kode Akun';
             $this->param['btnLink'] = route('kode-akun.index');
-            $this->param['data'] = KodeAkun::find($id);
+            $this->param['data'] = KodeAkun::findOrFail($id);
             $this->param['data_induk'] = KodeInduk::all();
             return view('pages.kode-akun.edit',$this->param);
         } catch (QueryException $e) {
