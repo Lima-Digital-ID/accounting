@@ -38,6 +38,7 @@ Route::get('/', function () {
 // })->middleware(['auth'])->name('dashboard');
 Route::middleware(['auth'])->group(function () {
     // dashboard
+    // action([DashboardController::class, 'index']);
     Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
     // users trash
     Route::get('/user/trash',[UsersController::class,'trashUser'])->name('user.trash');

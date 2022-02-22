@@ -23,7 +23,7 @@
                 <div class="card-block">
                     <form  action="{{ route('user-activity.index') }}"  method="GET" class="mb-5" id="report_kas">
                         <div class="form-group row ">
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                                 <label class="col-form-label">Dari</label>
                                 <input class="form-control form-control-lg {{ $errors->has('start') ? ' is-invalid' : '' }}" type="date" name="start" value="{{ old('start', isset($_GET['start']) != null ? $_GET['start'] : date('Y-m-d')) }}" placeholder="Tanggal"/>
                                 @error('start')
@@ -32,7 +32,7 @@
                                     </div>
                                 @enderror
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                                 <label class="col-form-label">Sampai</label>
                                 <input class="form-control form-control-lg {{ $errors->has('end') ? ' is-invalid' : '' }}" type="date" name="end" value="{{ old('end', isset($_GET['end']) != null ? $_GET['end'] : date('Y-m-d')) }}" />
                                 @error('end')
@@ -50,8 +50,8 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-lg-1 mt-4" style="padding-top: 10px">
-                                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fa fa-search"></i> Cari</button>
+                            <div class="col-lg-2 col-md-12 mt-4" style="padding-top: 10px">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Cari</button>
                                 {{-- <div class="d-flex justify-content-end"> --}}
                                     {{-- <div class="mt-4" style="p"> --}}
 

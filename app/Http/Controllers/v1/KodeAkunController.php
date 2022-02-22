@@ -122,6 +122,7 @@ class KodeAkunController extends Controller
      */
     public function edit($id)
     {
+
         try {
             $this->param['btnText'] = 'Lihat Kode Akun';
             $this->param['btnLink'] = route('kode-akun.index');

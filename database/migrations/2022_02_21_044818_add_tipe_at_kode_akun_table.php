@@ -14,7 +14,7 @@ class AddTipeAtKodeAkunTable extends Migration
     public function up()
     {
         Schema::table('kode_akun', function (Blueprint $table) {
-            $table->enum('tipe',['Debit','Kredit']);
+            $table->enum('tipe',['Debit','Kredit'])->nullable();
         });
     }
     /**

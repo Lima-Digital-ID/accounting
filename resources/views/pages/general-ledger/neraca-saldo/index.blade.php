@@ -16,7 +16,7 @@
     <div class="card">
         <div class="card-header">
 
-            <h5>Buku Besar</h5>
+            <h5>Neraca Saldo</h5>
             {{-- <div class="col-md-4 pull-right">
                 @include('components.search')
             </div> --}}

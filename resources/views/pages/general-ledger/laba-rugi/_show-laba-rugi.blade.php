@@ -32,7 +32,7 @@
             @endphp
             <thead class="bg-primary">
                 <tr>
-                    <th colspan="2">Penjualan</th>
+                    <th colspan="2">Pendapatan</th>
                 </tr>
             </thead>
             {{-- penjualan --}}
@@ -47,7 +47,7 @@
                             ->where('tahun', $year)
                             ->where('kode', $item->kode_akun)
                             ->count();
-                        
+
                         if ($cekTransaksiDiKode > 0) {
                             $sumMutasiDebetDiKode = \DB::table('view_laba_rugi')
                                 ->where('kode', $item->kode_akun)
@@ -55,24 +55,24 @@
                                 ->where('tahun', $year)
                                 ->where('tipe', 'Debit')
                                 ->sum('view_laba_rugi.nominal');
-                        
+
                             $sumMutasiKreditDiKode = \DB::table('view_laba_rugi')
                                 ->where('kode', $item->kode_akun)
                                 ->where('bulan', $month)
                                 ->where('tahun', $year)
                                 ->where('tipe', 'Kredit')
                                 ->sum('view_laba_rugi.nominal');
-                        
+
                             $mutasiDebet += $sumMutasiDebetDiKode;
                             $mutasiKredit += $sumMutasiKreditDiKode;
-                        
+
                             // cek transaksi di field lawan
                             $cekTransaksiDiLawan = \DB::table('view_laba_rugi')
                                 ->where('bulan', $month)
                                 ->where('tahun', $year)
                                 ->where('lawan', $item->kode_akun)
                                 ->count();
-                        
+
                             if ($cekTransaksiDiLawan > 0) {
                                 $sumMutasiDebetDiLawan = \DB::table('view_laba_rugi')
                                     ->where('lawan', $item->kode_akun)
@@ -80,14 +80,14 @@
                                     ->where('tahun', $year)
                                     ->where('tipe', 'Kredit')
                                     ->sum('view_laba_rugi.nominal');
-                        
+
                                 $sumMutasiKreditDiLawan = \DB::table('view_laba_rugi')
                                     ->where('lawan', $item->kode_akun)
                                     ->where('bulan', $month)
                                     ->where('tahun', $year)
                                     ->where('tipe', 'Debit')
                                     ->sum('view_laba_rugi.nominal');
-                        
+
                                 $mutasiDebet += $sumMutasiDebetDiLawan;
                                 $mutasiKredit += $sumMutasiKreditDiLawan;
                             }
@@ -106,14 +106,14 @@
                                     ->where('tahun', $year)
                                     ->where('tipe', 'Kredit')
                                     ->sum('view_laba_rugi.nominal');
-                        
+
                                 $sumMutasiKreditDiLawan = \DB::table('view_laba_rugi')
                                     ->where('lawan', $item->kode_akun)
                                     ->where('bulan', $month)
                                     ->where('tahun', $year)
                                     ->where('tipe', 'Debit')
                                     ->sum('view_laba_rugi.nominal');
-                        
+
                                 $mutasiDebet += $sumMutasiDebetDiLawan;
                                 $mutasiKredit += $sumMutasiKreditDiLawan;
                             }
@@ -133,7 +133,7 @@
             </tbody>
             <thead class="bg-primary">
                 <tr>
-                    <th>Total Penjualan</th>
+                    <th>Total Pendapatan</th>
                     <th>{{ number_format($totalPenjualan, 2, ',', '.') }}</th>
                 </tr>
             </thead>
@@ -172,7 +172,7 @@
                             ->where('tahun', $year)
                             ->where('kode', $item->kode_akun)
                             ->count();
-                        
+
                         if ($cekTransaksiDiKode > 0) {
                             $sumMutasiDebetDiKode = \DB::table('view_laba_rugi')
                                 ->where('kode', $item->kode_akun)
@@ -180,24 +180,24 @@
                                 ->where('tahun', $year)
                                 ->where('tipe', 'Debit')
                                 ->sum('view_laba_rugi.nominal');
-                        
+
                             $sumMutasiKreditDiKode = \DB::table('view_laba_rugi')
                                 ->where('kode', $item->kode_akun)
                                 ->where('bulan', $month)
                                 ->where('tahun', $year)
                                 ->where('tipe', 'Kredit')
                                 ->sum('view_laba_rugi.nominal');
-                        
+
                             $mutasiDebet += $sumMutasiDebetDiKode;
                             $mutasiKredit += $sumMutasiKreditDiKode;
-                        
+
                             // cek transaksi di field lawan
                             $cekTransaksiDiLawan = \DB::table('view_laba_rugi')
                                 ->where('bulan', $month)
                                 ->where('tahun', $year)
                                 ->where('lawan', $item->kode_akun)
                                 ->count();
-                        
+
                             if ($cekTransaksiDiLawan > 0) {
                                 $sumMutasiDebetDiLawan = \DB::table('view_laba_rugi')
                                     ->where('lawan', $item->kode_akun)
@@ -205,14 +205,14 @@
                                     ->where('tahun', $year)
                                     ->where('tipe', 'Kredit')
                                     ->sum('view_laba_rugi.nominal');
-                        
+
                                 $sumMutasiKreditDiLawan = \DB::table('view_laba_rugi')
                                     ->where('lawan', $item->kode_akun)
                                     ->where('bulan', $month)
                                     ->where('tahun', $year)
                                     ->where('tipe', 'Debit')
                                     ->sum('view_laba_rugi.nominal');
-                        
+
                                 $mutasiDebet += $sumMutasiDebetDiLawan;
                                 $mutasiKredit += $sumMutasiKreditDiLawan;
                             }
@@ -231,14 +231,14 @@
                                     ->where('tahun', $year)
                                     ->where('tipe', 'Kredit')
                                     ->sum('view_laba_rugi.nominal');
-                        
+
                                 $sumMutasiKreditDiLawan = \DB::table('view_laba_rugi')
                                     ->where('lawan', $item->kode_akun)
                                     ->where('bulan', $month)
                                     ->where('tahun', $year)
                                     ->where('tipe', 'Debit')
                                     ->sum('view_laba_rugi.nominal');
-                        
+
                                 $mutasiDebet += $sumMutasiDebetDiLawan;
                                 $mutasiKredit += $sumMutasiKreditDiLawan;
                             }
@@ -295,7 +295,7 @@
                             ->where('tahun', $year)
                             ->where('kode', $item->kode_akun)
                             ->count();
-                        
+
                         if ($cekTransaksiDiKode > 0) {
                             $sumMutasiDebetDiKode = \DB::table('view_laba_rugi')
                                 ->where('kode', $item->kode_akun)
@@ -303,24 +303,24 @@
                                 ->where('tahun', $year)
                                 ->where('tipe', 'Debit')
                                 ->sum('view_laba_rugi.nominal');
-                        
+
                             $sumMutasiKreditDiKode = \DB::table('view_laba_rugi')
                                 ->where('kode', $item->kode_akun)
                                 ->where('bulan', $month)
                                 ->where('tahun', $year)
                                 ->where('tipe', 'Kredit')
                                 ->sum('view_laba_rugi.nominal');
-                        
+
                             $mutasiDebet += $sumMutasiDebetDiKode;
                             $mutasiKredit += $sumMutasiKreditDiKode;
-                        
+
                             // cek transaksi di field lawan
                             $cekTransaksiDiLawan = \DB::table('view_laba_rugi')
                                 ->where('bulan', $month)
                                 ->where('tahun', $year)
                                 ->where('lawan', $item->kode_akun)
                                 ->count();
-                        
+
                             if ($cekTransaksiDiLawan > 0) {
                                 $sumMutasiDebetDiLawan = \DB::table('view_laba_rugi')
                                     ->where('lawan', $item->kode_akun)
@@ -328,14 +328,14 @@
                                     ->where('tahun', $year)
                                     ->where('tipe', 'Kredit')
                                     ->sum('view_laba_rugi.nominal');
-                        
+
                                 $sumMutasiKreditDiLawan = \DB::table('view_laba_rugi')
                                     ->where('lawan', $item->kode_akun)
                                     ->where('bulan', $month)
                                     ->where('tahun', $year)
                                     ->where('tipe', 'Debit')
                                     ->sum('view_laba_rugi.nominal');
-                        
+
                                 $mutasiDebet += $sumMutasiDebetDiLawan;
                                 $mutasiKredit += $sumMutasiKreditDiLawan;
                             }
@@ -354,14 +354,14 @@
                                     ->where('tahun', $year)
                                     ->where('tipe', 'Kredit')
                                     ->sum('view_laba_rugi.nominal');
-                        
+
                                 $sumMutasiKreditDiLawan = \DB::table('view_laba_rugi')
                                     ->where('lawan', $item->kode_akun)
                                     ->where('bulan', $month)
                                     ->where('tahun', $year)
                                     ->where('tipe', 'Debit')
                                     ->sum('view_laba_rugi.nominal');
-                        
+
                                 $mutasiDebet += $sumMutasiDebetDiLawan;
                                 $mutasiKredit += $sumMutasiKreditDiLawan;
                             }
@@ -393,7 +393,7 @@
             {{-- laba rugi setelah pajak / bersih --}}
             @php
                 $labaRugiBersih = $labaRugiSebelumPajak - $totalPajak;
-                
+
                 // // cek is data available
                 // $isAvailable = \DB::table('support_ekuitas')
                 //     ->where('bulan', $month)
