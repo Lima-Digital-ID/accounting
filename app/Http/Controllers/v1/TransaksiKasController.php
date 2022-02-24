@@ -171,7 +171,28 @@ class TransaksiKasController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $this->param['btnText'] = 'Kembali';
+            $this->param['btnLink'] = route('kas-transaksi.index');
+            $this->param['kodeAkun'] = KodeAkun::select('kode_akun.kode_akun', 'kode_akun.nama')
+                                                ->join('kode_induk', 'kode_akun.induk_kode', 'kode_induk.kode_induk')
+                                                ->where('kode_akun.nama', 'LIKE', 'Kas%')
+                                                ->get();
+            $this->param['kode_lawan'] = KodeAkun::select('kode_akun.kode_akun', 'kode_akun.nama')
+                                                ->join('kode_induk', 'kode_akun.induk_kode', 'kode_induk.kode_induk')
+                                                ->where('kode_akun.nama', '!=', 'Kas')
+                                                ->where('kode_akun.nama', '!=', 'Bank')
+                                                ->get();
+            $this->param['transaksi_kas'] = TransaksiKas::find($id);
+            $this->param['transaksi_kas_detail'] = TransaksiKasDetail::where('kode_transaksi_kas',$id)->get();
+
+            return view('pages.transaksi-kas.show',$this->param);
+
+        } catch (QueryException $e) {
+            return redirect()->back()->withError('Terjadi kesalahan.' . $e->getMessage());
+        } catch (Exception $e) {
+            return redirect()->back()->withError('Terjadi kesalahan.'. $e->getMessage());
+        }
     }
 
     /**

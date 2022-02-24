@@ -8,7 +8,8 @@
                 <th>Kode Akun Bank</th>
                 <th>Tipe</th>
                 <th>Total</th>
-                {!! Auth::user()->level != 'Viewer' ? "<th>Aksi</th>" : '' !!}
+                <th>Aksi</th>
+                {{-- {!! Auth::user()->level != 'Viewer' ? "" : '' !!} --}}
             </tr>
         </thead>
         <tbody>
@@ -24,9 +25,14 @@
                     <td>{{ $item->akun_kode }}</td>
                     <td>{{ $item->tipe }}</td>
                     <td>Rp. {{number_format($item->total, 2, ',', '.') }}</td>
-                    @if (Auth::user()->level != 'Viewer')
-                        <td>
-                            <div class="form-inline">
+                    <td>
+                        <div class="form-inline">
+                                <a href="{{ route('bank-transaksi.show', $item->kode_transaksi_bank) }}" class="mr-2">
+                                    <button type="button" id="PopoverCustomT-1" class="btn btn-info btn-sm"
+                                    data-toggle="tooltip" title="Detail" data-placement="top"><span
+                                    class="feather icon-info"></span></button>
+                                </a>
+                            @if (Auth::user()->level != 'Viewer')
                                 <a href="{{ route('bank-transaksi.edit', $item->kode_transaksi_bank) }}" class="mr-2">
                                     <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm"
                                         data-toggle="tooltip" title="Edit" data-placement="top"><span
@@ -41,9 +47,9 @@
                                         <span class="feather icon-trash"></span>
                                     </button>
                                 </form>
+                            @endif
                             </div>
                         </td>
-                    @endif
                 </tr>
                 @php
                     $no++;

@@ -167,7 +167,21 @@ class MemorialController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $this->param['btnText'] = 'Lihat Memorial';
+            $this->param['btnLink'] = route('memorial.index');
+            $this->param['kodeAkun'] = KodeAkun::select('kode_akun.kode_akun','kode_akun.nama')->get();
+
+            $this->param['memorial'] = Memorial::find($id);
+            $this->param['detailMemorial'] = MemorialDetail::where('kode_memorial',$id)->get();
+
+            return view('pages.memorial.show',$this->param);
+
+        } catch (QueryException $e) {
+            return redirect()->back()->withError('Terjadi kesalahan.' . $e->getMessage());
+        } catch (Exception $e) {
+            return redirect()->back()->withError('Terjadi kesalahan.'. $e->getMessage());
+        }
     }
 
     /**

@@ -181,16 +181,19 @@
                     </ul>
                 </li>
             </ul>
-            <ul class="pcoded-item pcoded-left-item">
-                <li class="{{ Request::segment(1) == 'user-activity' ? 'active' : '' }}">
-                    <a href="{{ url('user-activity') }}" class="waves-effect waves-dark">
-                        <span class="pcoded-micon">
-                            <i class="fa fa-history"></i>
-                        </span>
-                        <span class="pcoded-mtext">User Activity</span>
-                    </a>
-                </li>
-            </ul>
+            @if (Auth::user()->level != 'Viewer')
+                {{-- user activity --}}
+                <ul class="pcoded-item pcoded-left-item">
+                    <li class="{{ Request::segment(1) == 'user-activity' ? 'active' : '' }}">
+                        <a href="{{ url('user-activity') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="fa fa-history"></i>
+                            </span>
+                            <span class="pcoded-mtext">User Activity</span>
+                        </a>
+                    </li>
+                </ul>
+            @endif
         </div>
     </div>
 </nav>

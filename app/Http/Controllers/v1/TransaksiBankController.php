@@ -175,7 +175,28 @@ class TransaksiBankController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $this->param['btnText'] = 'Kembaki';
+            $this->param['btnLink'] = route('bank-transaksi.index');
+            $this->param['kodeAkun'] = KodeAkun::select('kode_akun.kode_akun', 'kode_akun.nama')
+                                                ->join('kode_induk', 'kode_akun.induk_kode', 'kode_induk.kode_induk')
+                                                ->where('kode_akun.nama', 'LIKE', 'Bank%')
+                                                ->get();
+            $this->param['kode_lawan'] = KodeAkun::select('kode_akun.kode_akun', 'kode_akun.nama')
+                                                ->join('kode_induk', 'kode_akun.induk_kode', 'kode_induk.kode_induk')
+                                                ->where('kode_akun.nama', '!=', 'Kas')
+                                                ->where('kode_akun.nama', '!=', 'Bank')
+                                                ->get();
+            $this->param['transaksi_bank'] = TransaksiBank::find($id);
+            $this->param['transaksi_bank_detail'] = TransaksiBankDetail::where('kode_transaksi_bank',$id)->get();
+
+            return view('pages.transaksi-bank.show',$this->param);
+
+        } catch (QueryException $e) {
+            return redirect()->back()->withError('Terjadi kesalahan.' . $e->getMessage());
+        } catch (Exception $e) {
+            return redirect()->back()->withError('Terjadi kesalahan.'. $e->getMessage());
+        }
     }
 
     /**
@@ -188,7 +209,7 @@ class TransaksiBankController extends Controller
     {
         try {
             $this->param['btnText'] = 'Lihat Transaksi Bank';
-            $this->param['btnLink'] = route('kas-transaksi.index');
+            $this->param['btnLink'] = route('bank-transaksi.index');
             $this->param['kodeAkun'] = KodeAkun::select('kode_akun.kode_akun', 'kode_akun.nama')
                                                 ->join('kode_induk', 'kode_akun.induk_kode', 'kode_induk.kode_induk')
                                                 ->where('kode_akun.nama', 'LIKE', 'Bank%')
