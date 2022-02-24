@@ -2,64 +2,63 @@
     <div class="nav-list">
         <div class="pcoded-inner-navbar main-menu">
             {{-- master --}}
-
-            @if (Auth::user()->level != 'Viewer')
-                <div class="pcoded-navigation-label">Master</div>
-                <ul class="pcoded-item pcoded-left-item">
-                    <li class="{{ Request::segment(1) == 'dashboard' ? 'active' : '' }}">
-                        <a href="{{ url('dashboard') }}" class="waves-effect waves-dark">
+            <div class="pcoded-navigation-label">Master</div>
+            <ul class="pcoded-item pcoded-left-item">
+                <li class="{{ Request::segment(1) == 'dashboard' ? 'active' : '' }}">
+                    <a href="{{ url('dashboard') }}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-home"></i>
+                        </span>
+                        <span class="pcoded-mtext">Dashboard</span>
+                    </a>
+                </li>
+                @if (Auth::user()->level == 'Administrator')
+                    <li class="{{ Request::segment(1) == 'user' ? 'active' : '' }}">
+                        <a href="{{ url('user') }}" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
-                                <i class="feather icon-home"></i>
+                                <i class="feather icon-user"></i>
                             </span>
-                            <span class="pcoded-mtext">Dashboard</span>
+                            <span class="pcoded-mtext">User</span>
                         </a>
                     </li>
-                    @if (Auth::user()->level == 'Administrator')
-                        <li class="{{ Request::segment(1) == 'user' ? 'active' : '' }}">
-                            <a href="{{ url('user') }}" class="waves-effect waves-dark">
-                                <span class="pcoded-micon">
-                                    <i class="feather icon-user"></i>
-                                </span>
-                                <span class="pcoded-mtext">User</span>
-                            </a>
-                        </li>
-                    @endif
-                    {{-- master akuntansi --}}
-                    <li class="pcoded-hasmenu {{ Request::segment(1) == 'master-akuntasi' ? 'active' : '' }} {{ Request::segment(1) == 'master-akuntasi' ? 'pcoded-trigger' : '' }}">
-                        <a href="javascript:void(0)" class="waves-effect waves-dark">
-                            <span class="pcoded-micon"><i class="feather icon-bookmark"></i></span>
-                            <span class="pcoded-mtext">Master Akuntasi</span>
-                        </a>
-                        <ul class="pcoded-submenu">
-                            <li class="{{ Request::segment(2) == 'kode-induk' ? 'active' : '' }}">
-                                <a href="{{ url('master-akuntasi/kode-induk') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-micon">
-                                        <i class="feather icon-bookmark"></i>
-                                    </span>
-                                    <span class="pcoded-mtext">Kode Induk</span>
-                                </a>
-                            </li>
-                            <li class="{{ Request::segment(2) == 'kode-akun' ? 'active' : '' }}">
-                                <a href="{{ url('master-akuntasi/kode-akun') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-micon">
-                                        <i class="feather icon-bookmark"></i>
-                                    </span>
-                                    <span class="pcoded-mtext">Kode Akun</span>
-                                </a>
-                            </li>
-                            <li class="{{ Request::segment(2) == 'kunci-transaksi' ? 'active' : '' }}">
-                            <a href="{{ url('master-akuntasi/kunci-transaksi') }}" class="waves-effect waves-dark">
+                @endif
+                {{-- master akuntansi --}}
+                @if (Auth::user()->level != 'Viewer')
+                <li class="pcoded-hasmenu {{ Request::segment(1) == 'master-akuntasi' ? 'active' : '' }} {{ Request::segment(1) == 'master-akuntasi' ? 'pcoded-trigger' : '' }}">
+                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="feather icon-bookmark"></i></span>
+                        <span class="pcoded-mtext">Master Akuntasi</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        <li class="{{ Request::segment(2) == 'kode-induk' ? 'active' : '' }}">
+                            <a href="{{ url('master-akuntasi/kode-induk') }}" class="waves-effect waves-dark">
                                 <span class="pcoded-micon">
                                     <i class="feather icon-bookmark"></i>
                                 </span>
-                                <span class="pcoded-mtext">Kunci Transaksi</span>
+                                <span class="pcoded-mtext">Kode Induk</span>
                             </a>
                         </li>
-                        </ul>
+                        <li class="{{ Request::segment(2) == 'kode-akun' ? 'active' : '' }}">
+                            <a href="{{ url('master-akuntasi/kode-akun') }}" class="waves-effect waves-dark">
+                                <span class="pcoded-micon">
+                                    <i class="feather icon-bookmark"></i>
+                                </span>
+                                <span class="pcoded-mtext">Kode Akun</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::segment(2) == 'kunci-transaksi' ? 'active' : '' }}">
+                        <a href="{{ url('master-akuntasi/kunci-transaksi') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-bookmark"></i>
+                            </span>
+                            <span class="pcoded-mtext">Kunci Transaksi</span>
+                        </a>
                     </li>
-                </ul>
-            @endif
-            {{-- <div class="pcoded-navigation-label">Master Akuntansi</div> --}}
+                    </ul>
+                </li>
+                @endif
+            </ul>
+                {{-- <div class="pcoded-navigation-label">Master Akuntansi</div> --}}
             <div class="pcoded-navigation-label">Transaksi Kas</div>
             {{-- Kas --}}
             <ul class="pcoded-item pcoded-left-item">

@@ -1,7 +1,7 @@
 <nav class="navbar header-navbar pcoded-header">
   <div class="navbar-wrapper">
       <div class="navbar-logo">
-          <a href="index.html">
+          <a href="{{ route('dashboard') }}">
             <i class="ti-pencil-alt"></i> <strong> Accounting</strong>
               {{-- <img class="img-flu`id" src="{{ asset('') }}png/jatim-logo.png" alt="Theme-Logo" /> --}}
           </a>

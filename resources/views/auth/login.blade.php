@@ -145,12 +145,12 @@
                             </div>
                             @endif
                             <div class="form-group form-primary">
-                                <input type="email" name="email"  class="form-control" value="{{ old('email') }}" autofocus>
+                                <input type="email" name="email"  class="form-control" value="{{ old('email') }}" >
                                     <span class="form-bar"></span>
                                     <label class="float-label">Email</label>
                             </div>
                             <div class="form-group form-primary">
-                                <input type="password" name="password" class="form-control" autofocus>
+                                <input type="password" name="password" class="form-control" >
                                 <span class="form-bar"></span>
                                 <label class="float-label">Password</label>
                             </div>
