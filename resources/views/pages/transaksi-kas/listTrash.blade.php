@@ -13,8 +13,9 @@
 @section('content')
 
     @include('components.notification')
-
-    @include('components.button-add', ['btnText' => $btnText, 'btnLink' => $btnLink])
+    @if (Auth::user()->level != 'Viewer')
+        @include('components.button-add', ['btnText' => $btnText, 'btnLink' => $btnLink])
+    @endif
 
     <ul class="nav nav-tabs">
         <li class="nav-item">

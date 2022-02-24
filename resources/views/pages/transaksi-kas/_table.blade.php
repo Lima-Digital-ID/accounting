@@ -8,7 +8,7 @@
                 <th>Kode Akun Kas</th>
                 <th>Tipe</th>
                 <th>Total</th>
-                <th>Aksi</th>
+                {!! Auth::user()->level != 'Viewer' ? "<th>Aksi</th>" : '' !!}
             </tr>
         </thead>
         <tbody>
@@ -24,7 +24,9 @@
                     <td>{{ $item->akun_kode }}</td>
                     <td>{{ $item->tipe }}</td>
                     <td>Rp. {{number_format($item->total, 2, ',', '.') }}</td>
+                    @if (Auth::user()->level != 'Viewer')
                     <td>
+
                         <div class="form-inline">
                             <a href="{{ route('kas-transaksi.edit', $item->kode_transaksi_kas) }}" class="mr-2">
                                 <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm"
@@ -42,6 +44,7 @@
                             </form>
                         </div>
                     </td>
+                    @endif
                 </tr>
                 @php
                     $no++;

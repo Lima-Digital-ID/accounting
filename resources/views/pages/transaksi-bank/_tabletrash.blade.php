@@ -8,7 +8,7 @@
                 <th>Kode Akun Kas</th>
                 <th>Tipe</th>
                 <th>Total</th>
-                <th>Aksi</th>
+                {!! Auth::user()->level != 'Viewer' ? "<th>Aksi</th>" : '' !!}
             </tr>
         </thead>
         <tbody>
@@ -24,23 +24,25 @@
                     <td>{{ $item->akun_kode }}</td>
                     <td>{{ $item->tipe }}</td>
                     <td>Rp. {{number_format($item->total, 2, ',', '.') }}</td>
-                    <td>
-                        <div class="form-inline">
-                            <a href="{{ route('transaksiBank.restore', $item->kode_transaksi_bank) }}" class="mr-2">
-                                <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm"
-                                    data-toggle="tooltip" title="Restore" data-placement="top"><i class="ti-reload"></i></button>
-                            </a>
-                            <form action="{{ route('transaksiBank.hapusPermanen', [$item->kode_transaksi_bank]) }}" method="post" onsubmit="return confirm('Delete this data permanently ?')">
-                                @csrf
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button type="submit" value="Delete" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Hapus Permanen"
-                                    data-placement="top">
-                                    <span class="feather icon-trash"></span>
-                                </button>
-                                {{-- </a> --}}
-                            </form>
-                        </div>
-                    </td>
+                    @if (Auth::user()->level != 'Viewer')
+                        <td>
+                            <div class="form-inline">
+                                <a href="{{ route('transaksiBank.restore', $item->kode_transaksi_bank) }}" class="mr-2">
+                                    <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm"
+                                        data-toggle="tooltip" title="Restore" data-placement="top"><i class="ti-reload"></i></button>
+                                </a>
+                                <form action="{{ route('transaksiBank.hapusPermanen', [$item->kode_transaksi_bank]) }}" method="post" onsubmit="return confirm('Delete this data permanently ?')">
+                                    @csrf
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" value="Delete" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Hapus Permanen"
+                                        data-placement="top">
+                                        <span class="feather icon-trash"></span>
+                                    </button>
+                                    {{-- </a> --}}
+                                </form>
+                            </div>
+                        </td>
+                    @endif
                 </tr>
                 @php
                     $no++;
