@@ -22,7 +22,7 @@
           <a class="nav-link {{ Request::segment(2) == 'kode-induk' ? 'active' : '' }}" href="{{ url('/master-akuntasi/kode-induk') }}">List Kode Induk</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ Request::segment(3) == 'trash' ? 'active' : '' }}" href="{{ url('/master-akuntasi/kode-induk/trash') }}">List Sampah</a>
+            <a class="nav-link {{ Request::segment(3) == 'trash' ? 'active' : '' }}" href="{{ url('/master-akuntasi/kode-induk/trash') }}">Tempat Sampah</a>
         </li>
     </ul>
 

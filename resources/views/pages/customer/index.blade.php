@@ -19,24 +19,23 @@
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link {{ Request::segment(2) == 'kode-akun' ? 'active' : '' }}" href="{{ url('/master-akuntasi/kode-akun') }}">List Kode Akun</a>
+          <a class="nav-link {{ Request::segment(1) == 'customer' ? 'active' : '' }}" href="{{ url('/customer') }}">List Customer</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ Request::segment(3) == 'kode-akun' ? 'active' : '' }}" href="{{ url('/master-akuntasi/kode-akun/trash') }}">Tempat Sampah</a>
+            <a class="nav-link {{ Request::segment(2) == 'trash' ? 'active' : '' }}" href="{{ url('/customer/trash') }}">Tempat Sampah</a>
         </li>
     </ul>
-
     <div class="card">
         <div class="card-header">
 
-            <h5>List Kode Akun</h5>
+            <h5>List Customer</h5>
             <div class="col-md-4 pull-right">
                 @include('components.search')
             </div>
 
         </div>
         <div class="card-block table-border-style">
-            @include('pages.kode-akun._table')
+            @include('pages.customer._table')
         </div>
     </div>
 @endsection

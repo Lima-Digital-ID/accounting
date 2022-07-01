@@ -22,12 +22,12 @@
           <a class="nav-link {{ request()->routeIs('kas-transaksi.index') ? 'active' : '' }}" href="{{ url('/kas/kas-transaksi') }}">List Transaksi Kas</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ Request::segment(3) == 'trash' ? 'active' : '' }}" href="{{ url('/kas/kas-transaksi/trash') }}">List Sampah</a>
+            <a class="nav-link {{ Request::segment(3) == 'trash' ? 'active' : '' }}" href="{{ url('/kas/kas-transaksi/trash') }}">Tempat Sampah</a>
         </li>
     </ul>
     <div class="card">
         <div class="card-header">
-            <h5>List Sampah</h5>
+            <h5>Tempat Sampah</h5>
             <div class="col-md-4 pull-right">
                 @include('components.search')
             </div>

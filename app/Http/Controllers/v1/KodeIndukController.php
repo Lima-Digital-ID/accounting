@@ -144,7 +144,7 @@ class KodeIndukController extends Controller
             $updateData->kode_induk = $request->kode_induk;
             $updateData->nama = $request->nama;
             $updateData->save();
-            return redirect()->route('kode-induk.index')->withStatus('Berhasil mengganti data.');
+            return redirect()->route('kode-induk.index')->withStatus('Berhasil memperbarui data.');
         } catch (QueryException $e) {
             return redirect()->back()->withError('Terjadi kesalahan.');
         } catch (Exception $e){

@@ -2,41 +2,39 @@
 
 @section('page-header')
     @include('components.page-header', [
-    'pageTitle' => $pageTitle,
-    'pageSubtitle' => '',
-    'pageIcon' => $pageIcon,
-    'parentMenu' => $parentMenu,
-    'current' => $current
+        'pageTitle' => $pageTitle,
+        'pageSubtitle' => '',
+        'pageIcon' => $pageIcon,
+        'parentMenu' => $parentMenu,
+        'current' => $current,
     ])
 @endsection
 
 @section('content')
-
     @include('components.notification')
 
     @include('components.button-add', ['btnText' => $btnText, 'btnLink' => $btnLink])
 
-
     <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link {{ Request::segment(2) == 'kode-akun' ? 'active' : '' }}" href="{{ url('/master-akuntasi/kode-akun') }}">List Kode Akun</a>
+            <a class="nav-link {{ request()->routeIs('user.index') ? 'active' : '' }}" href="{{ url('/supplier') }}">List
+                Supplier</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ Request::segment(3) == 'kode-akun' ? 'active' : '' }}" href="{{ url('/master-akuntasi/kode-akun/trash') }}">Tempat Sampah</a>
+            <a class="nav-link {{ Request::segment(2) == 'trash' ? 'active' : '' }}"
+                href="{{ url('/supplier/trash') }}">Tempat Sampah</a>
         </li>
     </ul>
-
     <div class="card">
         <div class="card-header">
-
-            <h5>List Kode Akun</h5>
+            <h5>Tempat Sampah</h5>
             <div class="col-md-4 pull-right">
                 @include('components.search')
             </div>
 
         </div>
         <div class="card-block table-border-style">
-            @include('pages.kode-akun._table')
+            @include('pages.supplier._tabletrash')
         </div>
     </div>
 @endsection
