@@ -271,7 +271,7 @@ class TransaksiKasController extends Controller
             $edit_bulan_transasik_kas = date('m-Y',strtotime($request->tanggal));
 
             if ($bulan_transaksi_kas != $edit_bulan_transasik_kas) {
-                return redirect()->back()->withStatus('tidak dapat mengganti bulan transaksi');
+                return redirect()->back()->withStatus('tidak dapat memperbarui bulan transaksi');
             }
             $tipe = $transaksi_kas->tipe;
 
@@ -359,11 +359,11 @@ class TransaksiKasController extends Controller
             $addUserActivity->id_user = Auth::user()->id;
             $addUserActivity->jenis_transaksi = 'Kas';
             $addUserActivity->tipe = 'Update';
-            $addUserActivity->keterangan = 'Berhasil mengganti/menambahkan data baru Transaksi Kas dengan kode '.$_POST['kode_transaksi_kas'].' dengan total '.$newTotal.'.';
+            $addUserActivity->keterangan = 'Berhasil memperbarui/menambahkan data baru Transaksi Kas dengan kode '.$_POST['kode_transaksi_kas'].' dengan total '.$newTotal.'.';
             $addUserActivity->save();
 
             DB::commit();
-            return redirect()->route('kas-transaksi.index')->withStatus('Berhasil mengganti data.');
+            return redirect()->route('kas-transaksi.index')->withStatus('Berhasil memperbarui data.');
         } catch (QueryException $e) {
             DB::rollBack();
             return redirect()->back()->withError('Terjadi kesalahan.' . $e->getMessage());

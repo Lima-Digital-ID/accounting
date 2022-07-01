@@ -111,7 +111,7 @@ class KunciTransaksiController extends Controller
             $editKunciTransaksi = KunciTransaksi::findOrFail($id);
             $editKunciTransaksi->tanggal_mulai_kunci = $request->tanggal_kunci;
             $editKunciTransaksi->save();
-            return redirect()->route('kunci-transaksi.index')->withStatus('Berhasil mengganti data.');
+            return redirect()->route('kunci-transaksi.index')->withStatus('Berhasil memperbarui data.');
         } catch (QueryException $e) {
             return redirect()->back()->withError('Terjadi kesalahan.');
         } catch (Exception $e){

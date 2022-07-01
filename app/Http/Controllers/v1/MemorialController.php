@@ -347,7 +347,7 @@ class MemorialController extends Controller
             $addUserActivity->id_user = Auth::user()->id;
             $addUserActivity->jenis_transaksi = 'Memorial';
             $addUserActivity->tipe = 'Update';
-            $addUserActivity->keterangan = 'Berhasil mengganti/menambahkan data baru Memorial Kas dengan kode '.$id.' dengan total '.$newTotal.'.';
+            $addUserActivity->keterangan = 'Berhasil memperbarui/menambahkan data baru Memorial Kas dengan kode '.$id.' dengan total '.$newTotal.'.';
             $addUserActivity->save();
             return redirect()->route('memorial.index')->withStatus('Data berhasil diperbarui.');
         } catch (QueryException $e) {

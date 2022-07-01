@@ -21,12 +21,12 @@
           <a class="nav-link {{request()->routeIs('user.index') ? 'active' : '' }}" href="{{ url('/user') }}">List User</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ Request::segment(2) == 'trash' ? 'active' : '' }}" href="{{ url('/user/trash') }}">List Sampah</a>
+            <a class="nav-link {{ Request::segment(2) == 'trash' ? 'active' : '' }}" href="{{ url('/user/trash') }}">Tempat Sampah</a>
         </li>
     </ul>
     <div class="card">
         <div class="card-header">
-            <h5>List Sampah</h5>
+            <h5>Tempat Sampah</h5>
             <div class="col-md-4 pull-right">
                 @include('components.search')
             </div>

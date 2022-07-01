@@ -20,7 +20,7 @@
           <a class="nav-link {{ Request::segment(2) == 'memorial' ? 'active' : '' }}" href="{{ url('/memorial/memorial') }}">List Memorial</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ Request::segment(3) == 'trash' ? 'active' : '' }}" href="{{ url('/memorial/memorial/trash') }}">List Sampah</a>
+            <a class="nav-link {{ Request::segment(3) == 'trash' ? 'active' : '' }}" href="{{ url('/memorial/memorial/trash') }}">Tempat Sampah</a>
         </li>
     </ul>
     <div class="card">

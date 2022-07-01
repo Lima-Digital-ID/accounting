@@ -9,6 +9,8 @@ use App\Http\Controllers\v1\MemorialController;
 use App\Http\Controllers\v1\TransaksiBankController;
 use App\Http\Controllers\v1\TransaksiKasController;
 use App\Http\Controllers\v1\UsersController;
+use App\Http\Controllers\v1\CustomerController;
+use App\Http\Controllers\v1\SupplierController;
 use App\Http\Controllers\v1\GeneralLedger\BukuBesarController;
 use App\Http\Controllers\v1\GeneralLedger\NeracaSaldoController;
 use App\Http\Controllers\v1\GeneralLedger\LabaRugiController;
@@ -46,6 +48,19 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/user/{id}/hapus',[UsersController::class,'hapusPermanen'])->name('user.hapusPermanen');
     // Users Management
     Route::resource('/user', UsersController::class);
+
+    // Supplier Management
+    Route::get('/supplier/trash',[SupplierController::class,'trashSupplier'])->name('supplier.trash');
+    Route::get('/supplier/restore/{id}',[SupplierController::class,'restoreSupplier'])->name('supplier.restore');
+    Route::delete('/supplier/{id}/hapus',[SupplierController::class,'hapusPermanen'])->name('supplier.hapusPermanen');
+    Route::resource('/supplier', SupplierController::class);
+
+    // Customer Management
+    Route::get('/customer/trash',[CustomerController::class,'trashCustomer'])->name('customer.trash');
+    Route::get('/customer/restore/{id}',[CustomerController::class,'restoreCustomer'])->name('customer.restore');
+    Route::delete('/customer/{id}/hapus',[CustomerController::class,'hapusPermanen'])->name('customer.hapusPermanen');
+    Route::resource('/customer', CustomerController::class);
+
     // change password
     Route::get('/change-password', [UsersController::class, 'changePassword'])->name('change_password');
     Route::put('/change-password/{id}', [UsersController::class, 'updatePassword'])->name('update_password');

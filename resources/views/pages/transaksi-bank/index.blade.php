@@ -24,7 +24,7 @@
           <a class="nav-link {{ Request::segment(2) == 'bank-transaksi' ? 'active' : '' }}" href="{{ url('/bank/bank-transaksi') }}">List Kode Rekening</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ Request::segment(3) == 'trash' ? 'active' : '' }}" href="{{ url('/bank/bank-transaksi/trash') }}">List Sampah</a>
+            <a class="nav-link {{ Request::segment(3) == 'trash' ? 'active' : '' }}" href="{{ url('/bank/bank-transaksi/trash') }}">Tempat Sampah</a>
         </li>
     </ul>
 

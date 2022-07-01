@@ -21,12 +21,12 @@
           <a class="nav-link {{ request()->routeIs('kode-akun.index') ? 'active' : '' }}" href="{{ url('/master-akuntasi/kode-akun') }}">List Kode Akun</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ Request::segment(3) == 'trash' ? 'active' : '' }}" href="{{ url('/master-akuntasi/kode-akun/trash') }}">List Sampah</a>
+            <a class="nav-link {{ Request::segment(3) == 'trash' ? 'active' : '' }}" href="{{ url('/master-akuntasi/kode-akun/trash') }}">Tempat Sampah</a>
         </li>
     </ul>
     <div class="card">
         <div class="card-header">
-            <h5>List Sampah</h5>
+            <h5>Tempat Sampah</h5>
             <div class="col-md-4 pull-right">
                 @include('components.search')
             </div>
