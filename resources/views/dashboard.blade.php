@@ -173,7 +173,7 @@
         </div>
 
         @if (auth()->user()->level == 'Administrator')
-            <div class="col-xl-4 col-md-6">
+            <div class="col-xl-6 col-md-6">
                 <div class="card latest-update-card">
                     <div class="card-header">
                         <h5>Aktifitas Terbaru</h5>
